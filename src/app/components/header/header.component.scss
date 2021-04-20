@@ -1,3 +1,5 @@
+$lightBlue: #00b7ff;
+
 .wrap {
     width: calc(100vw - 2em);
     height: 10vh;
@@ -12,7 +14,7 @@
         height: 4em;
         align-items: center;
 
-        .hamburger {
+        img {
             width: 2em;
             height: 2em;
             background: white;
@@ -20,7 +22,7 @@
 
         h1 {
             color: #00b7ff;
-            margin: 0 0 0 0;
+            margin: 0 0 0 0.5em;
             font-size: 4em;
         }
     }
@@ -42,7 +44,7 @@
             height: 2em;
             border-radius: 100%;
             margin-left: .5em;
-            background: white;
+            background: $lightBlue;
         }
     }
 }

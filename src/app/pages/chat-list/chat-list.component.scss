@@ -1,0 +1,40 @@
+$lightBlue: #00b7ff;
+$blue: #006b8c;
+$gray: #282828;
+
+.wrap {
+    width: calc(25vw - 2em);
+    height: calc(90vh - 2em);
+    padding: 1em;
+    border-right: 2px solid $gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .drawer {
+        display: flex;
+        width: 100%;
+        border-bottom: 2px solid $gray;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1em;
+    }
+    .active h3 {
+        color: $blue;
+    }
+    .frequents {
+        margin-bottom: 4em;
+        h3 {
+            text-align: center;
+        }
+        .frequentUsers {
+            display: flex;
+            justify-content: space-between;
+            .user {
+                height: 4em;
+                width: 4em;
+                border-radius: 100%;
+                background: $lightBlue;
+            }
+        }
+    }
+}
