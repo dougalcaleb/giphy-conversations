@@ -9,6 +9,7 @@ import { ChatListComponent } from './pages/chat-list/chat-list.component';
 import { ConversationComponent } from './pages/conversation/conversation.component';
 import { UserComponent } from './pages/user/user.component';
 import { MessageComponent } from './components/message/message.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { MessageComponent } from './components/message/message.component';
     ChatListComponent,
     ConversationComponent,
     UserComponent,
-    MessageComponent
+    MessageComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
