@@ -5,6 +5,8 @@
     <div class="userIcon">
         <div class="head"></div>
         <div class="body"></div>
+        <div *ngIf="loggedIn" class="userImage" style="background-image: url({{newUserData.photoURL}})"></div>
     </div>
-    <button (click)="Firebase.googleSignIn()">LOGIN WITH GOOGLE</button>
+    <button *ngIf="!loggedIn" (click)="signIn()">LOGIN WITH GOOGLE</button>
+    <button *ngIf="loggedIn" (click)="signIn()">SIGN OUT</button>
 </div>

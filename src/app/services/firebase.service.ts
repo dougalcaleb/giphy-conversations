@@ -14,7 +14,8 @@ import { switchMap } from "rxjs/operators";
 	providedIn: "root",
 })
 export class FirebaseService {
-	public signedIn: Observable<User | null | undefined>;
+   public signedIn: Observable<User | null | undefined>;
+   public userData: any;
 
 	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router) {
       this.signedIn = this.auth.authState.pipe(
@@ -31,6 +32,7 @@ export class FirebaseService {
    async googleSignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
       const cred = await this.auth.signInWithPopup(provider);
+      this.userData = cred.user;
       return this.updateUserData(cred.user);
    }
 

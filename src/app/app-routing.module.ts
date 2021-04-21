@@ -6,9 +6,11 @@ import { AuthGuard } from "./auth.guard";
 // pages
 import {LoginComponent} from "./pages/login/login.component";
 import {TestingPageComponent} from "./pages/testing-page/testing-page.component";
+import { ConversationComponent } from "./pages/conversation/conversation.component";
 
 const routes: Routes = [
 	{path: "test", component: TestingPageComponent, canActivate: [AuthGuard]},
+	{path: "conversation", component: ConversationComponent, canActivate: [AuthGuard]},
 	{path: "login", component: LoginComponent},
 	{path: "**", redirectTo: "login", pathMatch: "full"},
 ];
