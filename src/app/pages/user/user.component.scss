@@ -1,0 +1,35 @@
+$lightBlue: #00b7ff;
+$blue: #006b8c;
+$gray: #282828;
+
+.wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5em 3em;
+    width: calc(75vw - 6em);
+    height: calc(90vh - 10em);
+
+    .pic {
+        width: 15em;
+        height: 15em;
+        border-radius: 100%;
+        background: $lightBlue;
+        margin-bottom: 2em;
+    }
+
+    .edit {
+        border: none;
+        outline: none;
+        color: white;
+        background: $lightBlue;
+        padding: 1em;
+        font-size: 1.5em;
+        width: fit-content;
+        border-radius: 7px;
+    }
+
+    .username {
+        color: $lightBlue
+    }
+}

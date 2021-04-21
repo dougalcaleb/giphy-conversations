@@ -6,7 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./conversation.component.scss']
 })
 export class ConversationComponent implements OnInit {
-
+  moreInfo() {
+    alert('lesss gooo')
+  }
   constructor() { }
 
   ngOnInit(): void {
