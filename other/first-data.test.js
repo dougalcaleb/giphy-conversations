@@ -1,4 +1,4 @@
-{
+export const testData = {
 	"data": [
 		{
 			"type": "gif",

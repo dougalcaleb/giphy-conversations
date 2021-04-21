@@ -1,5 +1,6 @@
 import {NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
 
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
@@ -13,7 +14,8 @@ import {HeaderComponent} from "./components/header/header.component";
 import {TestingPageComponent} from "./pages/testing-page/testing-page.component";
 
 // Material
-import {MatButtonModule} from "@angular/material/button";
+import { MatButtonModule } from "@angular/material/button";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @NgModule({
 	declarations: [
@@ -26,7 +28,7 @@ import {MatButtonModule} from "@angular/material/button";
 		HeaderComponent,
 		TestingPageComponent,
 	],
-	imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, MatButtonModule],
+	imports: [FormsModule, BrowserModule, AppRoutingModule, BrowserAnimationsModule, MatButtonModule, MatProgressSpinnerModule],
 	providers: [],
 	bootstrap: [AppComponent],
 })
