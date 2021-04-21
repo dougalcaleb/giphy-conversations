@@ -24,3 +24,13 @@
         }
     }
 }
+
+.sent {
+    justify-self: flex-end;
+    .user {
+        display: none;
+        .imginfo {
+            flex-direction: row-reverse;
+        }
+    }
+}
