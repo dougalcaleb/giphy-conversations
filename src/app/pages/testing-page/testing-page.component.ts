@@ -1,6 +1,5 @@
 import {Component, OnInit} from "@angular/core";
 import { GiphyService } from "../../services/giphy.service";
-import { testData } from "../../files/first-data";
 
 @Component({
 	selector: "app-testing-page",
@@ -15,7 +14,11 @@ export class TestingPageComponent implements OnInit {
 
 	constructor(private Giphy: GiphyService) {}
 
-	ngOnInit() {}
+   ngOnInit() { }
+   
+   async login() {
+
+   }
 
 	search(event: any) {
 		if (event.key == "Enter") {
@@ -45,27 +48,10 @@ export class TestingPageComponent implements OnInit {
             if (this.cache) {
                localStorage.setItem("gif-cache", JSON.stringify(this.searchResult));
             }
-            // this.searchResult.data.forEach((gif: any) => {
-            //    let vid = document.createElement("video");
-            //    vid.setAttribute("autoplay", "true");
-            //    vid.setAttribute("loop", "true");
-            //    vid.setAttribute("src", gif.images.fixed_height);
-            // });
          },
          () => {
             console.error("Search failed.");
-            // this.useFakeData();
          }
       );
    }
-   
-   // useFakeData() {
-   //    this.searchResult = testData;
-   //    this.searchResult.forEach((gif: any) => {
-   //       let vid = document.createElement("video");
-   //       vid.setAttribute("autoplay", "true");
-   //       vid.setAttribute("loop", "true");
-   //       vid.setAttribute("src", gif.images.fixed_height);
-   //    });
-   // }
 }

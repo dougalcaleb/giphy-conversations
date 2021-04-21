@@ -1,12 +1,5 @@
-<!-- <button (click)="getData()">Get?</button> -->
-
-<!-- <img src="https://media0.giphy.com/media/26FffpngNB7A356cU/200.gif?cid=1480d408wq1ertr02t6467bnrlaefkxvr9aj46hhfn0snxcv&rid=200.gif&ct=g" > -->
-
-
-
-
 <div class="bg">
-   <div class="gifs" *ngIf="retrieved">
+   <!-- <div class="gifs" *ngIf="retrieved">
       <span *ngFor="let gif of searchResult.data;">
          <video autoplay loop src={{gif.images.fixed_height.mp4}}></video>
          <div class="spinner-wrap">
@@ -29,5 +22,9 @@
       
 
    </div>
-   <input type="text" placeholder="Search for a GIF" [(ngModel)]="searchTerm" (keydown)="search($event)">
+   <input type="text" placeholder="Search for a GIF" [(ngModel)]="searchTerm" (keydown)="search($event)"> -->
+
+
+
+   <button (click)="login()">Log In with Google</button>
 </div>
