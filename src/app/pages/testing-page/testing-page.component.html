@@ -1,5 +1,5 @@
 <div class="bg">
-   <!-- <div class="gifs" *ngIf="retrieved">
+   <div class="gifs" *ngIf="retrieved">
       <span *ngFor="let gif of searchResult.data;">
          <video autoplay loop src={{gif.images.fixed_height.mp4}}></video>
          <div class="spinner-wrap">
@@ -22,9 +22,5 @@
       
 
    </div>
-   <input type="text" placeholder="Search for a GIF" [(ngModel)]="searchTerm" (keydown)="search($event)"> -->
-
-
-
-   <button (click)="login()">Log In with Google</button>
+   <input type="text" placeholder="Search for a GIF" [(ngModel)]="searchTerm" (keydown)="search($event)">
 </div>

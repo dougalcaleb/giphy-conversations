@@ -1,4 +1,5 @@
 import {Component, OnInit} from "@angular/core";
+import { FirebaseService } from "src/app/services/firebase.service";
 import { GiphyService } from "../../services/giphy.service";
 
 @Component({
@@ -12,7 +13,7 @@ export class TestingPageComponent implements OnInit {
    retrieved = false;
    cache = true;
 
-	constructor(private Giphy: GiphyService) {}
+	constructor(private Giphy: GiphyService, public Firebase: FirebaseService) {}
 
    ngOnInit() { }
    
