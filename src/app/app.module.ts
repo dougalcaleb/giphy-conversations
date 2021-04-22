@@ -10,6 +10,7 @@ import { ConversationComponent } from './pages/conversation/conversation.compone
 import { UserComponent } from './pages/user/user.component';
 import { MessageComponent } from './components/message/message.component';
 import { HeaderComponent } from './components/header/header.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HeaderComponent } from './components/header/header.component';
     ConversationComponent,
     UserComponent,
     MessageComponent,
-    HeaderComponent
+    HeaderComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
