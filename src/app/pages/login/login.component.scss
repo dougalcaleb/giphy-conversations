@@ -15,6 +15,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        position: relative;
         .head {
             background: white;
             width: 4em;
@@ -31,6 +32,15 @@
             z-index: 0;
             border-radius: 6em 6em 0 0;
             margin-top: -2em;
+        }
+        .userImage {
+           height: 100%;
+           width: 100%;
+           position: absolute;
+           border-radius: 100%;
+           z-index: 10;
+           background-position: center center;
+           background-size: cover;
         }
     }
     button {

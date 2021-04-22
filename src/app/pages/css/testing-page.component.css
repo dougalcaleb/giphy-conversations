@@ -1,0 +1,67 @@
+.bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #282828;
+}
+
+input {
+  position: absolute;
+  bottom: 50px;
+  width: calc(100% - 100px);
+  border: 3px solid #006b8c;
+  border-radius: 5px;
+  background: #282828;
+  color: #e8e8e8;
+  outline: none;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 5px;
+}
+
+.gifs {
+  background: #070707;
+  max-width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  position: absolute;
+  background: #070707;
+  border-radius: 10px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  bottom: 150px;
+  padding: 5px;
+  max-height: 60%;
+  overflow-y: auto;
+}
+.gifs span {
+  margin: 5px;
+  height: 100px;
+  background: #282828;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  min-width: 50px;
+  cursor: pointer;
+}
+.gifs span video {
+  height: 100px;
+  position: relative;
+  z-index: 10;
+}
+.gifs span .spinner-wrap {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  min-width: 50px;
+  position: absolute;
+  top: 0;
+  justify-content: center;
+  z-index: 9;
+}
