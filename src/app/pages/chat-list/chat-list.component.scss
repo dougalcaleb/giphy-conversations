@@ -18,6 +18,9 @@ $gray: #282828;
         justify-content: center;
         margin-top: 1em;
     }
+    h3 {
+        cursor: pointer;
+    }
     .active h3 {
         color: $blue;
     }
