@@ -8,6 +8,8 @@ import { AngularFireAuth } from "@angular/fire/auth";
 // rxjs
 import { Observable, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
+// other
+import { StoreService } from "./store.service";
 
 
 @Injectable({
@@ -17,7 +19,7 @@ export class FirebaseService {
    public signedIn: Observable<User | null | undefined>;
    public userData: any;
 
-	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router) {
+	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
       this.signedIn = this.auth.authState.pipe(
          switchMap(user => {
             if (user) {
@@ -45,6 +47,7 @@ export class FirebaseService {
          displayName: user.displayName,
          photoURL: user.photoURL,
          color: user.color || "orange",
+         chats: user.chats || [],
       }
 
       return userRef.set(data, { merge: true });
@@ -52,6 +55,8 @@ export class FirebaseService {
 
    async signOut() {
       await this.auth.signOut();
+      this.Store.activeUser = null;
+      this.Store.loggedIn = false;
       this.router.navigate(["/"]);
    }
 }
