@@ -26,6 +26,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+import { TestChatlistComponent } from './pages/test-chatlist/test-chatlist.component';
+import { PagenotfoundComponent } from './pages/pagenotfound/pagenotfound.component';
 
 @NgModule({
 	declarations: [
@@ -37,6 +39,8 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 		MessageComponent,
 		HeaderComponent,
 		TestingPageComponent,
+  TestChatlistComponent,
+  PagenotfoundComponent,
 	],
 	imports: [
 		FormsModule,

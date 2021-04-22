@@ -14,7 +14,13 @@ export class LoginComponent implements OnInit {
 
 	constructor(public Firebase: FirebaseService, private Store: StoreService, private router: Router) {}
 
-	ngOnInit(): void {}
+   ngOnInit(): void {
+      console.log(this.Store.loggedIn);
+      console.log(this.loggedIn)
+      if (this.Store.loggedIn) {
+         this.loggedIn = true;
+      }
+   }
 
    // Invokes Google popup signin (or signs out if already signed in), stores user data to global store
 	async signIn() {

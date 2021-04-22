@@ -1,0 +1,30 @@
+<div class="bg">
+   <span *ngIf="Store.loggedIn">
+      <div *ngFor="let chat of Store.activeUser.chats"></div>
+   </span>
+
+   <div class="options-modal">
+      <input type="text" class="user-search" placeholder="Search for a user">
+      <div class="users">
+         <!-- <div class="user-image" *ngFor="let user of inProgressUsers" style="background-image: url({{user.image}})"></div> -->
+         <div class="user-image"></div>
+         <div class="user-image"></div>
+         <div class="user-image"></div>
+         <div class="user-image"></div>
+      </div>
+      <div class="user-suggestion" *ngIf="suggested.length > 0">
+         <!-- <div class="suggestedUser" *ngFor="let user of suggested"></div> -->
+         <!-- <div class="suggested-user" *ngFor="let user of suggested">
+            <div class="profile-image"></div>
+            <div class="profile-names">Caleb Dougal <span class="username">@dougalcaleb</span></div>
+         </div> -->
+
+         <div class="suggested-user" *ngFor="let user of suggested">
+            <div class="profile-image" style="background-image: url({{user.photoURL}})"></div>
+            <div class="profile-names">{{user.displayName}} <span class="username">{{user.username}}</span></div>
+         </div>
+      </div>
+   </div>
+
+   <button class="newChat" (click)="startNewChat()">New Chat</button>
+</div>
