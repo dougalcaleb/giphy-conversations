@@ -1,6 +1,5 @@
 import {Component, OnInit} from "@angular/core";
 import { Router } from "@angular/router";
-import {take, tap} from "rxjs/operators";
 import {FirebaseService} from "src/app/services/firebase.service";
 import { StoreService } from "src/app/services/store.service";
 
@@ -17,6 +16,7 @@ export class LoginComponent implements OnInit {
 
 	ngOnInit(): void {}
 
+   // Invokes Google popup signin (or signs out if already signed in), stores user data to global store
 	async signIn() {
 		if (!this.loggedIn) {
 			await this.Firebase.googleSignIn();
@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
          this.Store.activeUser = this.newUserData;
          this.Store.loggedIn = true;
          this.router.navigate(["test"]);
-			// console.log(this.newUserData);
       } else {
          await this.Firebase.signOut();
          this.loggedIn = false;

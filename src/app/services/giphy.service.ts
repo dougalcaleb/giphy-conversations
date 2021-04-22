@@ -9,10 +9,11 @@ export class GiphyService {
    searchUrl = "api.giphy.com/v1/gifs/search";
    trendingUrl = "api.giphy.com/v1/gifs/trending";
    req = new XMLHttpRequest();
-   params = `?api_key=${keys.giphy}&limit=10&rating=pg-13`;
+   params = `?api_key=${keys.giphy}&rating=pg-13`;
 
    constructor() { }
    
+   // Gets GIFs from the Trending section (testing purposes)
    public getTrending(): any {
       this.req.open("GET", "http://"+this.trendingUrl + this.params, true);
       this.req.responseType = "text";
@@ -25,8 +26,9 @@ export class GiphyService {
       }
    }
 
-   public async getSearch(query: string): Promise<any> {
-      this.req.open("GET", "http://"+this.searchUrl + this.params+"&q="+query, true);
+   // Gets GIFs from a search term
+   public async getSearch(query: string, count: number = 10): Promise<any> {
+      this.req.open("GET", `http://${this.searchUrl + this.params}&q=${query}&limit=${count}`, true);
       this.req.responseType = "text";
       this.req.send();
 

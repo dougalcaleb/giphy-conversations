@@ -31,6 +31,7 @@ export class FirebaseService {
       )
    }
    
+   // Google signin popup
    async googleSignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
       const cred = await this.auth.signInWithPopup(provider);
@@ -38,6 +39,7 @@ export class FirebaseService {
       return this.updateUserData(cred.user);
    }
 
+   // Updates or sets user data in Firebase
    private updateUserData(user: any) {
       const userRef: AngularFirestoreDocument<User> = this.firestore.doc(`users/${user.uid}`);
 
@@ -53,6 +55,7 @@ export class FirebaseService {
       return userRef.set(data, { merge: true });
    }
 
+   // Signs out and routes to login
    async signOut() {
       await this.auth.signOut();
       this.Store.activeUser = null;
