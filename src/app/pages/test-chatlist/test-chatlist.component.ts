@@ -14,10 +14,18 @@ export class TestChatlistComponent implements OnInit {
    inProgress = true;
    suggested: User[] = [];
 
-	constructor(public Store: StoreService) {}
+   constructor(public Store: StoreService) { }
+   
+  toggleModal() {
+    if (this.Store.display == false) {
+      this.Store.display = true;
+    } else {
+      this.Store.display = false;
+    }
+  }
 
 	ngOnInit(): void {
-      console.log(this.Store.loggedIn);
+
    }
 
    startNewChat() {}

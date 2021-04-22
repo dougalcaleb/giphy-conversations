@@ -7,6 +7,7 @@ export class StoreService {
    // User data
    public activeUser: any = null;
    public loggedIn: boolean = false;
+   display = false;
 
   constructor() { }
 }
