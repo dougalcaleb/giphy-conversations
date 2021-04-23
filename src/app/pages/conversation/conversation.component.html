@@ -8,14 +8,13 @@
 		</div>
 		<div class="messages">
 
-
 			<div *ngFor="let message of messages" class="message-wrap {{message.type}}">
 				<div class="user" style="background-image: url({{message.senderPhotoURL}})"></div>
 				<div class="img">
-               <video autoplay loop preload="auto" src="{{message.url}}"></video>
+               <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{message.url}}">Your browser does not support embedded video.</video>
 					<div class="imginfo">
 						<p>{{message.time}} ago from {{message.senderName}}</p>
-						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
+						<img src="{{ message.heart }}" class="heart" (click)="heartToggle(message.url)" />
 					</div>
 				</div>
 			</div>
