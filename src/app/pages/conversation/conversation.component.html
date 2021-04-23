@@ -1,27 +1,74 @@
 <app-header></app-header>
 <div class="page">
-    <app-chat-list></app-chat-list>
-    <div class="wrap">
-        <div class="info">
-            <h1>Conversation 1</h1>
-            <p (click)="toggleModal()">i</p>
-        </div>
-        <div class="messages">
-            <app-message></app-message>
-            <app-message></app-message>
-            <app-message></app-message>
-            <app-message></app-message>
-            <app-message></app-message>
-            <app-message></app-message>
-            <app-message></app-message>
-            <app-message></app-message>
-        </div>
-        <div class="send">
-            <input type="text">
-            <button class="msgSend">Send</button>
-            <div class="gradient"></div>
-        </div>
-    </div>
-    <app-test-chatlist></app-test-chatlist>
-    
+	<app-chat-list></app-chat-list>
+	<div class="wrap">
+		<div class="info">
+			<h1>Conversation 1</h1>
+			<p (click)="toggleModal()">i</p>
+		</div>
+		<div class="messages">
+
+
+			<!-- <div *ngFor="let message of messages" class="message-wrap {{message.type}}">
+				<div class="user"></div>
+				<div class="img">
+					<img src="https://media.giphy.com/media/jwKC0qlOoXmcLDB4vC/giphy.gif" />
+               <video autoplay loop src="{{message.url}}"></video>
+					<div class="imginfo">
+						<p>3 minutes ago</p>
+						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
+					</div>
+				</div>
+			</div> -->
+
+         <div class="message-wrap sent">
+				<div class="user"></div>
+				<div class="img">
+					<!-- <img src="https://media.giphy.com/media/jwKC0qlOoXmcLDB4vC/giphy.gif" /> -->
+               <video autoplay loop src="https://media0.giphy.com/media/uQvxobRExS9nG/giphy.mp4?cid=1480d408mmg9n7yya1yopwn6jnrtj4cdlnx6ljglkkb2xslq&rid=giphy.mp4&ct=g"></video>
+					<div class="imginfo">
+						<p>3 minutes ago</p>
+						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
+					</div>
+				</div>
+         </div>
+         <div class="message-wrap sent">
+				<div class="user"></div>
+				<div class="img">
+					<!-- <img src="https://media.giphy.com/media/jwKC0qlOoXmcLDB4vC/giphy.gif" /> -->
+               <video autoplay loop src="https://media0.giphy.com/media/uQvxobRExS9nG/giphy.mp4?cid=1480d408mmg9n7yya1yopwn6jnrtj4cdlnx6ljglkkb2xslq&rid=giphy.mp4&ct=g"></video>
+					<div class="imginfo">
+						<p>3 minutes ago</p>
+						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
+					</div>
+				</div>
+         </div>
+         <div class="message-wrap">
+				<div class="user"></div>
+				<div class="img">
+					<!-- <img src="https://media.giphy.com/media/jwKC0qlOoXmcLDB4vC/giphy.gif" /> -->
+               <video autoplay loop src="https://media0.giphy.com/media/uQvxobRExS9nG/giphy.mp4?cid=1480d408mmg9n7yya1yopwn6jnrtj4cdlnx6ljglkkb2xslq&rid=giphy.mp4&ct=g"></video>
+					<div class="imginfo">
+						<p>3 minutes ago</p>
+						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
+					</div>
+				</div>
+         </div>
+
+			<app-message></app-message>
+			<app-message></app-message>
+			<app-message></app-message>
+			<app-message></app-message>
+			<app-message></app-message>
+			<app-message></app-message>
+			<app-message></app-message>
+			<app-message></app-message>
+		</div>
+		<div class="send">
+			<input type="text" />
+			<button class="msgSend">Send</button>
+			<div class="gradient"></div>
+		</div>
+	</div>
+	<app-test-chatlist></app-test-chatlist>
 </div>
