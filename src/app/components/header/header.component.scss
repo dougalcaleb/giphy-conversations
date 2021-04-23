@@ -24,6 +24,7 @@ $lightBlue: #00b7ff;
             color: #00b7ff;
             margin: 0 0 0 0.5em;
             font-size: 4em;
+            cursor: pointer;
         }
     }
 
@@ -36,6 +37,7 @@ $lightBlue: #00b7ff;
 
             span {
                 color: #00b7ff;
+                cursor: pointer;
             }
         }
 
@@ -45,6 +47,7 @@ $lightBlue: #00b7ff;
             border-radius: 100%;
             margin-left: .5em;
             background: $lightBlue;
+            cursor: pointer;
         }
     }
 }

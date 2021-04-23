@@ -1,22 +1,27 @@
-<div class="wrap">
-    <div class="info">
-        <h1>Conversation 1</h1>
-        <p (click)="toggleModal()">i</p>
+<app-header></app-header>
+<div class="page">
+    <app-chat-list></app-chat-list>
+    <div class="wrap">
+        <div class="info">
+            <h1>Conversation 1</h1>
+            <p (click)="toggleModal()">i</p>
+        </div>
+        <div class="messages">
+            <app-message></app-message>
+            <app-message></app-message>
+            <app-message></app-message>
+            <app-message></app-message>
+            <app-message></app-message>
+            <app-message></app-message>
+            <app-message></app-message>
+            <app-message></app-message>
+        </div>
+        <div class="send">
+            <input type="text">
+            <button class="msgSend">Send</button>
+            <div class="gradient"></div>
+        </div>
     </div>
-    <div class="messages">
-        <app-message></app-message>
-        <app-message></app-message>
-        <app-message></app-message>
-        <app-message></app-message>
-        <app-message></app-message>
-        <app-message></app-message>
-        <app-message></app-message>
-        <app-message></app-message>
-    </div>
-    <div class="send">
-        <input type="text">
-        <button class="msgSend">Send</button>
-        <div class="gradient"></div>
-    </div>
+    <app-test-chatlist></app-test-chatlist>
+    
 </div>
-<app-test-chatlist></app-test-chatlist>

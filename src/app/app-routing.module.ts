@@ -10,12 +10,14 @@ import { ConversationComponent } from "./pages/conversation/conversation.compone
 import { PagenotfoundComponent } from "./pages/pagenotfound/pagenotfound.component";
 import { TestChatlistComponent } from "./pages/test-chatlist/test-chatlist.component";
 import { ChatsComponent } from './pages/chats/chats.component';
+import { UserComponent } from './pages/user/user.component';
 
 const routes: Routes = [
 	{path: "test", component: TestingPageComponent, canActivate: [AuthGuard]},
 	{path: "test-chatlist", component: TestChatlistComponent, canActivate: [AuthGuard]},
 	{path: "conversation", component: ConversationComponent, canActivate: [AuthGuard]},
 	{path: "chats", component: ChatsComponent, canActivate: [AuthGuard]},
+	{path: "profile", component: UserComponent, canActivate: [AuthGuard]},
 	{path: "login", component: LoginComponent},
 	{path: "notfound", component: PagenotfoundComponent},
 	{path: "**", redirectTo: "notfound", pathMatch: "full"},
