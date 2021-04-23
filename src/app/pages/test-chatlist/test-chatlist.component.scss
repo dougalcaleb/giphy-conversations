@@ -65,12 +65,12 @@ $theme-black-dark: #070707;
       position: absolute;
       top: 82px;
       width: calc(100% - 90px);
-      background: white;
+      background: #fff;
       height: 200px;
       left: 0;
       right: 0;
       margin: auto;
-      box-shadow: 3px 3px 3px #333;
+      box-shadow:3px 3px 10px 3px #999;
 
       .suggested-user {
          width: 100%;
@@ -79,7 +79,7 @@ $theme-black-dark: #070707;
          cursor: pointer;
 
          &:hover {
-            background: #333;
+            background: #eee;
          }
 
          .profile-image {
@@ -99,12 +99,12 @@ $theme-black-dark: #070707;
             position: absolute;
             left: 70px;
             top: 0;
-            font-family: "Ubuntu";
-            color: white;
+            // font-family: "Ubuntu";
+            color: #222;
             user-select: none;
 
             .username {
-               color: gray;
+               color: #222;
                margin-left: 25px;
             }
          }
@@ -136,7 +136,7 @@ $theme-black-dark: #070707;
    padding: 10px;
    border: none;
    color: white;
-   font-family: "Ubuntu";
+   // font-family: "Ubuntu";
    cursor: pointer;
 }
 
@@ -150,7 +150,7 @@ $theme-black-dark: #070707;
    padding: 10px;
    border: none;
    color: white;
-   font-family: "Ubuntu";
+   // font-family: "Ubuntu";
    cursor: pointer;
 }
 

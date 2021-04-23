@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
          this.loggedIn = true;
          this.Store.loggedIn = true;
          console.log("After login:",this.Store.loggedIn);
-         this.router.navigate(["test-chatlist"]);
+         this.router.navigate(["chats"]);
       } else {
          console.log("Signing out");
          await this.Firebase.signOut();
