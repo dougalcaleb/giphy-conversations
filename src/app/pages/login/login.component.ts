@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import { Router } from "@angular/router";
 import {FirebaseService} from "src/app/services/firebase.service";
 import { StoreService } from "src/app/services/store.service";
+// import { StoreService } from "src/app/app.module";
 
 @Component({
 	selector: "app-login",
@@ -12,11 +13,9 @@ export class LoginComponent implements OnInit {
 	public newUserData: any;
 	loggedIn = false;
 
-	constructor(public Firebase: FirebaseService, private Store: StoreService, private router: Router) {}
+	constructor(public Firebase: FirebaseService, public Store: StoreService, private router: Router) {}
 
    ngOnInit(): void {
-      console.log(this.Store.loggedIn);
-      console.log(this.loggedIn)
       if (this.Store.loggedIn) {
          this.loggedIn = true;
       }
@@ -27,13 +26,17 @@ export class LoginComponent implements OnInit {
 		if (!this.loggedIn) {
 			await this.Firebase.googleSignIn();
 			this.newUserData = this.Firebase.userData;
-         this.loggedIn = true;
          this.Store.activeUser = this.newUserData;
+         this.Store.activeUserName = this.newUserData.username;
+         this.loggedIn = true;
          this.Store.loggedIn = true;
-         this.router.navigate(["test"]);
+         // console.log("After login:",this.Store.loggedIn);
+         this.router.navigate(["chats"]);
       } else {
+         console.log("Signing out");
          await this.Firebase.signOut();
          this.loggedIn = false;
+         this.Store.loggedIn = false;
       }
 	}
 }
