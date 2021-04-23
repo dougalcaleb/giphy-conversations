@@ -9,7 +9,7 @@
 
 .options-modal {
   background: #191919;
-  height: 50vh;
+  height: 55vh;
   width: 30vw;
   position: absolute;
   margin: auto;
@@ -20,11 +20,35 @@
   border-radius: 5px;
   box-shadow: 5px 5px 5px #141414;
 }
+.options-modal .closeSuggested {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  margin: auto;
+  left: -300vw;
+  right: -300vw;
+  top: -300vw;
+  bottom: -300vw;
+}
+.options-modal .startChat {
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: auto;
+  bottom: 10px;
+  background: #006b8c;
+  border-radius: 5px;
+  padding: 10px;
+  border: none;
+  color: white;
+  font-family: "Ubuntu";
+  cursor: pointer;
+}
 .options-modal .users {
   position: absolute;
   top: 50px;
   width: calc(100% - 100px);
-  height: calc(100% - 150px);
+  height: calc(100% - 200px);
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
@@ -45,23 +69,25 @@
   border-radius: 100%;
   background: white;
   margin: 25px;
+  background-position: center center;
+  background-size: cover;
 }
 .options-modal .user-suggestion {
   position: absolute;
   top: 82px;
   width: calc(100% - 90px);
-  background: #070707;
   height: 200px;
   left: 0;
   right: 0;
   margin: auto;
-  box-shadow: 3px 3px 3px #333;
 }
 .options-modal .user-suggestion .suggested-user {
   width: 100%;
   height: 70px;
   background: inherit;
   cursor: pointer;
+  position: relative;
+  background: #191919;
 }
 .options-modal .user-suggestion .suggested-user:hover {
   background: #333;

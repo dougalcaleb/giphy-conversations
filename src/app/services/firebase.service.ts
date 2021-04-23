@@ -35,11 +35,11 @@ export class FirebaseService {
 		const provider = new firebase.auth.GoogleAuthProvider();
 		const cred = await this.auth.signInWithPopup(provider);
 		this.userData = cred.user;
-		return this.updateUserData(cred.user);
+		return this.setUserData(cred.user);
 	}
 
 	// Updates or sets user data in Firebase
-	private updateUserData(user: any) {
+	private setUserData(user: any) {
 		const userRef: AngularFirestoreDocument<User> = this.firestore.doc(`users/${user.uid}`);
 
 		const data = {
@@ -53,7 +53,17 @@ export class FirebaseService {
 		};
 
 		return userRef.set(data, {merge: true});
-	}
+   }
+   
+   updateUser(userId: string, newData: any, type: string) {
+      switch (type) {
+         case "newChat":
+            this.firestore.doc(`users/${userId}`).update({
+               chats: firebase.firestore.FieldValue.arrayUnion(newData)
+            });
+            break;
+      }
+   }
 
 	// Signs out and routes to login
 	async signOut() {
@@ -82,5 +92,10 @@ export class FirebaseService {
             }),
 			)
          .subscribe();
-	}
+   }
+   
+   public createChat(uid: any) {
+      const emptyData = { messages: [] };
+      this.firestore.doc(`chats/${uid}`).set(emptyData);
+   }
 }
