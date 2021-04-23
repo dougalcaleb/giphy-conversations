@@ -117,6 +117,7 @@ export class FirebaseService {
          senderPhotoURL: this.Store.activeUser.photoURL,
          url: text,
          user: this.Store.activeUser.uid,
+         timestamp: Date.now(),
       }
       this.firestore.doc(`chats/${this.Store.activeChat}`).update({
          messages: firebase.firestore.FieldValue.arrayUnion(message)

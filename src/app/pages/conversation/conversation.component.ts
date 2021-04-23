@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {FirebaseService} from "src/app/services/firebase.service";
-import { GiphyService } from "src/app/services/giphy.service";
+import {GiphyService} from "src/app/services/giphy.service";
 import {StoreService} from "src/app/services/store.service";
 
 @Component({
@@ -40,11 +40,11 @@ export class ConversationComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-    this.getMessages();
-  }
-  
-  getMessages() {
-    this.firebase.getChat("test-chat", (data: any) => {
+		this.getMessages();
+	}
+
+	getMessages() {
+		this.firebase.getChat("test-chat", (data: any) => {
 			this.messages = data;
 			this.messages.forEach((message: any) => {
 				if (message.user == this.Store.activeUser.uid) {
@@ -52,10 +52,38 @@ export class ConversationComponent implements OnInit {
 					this.messages[this.messages.indexOf(message)].senderName = "you";
 				} else {
 					this.messages[this.messages.indexOf(message)].type = "";
-				}
+        }
+        this.messages[this.messages.indexOf(message)].time = this.getTime(message.timestamp);
 			});
 		});
-  }
+	}
+
+	getTime(date: any) {
+		var seconds = Math.floor((Date.now() - date) / 1000);
+
+		var interval = seconds / 31536000;
+
+		if (interval > 1) {
+			return Math.floor(interval) + " years";
+		}
+		interval = seconds / 2592000;
+		if (interval > 1) {
+			return Math.floor(interval) + " months";
+		}
+		interval = seconds / 86400;
+		if (interval > 1) {
+			return Math.floor(interval) + " days";
+		}
+		interval = seconds / 3600;
+		if (interval > 1) {
+			return Math.floor(interval) + " hours";
+		}
+		interval = seconds / 60;
+		if (interval > 1) {
+			return Math.floor(interval) + " minutes";
+		}
+		return "Just now";
+	}
 
 	search(event: any) {
 		if (event.key == "Enter") {
@@ -66,13 +94,13 @@ export class ConversationComponent implements OnInit {
 
 	getTrendingData() {
 		this.Giphy.getTrending();
-  }
-  
-  selectGif(url: any) {
-    this.firebase.sendMessage(url, () => {
-      this.getMessages();
-    });
-  }
+	}
+
+	selectGif(url: any) {
+		this.firebase.sendMessage(url, () => {
+			this.getMessages();
+		});
+	}
 
 	async getSearch() {
 		if (this.cache && localStorage.getItem("gif-cache")) {

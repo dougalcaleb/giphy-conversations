@@ -14,7 +14,7 @@
 				<div class="img">
                <video autoplay loop src="{{message.url}}"></video>
 					<div class="imginfo">
-						<p>3 minutes ago from {{message.senderName}}</p>
+						<p>{{message.time}} ago from {{message.senderName}}</p>
 						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
 					</div>
 				</div>
