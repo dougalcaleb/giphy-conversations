@@ -7,6 +7,7 @@ export class StoreService {
    // User data
    public activeUser: any = null;
    public activeUserName: any = null;
+   public favoritedGifs: any = [];
    public loggedIn: boolean = false;
    public activeChat: string = "";
    display = false;

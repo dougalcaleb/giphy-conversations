@@ -31,7 +31,7 @@ export class ConversationComponent implements OnInit {
 		}
 	}
 
-	heartToggle() {
+	heartToggle(gifUrl: any) {
 		if (this.heart == "assets/heartOutline.png") {
 			this.heart = "assets/heart.png";
 		} else {
@@ -108,12 +108,12 @@ export class ConversationComponent implements OnInit {
 			this.retrieved = true;
 			return;
 		}
-		console.log("Initializing Search with term", this.searchTerm);
+		// console.log("Initializing Search with term", this.searchTerm);
 		this.Giphy.getSearch(this.searchTerm).then(
 			(data) => {
-				console.log("Retrieval was successful. Outputting data:");
-				console.log("Raw:");
-				console.log(data);
+				// console.log("Retrieval was successful. Outputting data:");
+				// console.log("Raw:");
+				// console.log(data);
 				this.searchResult = data;
 				this.retrieved = true;
 				if (this.cache) {

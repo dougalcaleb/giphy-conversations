@@ -9,7 +9,8 @@ import {AngularFireAuth} from "@angular/fire/auth";
 import {Observable, of} from "rxjs";
 import {defaultIfEmpty, mergeMap, switchMap, take, tap} from "rxjs/operators";
 // other
-import {StoreService} from "./store.service";
+import { StoreService } from "./store.service";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable({
 	providedIn: "root",
@@ -39,7 +40,7 @@ export class FirebaseService {
 	}
 
 	// Updates or sets user data in Firebase
-	private setUserData(user: any) {
+	private async setUserData(user: any) {
 		const userRef: AngularFirestoreDocument<User> = this.firestore.doc(`users/${user.uid}`);
 
 		const data = {
@@ -49,7 +50,8 @@ export class FirebaseService {
 			photoURL: user.photoURL,
 			color: user.color || "orange",
 			chats: user.chats || [],
-			username: user.username || user.displayName.split(" ").join(""),
+         username: user.username || user.displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0,5).join(""),
+         favoritedGifs: user.favoritedGifs || [],
       };
       
       this.userData = data;
@@ -57,6 +59,14 @@ export class FirebaseService {
 		return userRef.set(data, {merge: true});
    }
    
+   async setNewUsername(userId: any) {
+      this.searchUser(userId, (returnVal: any) => {
+         if (returnVal != null) {
+            alert("Username is taken");
+         }
+      }, "uid");
+   }
+
    updateUser(userId: string, newData: any, type: string) {
       switch (type) {
          case "newChat":
@@ -75,11 +85,11 @@ export class FirebaseService {
 		this.router.navigate(["/"]);
 	}
 
-   public async searchUser(searchTerm: string, callback: any): Promise<any> {
+   public async searchUser(searchTerm: string, callback: any, searchFor: any = "username"): Promise<any> {
       let result = null;
       let found = false;
       this.firestore
-         .collection("users", (ref) => ref.where("username", "==", searchTerm))
+         .collection("users", (ref) => ref.where(searchFor, "==", searchTerm))
          .get()
          .pipe(
             take(1),
