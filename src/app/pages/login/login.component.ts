@@ -27,9 +27,10 @@ export class LoginComponent implements OnInit {
 			await this.Firebase.googleSignIn();
 			this.newUserData = this.Firebase.userData;
          this.Store.activeUser = this.newUserData;
+         this.Store.activeUserName = this.newUserData.username;
          this.loggedIn = true;
          this.Store.loggedIn = true;
-         console.log("After login:",this.Store.loggedIn);
+         // console.log("After login:",this.Store.loggedIn);
          this.router.navigate(["chats"]);
       } else {
          console.log("Signing out");

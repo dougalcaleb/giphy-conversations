@@ -1,4 +1,6 @@
 import {Component, OnInit} from "@angular/core";
+import {FirebaseService} from "src/app/services/firebase.service";
+import { GiphyService } from "src/app/services/giphy.service";
 import {StoreService} from "src/app/services/store.service";
 
 @Component({
@@ -8,19 +10,18 @@ import {StoreService} from "src/app/services/store.service";
 })
 export class ConversationComponent implements OnInit {
 	heart = "assets/heartOutline.png";
-	messages: any = [
-		{
-			url: "https://media3.giphy.com/media/KpLPyE3D6HJPa/giphy.mp4?cid=1480d408mmg9n7yya1yopwn6jnrtj4cdlnx6ljglkkb2xslq&rid=giphy.mp4&ct=g",
-			user: "t47FWrBXcrX0ks4KWyEmh5npnqJ3",
-			type: ""
-		},
-	];
+	messages: any = [];
 
-  constructor(private Store: StoreService) {
-    this.messages.forEach((message:any) => {
-      message.type = this.Store.activeUser.uid == message.user ? "sent" : "";
-    });
-  }
+	searchTerm = "";
+	searchResult: any;
+	retrieved = false;
+	cache = true;
+
+	constructor(private Store: StoreService, private firebase: FirebaseService, private Giphy: GiphyService) {
+		this.messages.forEach((message: any) => {
+			message.type = this.Store.activeUser.uid == message.user ? "sent" : "";
+		});
+	}
 
 	toggleModal() {
 		if (this.Store.display == false) {
@@ -38,5 +39,62 @@ export class ConversationComponent implements OnInit {
 		}
 	}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+    this.getMessages();
+  }
+  
+  getMessages() {
+    this.firebase.getChat("test-chat", (data: any) => {
+			this.messages = data;
+			this.messages.forEach((message: any) => {
+				if (message.user == this.Store.activeUser.uid) {
+					this.messages[this.messages.indexOf(message)].type = "sent";
+					this.messages[this.messages.indexOf(message)].senderName = "you";
+				} else {
+					this.messages[this.messages.indexOf(message)].type = "";
+				}
+			});
+		});
+  }
+
+	search(event: any) {
+		if (event.key == "Enter") {
+			console.log(this.searchTerm);
+			this.getSearch();
+		}
+	}
+
+	getTrendingData() {
+		this.Giphy.getTrending();
+  }
+  
+  selectGif(url: any) {
+    this.firebase.sendMessage(url, () => {
+      this.getMessages();
+    });
+  }
+
+	async getSearch() {
+		if (this.cache && localStorage.getItem("gif-cache")) {
+			this.searchResult = JSON.parse(localStorage.getItem("gif-cache") || "");
+			this.retrieved = true;
+			return;
+		}
+		console.log("Initializing Search with term", this.searchTerm);
+		this.Giphy.getSearch(this.searchTerm).then(
+			(data) => {
+				console.log("Retrieval was successful. Outputting data:");
+				console.log("Raw:");
+				console.log(data);
+				this.searchResult = data;
+				this.retrieved = true;
+				if (this.cache) {
+					localStorage.setItem("gif-cache", JSON.stringify(this.searchResult));
+				}
+			},
+			() => {
+				console.error("Search failed.");
+			}
+		);
+	}
 }

@@ -50,7 +50,9 @@ export class FirebaseService {
 			color: user.color || "orange",
 			chats: user.chats || [],
 			username: user.username || user.displayName.split(" ").join(""),
-		};
+      };
+      
+      this.userData = data;
 
 		return userRef.set(data, {merge: true});
    }
@@ -97,5 +99,29 @@ export class FirebaseService {
    public createChat(uid: any) {
       const emptyData = { messages: [] };
       this.firestore.doc(`chats/${uid}`).set(emptyData);
+   }
+
+   public getChat(uid: any, callback: any) {
+      this.Store.activeChat = uid;
+      this.firestore.doc(`chats/${uid}`).get().pipe(
+         tap((item: any) => {
+            callback(item.data().messages);
+         })
+      ).subscribe();
+   }
+
+   public sendMessage(text: any, callback: any) {
+      console.log("active username: ",this.Store.activeUserName);
+      let message = {
+         senderName: this.Store.activeUserName,
+         senderPhotoURL: this.Store.activeUser.photoURL,
+         url: text,
+         user: this.Store.activeUser.uid,
+      }
+      this.firestore.doc(`chats/${this.Store.activeChat}`).update({
+         messages: firebase.firestore.FieldValue.arrayUnion(message)
+      }).then(() => {
+         callback();
+      });
    }
 }
