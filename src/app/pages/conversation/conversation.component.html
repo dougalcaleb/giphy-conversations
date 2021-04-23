@@ -12,7 +12,7 @@
 			<div *ngFor="let message of messages" class="message-wrap {{message.type}}">
 				<div class="user" style="background-image: url({{message.senderPhotoURL}})"></div>
 				<div class="img">
-               <video autoplay loop src="{{message.url}}"></video>
+               <video autoplay loop preload="auto" src="{{message.url}}"></video>
 					<div class="imginfo">
 						<p>{{message.time}} ago from {{message.senderName}}</p>
 						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
