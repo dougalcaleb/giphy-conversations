@@ -9,29 +9,29 @@
    </span> -->
 
    <div class="options-modal">
-      <p (click)="toggleModal()">X</p>
-      <input type="text" class="user-search" placeholder="Search for a user" [(ngModel)]="userSearchTerm" (keydown)="handleKey($event)">
-      <div class="users">
-         <!-- <div class="user-image" *ngFor="let user of inProgressUsers" style="background-image: url({{user.image}})"></div> -->
-         <div class="user-image"></div>
-         <div class="user-image"></div>
-         <div class="user-image"></div>
-         <div class="user-image"></div>
+      <div class="closeSuggested" (click)="clearSuggested()"></div>
+      <input type="text" class="user-search" placeholder="Search by username" [(ngModel)]="userSearchTerm" (keydown)="handleKey($event)" spellcheck="false">
+      <div class="users" *ngIf="inProgressUsers.length > 0">
+         <div class="user-image" *ngFor="let user of inProgressUsers" style="background-image: url({{user.photoURL}});"></div>
       </div>
       <div class="user-suggestion" *ngIf="suggested.length > 0">
-         <!-- <div class="suggestedUser" *ngFor="let user of suggested"></div> -->
-         <!-- <div class="suggested-user" *ngFor="let user of suggested">
+         <!-- <div class="suggested-user">
             <div class="profile-image"></div>
             <div class="profile-names">Caleb Dougal <span class="username">@dougalcaleb</span></div>
+         </div>
+         <div class="suggested-user">
+            <div class="profile-image"></div>
+            <div class="profile-names">Maleb Bugle <span class="username">@bruhboi</span></div>
          </div> -->
-
-         <div class="suggested-user" *ngFor="let user of suggested">
+         
+         <div class="suggested-user" *ngFor="let user of suggested" (click)="selectUser(user.uid)">
             <div class="profile-image" style="background-image: url({{user.photoURL}})"></div>
-            <div class="profile-names">{{user.displayName}} <span class="username">@{{user.username}}</span></div>
+            <div class="profile-names">{{user.displayName}} <span class="username" *ngIf="user.username != ''">@{{user.username}}</span></div>
          </div>
       </div>
+
+      <button class="startChat" (click)="finishNewChat()">Finish</button>
    </div>
 
    <button class="newChat" (click)="startNewChat()">New Chat</button>
-   <button class="search" (click)="search()">search</button>
 </div>

@@ -16,6 +16,7 @@ $theme-black-dark: #070707;
 }
 
 .options-modal {
+<<<<<<< HEAD
    background: white;
    height: 50vh;
    width: 30vw;
@@ -67,9 +68,36 @@ $theme-black-dark: #070707;
       width: calc(100% - 90px);
       background: #fff;
       height: 200px;
-      left: 0;
-      right: 0;
+=======
+	background: $theme-black-medium;
+	height: 55vh;
+	width: 30vw;
+	position: absolute;
+	margin: auto;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	border-radius: 5px;
+	box-shadow: 5px 5px 5px #141414;
+   .closeSuggested {
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
+      // background: orange;
       margin: auto;
+      left: -300vw;
+      right: -300vw;
+      top: -300vw;
+      bottom: -300vw;
+   }
+	.startChat {
+		position: absolute;
+		right: 0;
+>>>>>>> 874540178955226490f3ec5218bc7fdd948d2372
+      left: 0;
+      margin: auto;
+<<<<<<< HEAD
       box-shadow:3px 3px 10px 3px #999;
 
       .suggested-user {
@@ -138,10 +166,123 @@ $theme-black-dark: #070707;
    color: white;
    // font-family: "Ubuntu";
    cursor: pointer;
+=======
+		bottom: 10px;
+		background: $theme-blue-dark;
+		border-radius: 5px;
+		padding: 10px;
+		border: none;
+		color: white;
+		font-family: "Ubuntu";
+		cursor: pointer;
+	}
+	.users {
+		position: absolute;
+		top: 50px;
+		width: calc(100% - 100px);
+		height: calc(100% - 200px);
+		overflow-y: auto;
+		display: flex;
+		flex-wrap: wrap;
+		align-content: center;
+		justify-content: center;
+		border: 3px solid $theme-blue-dark;
+		border-radius: 5px;
+		background: #282828;
+		left: 0;
+		right: 0;
+		margin: auto;
+		padding: 5px;
+		top: 100px;
+		.user-image {
+			height: 50px;
+			width: 50px;
+			border-radius: 100%;
+			background: white;
+			margin: 25px;
+         background-position: center center;
+         background-size: cover;
+		}
+	}
+	.user-suggestion {
+		position: absolute;
+		top: 82px;
+		width: calc(100% - 90px);
+		// background: $theme-black-dark;
+		height: 200px;
+		left: 0;
+		right: 0;
+		margin: auto;
+		// box-shadow: 3px 3px 3px #333;
+      
+		.suggested-user {
+			width: 100%;
+			height: 70px;
+			background: inherit;
+			cursor: pointer;
+			position: relative;
+         background: $theme-black-medium;
+			&:hover {
+				background: #333;
+			}
+			.profile-image {
+				height: 50px;
+				width: 50px;
+				position: relative;
+				top: 10px;
+				border-radius: 100%;
+				left: 10px;
+				background: gray;
+				background-position: center center;
+				background-size: cover;
+			}
+			.profile-names {
+				line-height: 70px;
+				position: absolute;
+				left: 70px;
+				top: 0;
+				font-family: "Ubuntu";
+				color: white;
+				user-select: none;
+				.username {
+					color: gray;
+					margin-left: 25px;
+				}
+			}
+		}
+	}
+	.user-search {
+		position: absolute;
+		top: 50px;
+		width: calc(100% - 100px);
+		border: 3px solid $theme-blue-dark;
+		border-radius: 5px;
+		background: #282828;
+		color: #e8e8e8;
+		outline: none;
+		left: 0;
+		right: 0;
+		margin: auto;
+		padding: 5px;
+	}
 }
 
+.newChat {
+	position: absolute;
+	right: 50px;
+	bottom: 50px;
+	background: $theme-blue-dark;
+	border-radius: 5px;
+	padding: 10px;
+	border: none;
+	color: white;
+	font-family: "Ubuntu";
+	cursor: pointer;
+>>>>>>> 874540178955226490f3ec5218bc7fdd948d2372
+}
 
 .search {
+<<<<<<< HEAD
    position: absolute;
    left: 50px;
    bottom: 50px;
@@ -152,10 +293,22 @@ $theme-black-dark: #070707;
    color: white;
    // font-family: "Ubuntu";
    cursor: pointer;
+=======
+	position: absolute;
+	left: 50px;
+	bottom: 50px;
+	background: $theme-blue-dark;
+	border-radius: 5px;
+	padding: 10px;
+	border: none;
+	color: white;
+	font-family: "Ubuntu";
+	cursor: pointer;
+>>>>>>> 874540178955226490f3ec5218bc7fdd948d2372
 }
 
-
 .gifs {
+<<<<<<< HEAD
    background: $theme-black-dark;
    max-width: 50%;
    display: flex;
@@ -202,3 +355,49 @@ $theme-black-dark: #070707;
       }
    }
 }
+=======
+	background: $theme-black-dark;
+	max-width: 50%;
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	position: absolute;
+	// padding: 10px;
+	background: $theme-black-dark;
+	border-radius: 10px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	bottom: 150px;
+	padding: 5px;
+	max-height: 60%;
+	overflow-y: auto;
+
+	span {
+		margin: 5px;
+		height: 100px;
+		background: $theme-black-light;
+		border-radius: 5px;
+		position: relative;
+		overflow: hidden;
+		min-width: 50px;
+		cursor: pointer;
+		video {
+			height: 100px;
+			position: relative;
+			z-index: 10;
+		}
+		.spinner-wrap {
+			display: flex;
+			align-items: center;
+			height: 100%;
+			width: 100%;
+			min-width: 50px;
+			position: absolute;
+			top: 0;
+			justify-content: center;
+			z-index: 9;
+		}
+	}
+}
+>>>>>>> 874540178955226490f3ec5218bc7fdd948d2372
