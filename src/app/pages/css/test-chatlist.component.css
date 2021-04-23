@@ -73,7 +73,7 @@
   top: 10px;
   border-radius: 100%;
   left: 10px;
-  background: purple;
+  background: gray;
   background-position: center center;
   background-size: cover;
 }
@@ -88,6 +88,7 @@
 }
 .options-modal .user-suggestion .suggested-user .profile-names .username {
   color: gray;
+  margin-left: 25px;
 }
 .options-modal .user-search {
   position: absolute;
@@ -107,6 +108,19 @@
 .newChat {
   position: absolute;
   right: 50px;
+  bottom: 50px;
+  background: #006b8c;
+  border-radius: 5px;
+  padding: 10px;
+  border: none;
+  color: white;
+  font-family: "Ubuntu";
+  cursor: pointer;
+}
+
+.search {
+  position: absolute;
+  left: 50px;
   bottom: 50px;
   background: #006b8c;
   border-radius: 5px;

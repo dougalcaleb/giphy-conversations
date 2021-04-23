@@ -89,7 +89,7 @@ $theme-black-dark: #070707;
             top: 10px;
             border-radius: 100%;
             left: 10px;
-            background: purple;
+            background: gray;
             background-position: center center;
             background-size: cover;
          }
@@ -105,6 +105,7 @@ $theme-black-dark: #070707;
 
             .username {
                color: gray;
+               margin-left: 25px;
             }
          }
       }
@@ -138,6 +139,21 @@ $theme-black-dark: #070707;
    font-family: "Ubuntu";
    cursor: pointer;
 }
+
+
+.search {
+   position: absolute;
+   left: 50px;
+   bottom: 50px;
+   background: $theme-blue-dark;
+   border-radius: 5px;
+   padding: 10px;
+   border: none;
+   color: white;
+   font-family: "Ubuntu";
+   cursor: pointer;
+}
+
 
 .gifs {
    background: $theme-black-dark;

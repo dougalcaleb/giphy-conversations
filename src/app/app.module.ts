@@ -23,11 +23,12 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 // Firebase
-import { AngularFireModule } from "@angular/fire";
-import { AngularFirestoreModule } from "@angular/fire/firestore";
-import { AngularFireAuthModule } from "@angular/fire/auth";
-import { TestChatlistComponent } from './pages/test-chatlist/test-chatlist.component';
-import { PagenotfoundComponent } from './pages/pagenotfound/pagenotfound.component';
+import {AngularFireModule} from "@angular/fire";
+import {AngularFirestoreModule} from "@angular/fire/firestore";
+import {AngularFireAuthModule} from "@angular/fire/auth";
+import {TestChatlistComponent} from "./pages/test-chatlist/test-chatlist.component";
+import { PagenotfoundComponent } from "./pages/pagenotfound/pagenotfound.component";
+
 
 @NgModule({
 	declarations: [
@@ -39,8 +40,8 @@ import { PagenotfoundComponent } from './pages/pagenotfound/pagenotfound.compone
 		MessageComponent,
 		HeaderComponent,
 		TestingPageComponent,
-  TestChatlistComponent,
-  PagenotfoundComponent,
+		TestChatlistComponent,
+		PagenotfoundComponent,
 	],
 	imports: [
 		FormsModule,
@@ -49,9 +50,9 @@ import { PagenotfoundComponent } from './pages/pagenotfound/pagenotfound.compone
 		BrowserAnimationsModule,
 		MatButtonModule,
 		MatProgressSpinnerModule,
-      AngularFireModule.initializeApp(keys.firebase),
-      AngularFirestoreModule,
-      AngularFireAuthModule
+		AngularFireModule.initializeApp(keys.firebase),
+		AngularFirestoreModule,
+		AngularFireAuthModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],
