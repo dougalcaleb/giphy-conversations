@@ -14,8 +14,8 @@
         <button class="edit">Edit Profile</button>
     </div>
     <div class="edit-modal">
-       <input type="text" placeholder="Display Name" [(ngModel)]="userData.displayName">
-       <input type="text" placeholder="Username" [(ngModel)]="userData.username">
+       <input type="text" placeholder="Display Name" [(ngModel)]="Store.activeUser_Firebase.displayName">
+       <input type="text" placeholder="Username" [(ngModel)]="Store.activeUser_Firebase.username">
        <label for="user-color">Color</label><input type="color" id="user-color">
     </div>
 </div>

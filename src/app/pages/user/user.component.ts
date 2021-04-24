@@ -9,7 +9,7 @@ import { StoreService } from 'src/app/services/store.service';
 })
 export class UserComponent implements OnInit {
 
-  constructor(private Store: StoreService) { }
+  constructor(public Store: StoreService) { }
 
   ngOnInit(): void {
   }

@@ -39,7 +39,7 @@ export class TestingPageComponent implements OnInit {
          return;
       }
       console.log("Initializing Search with term",this.searchTerm);
-      this.Giphy.getSearch(this.searchTerm).then(
+      this.Giphy.getSearch(this.searchTerm, 0, 10).then(
          (data) => {
             console.log("Retrieval was successful. Outputting data:");
             console.log("Raw:");

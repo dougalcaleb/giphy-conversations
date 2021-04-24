@@ -27,8 +27,8 @@ export class GiphyService {
    }
 
    // Gets GIFs from a search term
-   public async getSearch(query: string, count: number = 10): Promise<any> {
-      this.req.open("GET", `http://${this.searchUrl + this.params}&q=${query}&limit=${count}`, true);
+   public async getSearch(query: string, offset: number, count: number): Promise<any> {
+      this.req.open("GET", `http://${this.searchUrl + this.params}&q=${query}&limit=${count}&offset=${offset}`, true);
       this.req.responseType = "text";
       this.req.send();
 

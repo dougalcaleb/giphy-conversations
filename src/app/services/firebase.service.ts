@@ -82,7 +82,7 @@ export class FirebaseService {
 	async signOut() {
 		await this.auth.signOut();
 		this.Store.activeUser_Google = null;
-		this.Store.activeUser_Firebase = null;
+		this.Store.activeUser_Firebase = StoreService.defaultFirebaseUser;
 		this.Store.loggedIn = false;
 		this.router.navigate(["/"]);
 	}

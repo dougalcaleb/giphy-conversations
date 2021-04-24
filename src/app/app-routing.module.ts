@@ -12,12 +12,26 @@ import {TestChatlistComponent} from "./pages/test-chatlist/test-chatlist.compone
 import {ChatsComponent} from "./pages/chats/chats.component";
 import {UserComponent} from "./pages/user/user.component";
 
+// normal
+// const routes: Routes = [
+// 	{path: "test", component: TestingPageComponent, canActivate: [AuthGuard]},
+// 	{path: "test-chatlist", component: TestChatlistComponent, canActivate: [AuthGuard]},
+// 	{path: "conversation", component: ConversationComponent, canActivate: [AuthGuard]},
+// 	{path: "chats", component: ChatsComponent, canActivate: [AuthGuard]},
+// 	{path: "profile", component: UserComponent, canActivate: [AuthGuard]},
+// 	{path: "login", component: LoginComponent},
+// 	{path: "notfound", component: PagenotfoundComponent},
+// 	{path: "", component: LoginComponent},
+// 	{path: "**", redirectTo: "notfound", pathMatch: "full"},
+// ];
+
+// testing
 const routes: Routes = [
-	{path: "test", component: TestingPageComponent, canActivate: [AuthGuard]},
-	{path: "test-chatlist", component: TestChatlistComponent, canActivate: [AuthGuard]},
-	{path: "conversation", component: ConversationComponent, canActivate: [AuthGuard]},
-	{path: "chats", component: ChatsComponent, canActivate: [AuthGuard]},
-	{path: "profile", component: UserComponent, canActivate: [AuthGuard]},
+	{path: "test", component: TestingPageComponent},
+	{path: "test-chatlist", component: TestChatlistComponent},
+	{path: "conversation", component: ConversationComponent},
+	{path: "chats", component: ChatsComponent},
+	{path: "profile", component: UserComponent},
 	{path: "login", component: LoginComponent},
 	{path: "notfound", component: PagenotfoundComponent},
 	{path: "", component: LoginComponent},

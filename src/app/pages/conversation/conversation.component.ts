@@ -14,9 +14,13 @@ export class ConversationComponent implements AfterViewInit {
 	messages: any = [];
 
 	searchTerm = "";
-	searchResult: any;
-	retrieved = false;
-	cache = true;
+	searchResult: any = [];
+   retrieved = false;
+   offset = 0;
+
+
+   cache = false;
+   retrieveCount = 10;
 
 	constructor(private Store: StoreService, private firebase: FirebaseService, private Giphy: GiphyService) {
 		this.messages.forEach((message: any) => {
@@ -69,8 +73,12 @@ export class ConversationComponent implements AfterViewInit {
             behavior: "smooth",
          });
       }, 300);
-      
-	}
+   }
+   
+   loadMore() {
+      this.offset += this.retrieveCount;
+      this.getSearch(this.offset);
+   }
 
 	getTime(date: any) {
 		var seconds = Math.floor((Date.now() - date) / 1000);
@@ -116,19 +124,22 @@ export class ConversationComponent implements AfterViewInit {
 		});
 	}
 
-	async getSearch() {
+	async getSearch(startAt: any = 0) {
 		if (this.cache && localStorage.getItem("gif-cache")) {
 			this.searchResult = JSON.parse(localStorage.getItem("gif-cache") || "");
 			this.retrieved = true;
 			return;
 		}
 		// console.log("Initializing Search with term", this.searchTerm);
-		this.Giphy.getSearch(this.searchTerm).then(
+		this.Giphy.getSearch(this.searchTerm, startAt, this.retrieveCount).then(
 			(data) => {
-				// console.log("Retrieval was successful. Outputting data:");
-				// console.log("Raw:");
-				// console.log(data);
-				this.searchResult = data;
+				console.log("Retrieval was successful. Outputting data:");
+				console.log("Raw:");
+            console.log(data);
+            data.data.forEach((gif:any) => {
+               this.searchResult.push(gif);
+            })
+				// this.searchResult = data;
 				this.retrieved = true;
 				if (this.cache) {
 					localStorage.setItem("gif-cache", JSON.stringify(this.searchResult));
