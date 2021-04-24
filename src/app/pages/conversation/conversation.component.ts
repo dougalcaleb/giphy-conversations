@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {FirebaseService} from "src/app/services/firebase.service";
 import {GiphyService} from "src/app/services/giphy.service";
 import {StoreService} from "src/app/services/store.service";
@@ -8,7 +8,8 @@ import {StoreService} from "src/app/services/store.service";
 	templateUrl: "./conversation.component.html",
 	styleUrls: ["./conversation.component.scss"],
 })
-export class ConversationComponent implements OnInit {
+export class ConversationComponent implements AfterViewInit {
+   @ViewChild("messageWrapper", { read: ElementRef }) public messageWrapper: any;
 	heart = "assets/heartOutline.png";
 	messages: any = [];
 
@@ -22,7 +23,7 @@ export class ConversationComponent implements OnInit {
 			message.type = this.Store.activeUser_Google.uid == message.user ? "sent" : "";
 		});
 	}
-
+   
 	toggleModal() {
 		if (this.Store.display == false) {
 			this.Store.display = true;
@@ -39,8 +40,12 @@ export class ConversationComponent implements OnInit {
 		}
 	}
 
-	ngOnInit(): void {
+	ngAfterViewInit(): void {
 		this.getMessages();
+		this.firebase.subscribeToChat(this.Store.activeChat, () => {
+			console.log("Snapshot!!");
+			this.getMessages();
+		});
 	}
 
 	getMessages() {
@@ -52,10 +57,19 @@ export class ConversationComponent implements OnInit {
 					this.messages[this.messages.indexOf(message)].senderName = "you";
 				} else {
 					this.messages[this.messages.indexOf(message)].type = "";
-        }
-        this.messages[this.messages.indexOf(message)].time = this.getTime(message.timestamp);
+				}
+				this.messages[this.messages.indexOf(message)].time = this.getTime(message.timestamp);
 			});
 		});
+      // this.messageWrapper.nativeElement.scrollTop = this.messageWrapper.nativeElement.scrollHeight;
+      setTimeout(() => {
+         this.messageWrapper.nativeElement.scroll({
+            top: this.messageWrapper.nativeElement.scrollHeight*2,
+            left: 0,
+            behavior: "smooth",
+         });
+      }, 300);
+      
 	}
 
 	getTime(date: any) {

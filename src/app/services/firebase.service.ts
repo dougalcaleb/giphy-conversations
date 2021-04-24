@@ -137,4 +137,12 @@ export class FirebaseService {
          callback();
       });
    }
+
+   public subscribeToChat(uid: string, callback: any) {
+      console.log("Subscribing to chat", uid);
+      this.firestore.collection("chats").doc(uid).valueChanges().subscribe(() => {
+         console.log("Maybe now??");
+         callback();
+      })
+   }
 }

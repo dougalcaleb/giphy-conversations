@@ -6,7 +6,7 @@
 			<h1>Conversation 1</h1>
 			<p (click)="toggleModal()">i</p>
 		</div>
-		<div class="messages">
+		<div class="messages" id="messages" #messageWrapper>
 
 			<div *ngFor="let message of messages" class="message-wrap {{message.type}}">
 				<div class="user" style="background-image: url({{message.senderPhotoURL}})"></div>

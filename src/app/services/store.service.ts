@@ -13,7 +13,7 @@ export class StoreService {
    public loggedIn: boolean = false;
    public activeChat: string = "";
 
-   display = true;
+   display = false;
 
   constructor() { }
 }
