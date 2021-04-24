@@ -14,7 +14,11 @@ export class PagenotfoundComponent implements OnInit {
   }
    
    goToLogin() {
-      this.router.navigate(["login"]);
+      
+   }
+
+   goHome() {
+      this.router.navigate(["chats"]);
    }
 
 }

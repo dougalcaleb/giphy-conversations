@@ -1,0 +1,48 @@
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+
+.bg {
+   position: absolute;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   background: $theme-black-medium;
+   z-index: 2;
+}
+
+.central {
+   height: 50vh;
+   width: 50vw;
+   position: absolute;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   margin: auto;
+   // background: orange;
+   text-align: center;
+
+   h1 {
+      color: $theme-blue-light;
+      font-size: 250px;
+      height: 150px;
+   }
+   h2, p {
+      color: $theme-white;
+   }
+   button {
+      margin-top: 50px;
+      background: $theme-blue-dark;
+      border-radius: 5px;
+      padding: 10px;
+      border: none;
+      color: white;
+      font-family: "Ubuntu";
+      cursor: pointer;
+   }
+}
