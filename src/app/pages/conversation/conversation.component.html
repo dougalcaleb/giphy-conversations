@@ -61,10 +61,14 @@
 		</div>
 		<div class="send">
 			<input type="text" placeholder="Search for a GIF" [(ngModel)]="searchTerm" (keydown)="search($event)"/>
-			<button class="msgSend">Send</button>
+			<button class="cancelPicker" (click)="cancelGifPicker()">Cancel</button>
+			<!-- <button class="msgSend">Send</button> -->
 			<div class="gradient"></div>
 
+         <div class="closeGifPicker" (click)="closeGifPicker()" *ngIf="retrieved"></div>
+
          <div class="gifs" *ngIf="retrieved">
+            <div class="exitGifPicker" (click)="closeGifPicker()"></div>
             <span *ngFor="let gif of searchResult;" (click)="selectGif(gif.images.original.mp4)">
                <video autoplay loop src={{gif.images.fixed_height.mp4}}></video>
                <div class="spinner-wrap">
