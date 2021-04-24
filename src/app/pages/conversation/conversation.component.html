@@ -13,7 +13,7 @@
 				<div class="img">
                <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{message.url}}">Your browser does not support embedded video.</video>
 					<div class="imginfo">
-						<p>{{message.time}} ago from {{message.senderName}}</p>
+						<p>{{message.time}} from {{message.senderName}}</p>
 						<img src="{{ message.heart }}" class="heart" (click)="heartToggle(message.url)" />
 					</div>
 				</div>
