@@ -10,14 +10,14 @@ import { StoreService } from "./services/store.service";
 	providedIn: "root",
 })
 export class AuthGuard implements CanActivate {
-   constructor(private auth: FirebaseService, private router: Router,private Store: StoreService) { }
+   constructor(private auth: FirebaseService, private router: Router, private Store: StoreService) { }
    
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot,): Observable<boolean> {
       return this.auth.signedIn.pipe(
          take(1),
          map(user => !!user),
          tap(loggedIn => {
-            if (!loggedIn) {
+            if (!loggedIn || !this.Store.loggedIn) {
                console.warn("Access denied");
                this.Store.loggedIn = false;
                this.router.navigate(["/login"]);
