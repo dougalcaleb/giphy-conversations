@@ -41,7 +41,7 @@ export class TestChatlistComponent implements OnInit {
       this.inProgressUsers.forEach((user:any) => {
          this.firebase.updateUser(user.uid, chatId, "newChat");
       });
-      this.firebase.updateUser(this.Store.activeUser.uid, chatId, "newChat");
+      this.firebase.updateUser(this.Store.activeUser_Google.uid, chatId, "newChat");
    }
 
 	newChat() {
@@ -51,7 +51,7 @@ export class TestChatlistComponent implements OnInit {
 			name: "",
 			uid: uuidv4(),
 		};
-		this.Store.activeUser.chats.push(chat.uid);
+		this.Store.activeUser_Firebase?.chats.push(chat.uid);
 	}
 
 	handleKey(event: any) {
@@ -67,7 +67,7 @@ export class TestChatlistComponent implements OnInit {
             user.uid == uid && // looping user is the selected user
             !this.inProgressUsersUIDs.includes(user.uid) && // has not been selected already
             user.uid != "ERROR" && // is not the error message
-            user.uid != this.Store.activeUser.uid // is not self
+            user.uid != this.Store.activeUser_Google.uid // is not self
          ) {
 				this.inProgressUsers.push(user);
 				this.inProgressUsersUIDs.push(user.uid);

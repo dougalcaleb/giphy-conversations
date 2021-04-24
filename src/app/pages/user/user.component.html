@@ -13,5 +13,9 @@
         </div>
         <button class="edit">Edit Profile</button>
     </div>
-    
+    <div class="edit-modal">
+       <input type="text" placeholder="Display Name" [(ngModel)]="userData.displayName">
+       <input type="text" placeholder="Username" [(ngModel)]="userData.username">
+       <label for="user-color">Color</label><input type="color" id="user-color">
+    </div>
 </div>

@@ -19,7 +19,7 @@ export class ConversationComponent implements OnInit {
 
 	constructor(private Store: StoreService, private firebase: FirebaseService, private Giphy: GiphyService) {
 		this.messages.forEach((message: any) => {
-			message.type = this.Store.activeUser.uid == message.user ? "sent" : "";
+			message.type = this.Store.activeUser_Google.uid == message.user ? "sent" : "";
 		});
 	}
 
@@ -47,7 +47,7 @@ export class ConversationComponent implements OnInit {
 		this.firebase.getChat("test-chat", (data: any) => {
 			this.messages = data;
 			this.messages.forEach((message: any) => {
-				if (message.user == this.Store.activeUser.uid) {
+				if (message.user == this.Store.activeUser_Google.uid) {
 					this.messages[this.messages.indexOf(message)].type = "sent";
 					this.messages[this.messages.indexOf(message)].senderName = "you";
 				} else {

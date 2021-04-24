@@ -55,16 +55,17 @@ export class FirebaseService {
       };
       
       this.userData = data;
+      this.Store.activeUser_Firebase = data;
 
 		return userRef.set(data, {merge: true});
    }
    
-   async setNewUsername(userId: any) {
-      this.searchUser(userId, (returnVal: any) => {
+   async setNewUsername(newName: any) {
+      this.searchUser(newName, (returnVal: any) => {
          if (returnVal != null) {
             alert("Username is taken");
          }
-      }, "uid");
+      }, "username");
    }
 
    updateUser(userId: string, newData: any, type: string) {
@@ -80,7 +81,8 @@ export class FirebaseService {
 	// Signs out and routes to login
 	async signOut() {
 		await this.auth.signOut();
-		this.Store.activeUser = null;
+		this.Store.activeUser_Google = null;
+		this.Store.activeUser_Firebase = null;
 		this.Store.loggedIn = false;
 		this.router.navigate(["/"]);
 	}
@@ -121,12 +123,12 @@ export class FirebaseService {
    }
 
    public sendMessage(text: any, callback: any) {
-      console.log("active username: ",this.Store.activeUserName);
+      console.log("active username: ",this.Store.activeUser_Firebase?.username);
       let message = {
-         senderName: this.Store.activeUserName,
-         senderPhotoURL: this.Store.activeUser.photoURL,
+         senderName: this.Store.activeUser_Firebase?.username,
+         senderPhotoURL: this.Store.activeUser_Google.photoURL,
          url: text,
-         user: this.Store.activeUser.uid,
+         user: this.Store.activeUser_Google.uid,
          timestamp: Date.now(),
       }
       this.firestore.doc(`chats/${this.Store.activeChat}`).update({

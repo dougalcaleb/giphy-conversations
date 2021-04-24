@@ -2,6 +2,8 @@ import {Component, OnInit} from "@angular/core";
 import { Router } from "@angular/router";
 import {FirebaseService} from "src/app/services/firebase.service";
 import { StoreService } from "src/app/services/store.service";
+import { User } from "../../models/user";
+
 // import { StoreService } from "src/app/app.module";
 
 @Component({
@@ -26,11 +28,9 @@ export class LoginComponent implements OnInit {
 		if (!this.loggedIn) {
 			await this.Firebase.googleSignIn();
 			this.newUserData = this.Firebase.userData;
-         this.Store.activeUser = this.newUserData;
-         this.Store.activeUserName = this.newUserData.username;
+         this.Store.activeUser_Google = this.newUserData;
          this.loggedIn = true;
          this.Store.loggedIn = true;
-         // console.log("After login:",this.Store.loggedIn);
          this.router.navigate(["chats"]);
       } else {
          console.log("Signing out");
