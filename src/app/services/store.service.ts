@@ -10,6 +10,7 @@ export class StoreService {
 	public activeUser_Firebase: User;
 	public loggedIn: boolean = false;
    public activeChat: string = "";
+   public isNewUser = false;
 
 
    public static defaultFirebaseUser = {

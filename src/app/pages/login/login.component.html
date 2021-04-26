@@ -5,5 +5,5 @@
         <div *ngIf="loggedIn" class="userImage" style="background-image: url({{Store.activeUser_Google.photoURL}})"></div>
     </div>
     <button *ngIf="!loggedIn" (click)="signIn()">LOGIN WITH GOOGLE</button>
-    <button *ngIf="loggedIn" (click)="signIn()">SIGN OUT</button>
+    <!-- <button *ngIf="loggedIn" (click)="signIn()">SIGN OUT</button> -->
 </div>

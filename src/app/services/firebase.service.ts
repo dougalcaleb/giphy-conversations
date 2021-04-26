@@ -7,7 +7,7 @@ import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/firestor
 import {AngularFireAuth} from "@angular/fire/auth";
 // rxjs
 import {Observable, of} from "rxjs";
-import {defaultIfEmpty, mergeMap, switchMap, take, tap} from "rxjs/operators";
+import {defaultIfEmpty, map, mergeMap, switchMap, take, tap} from "rxjs/operators";
 // other
 import { StoreService } from "./store.service";
 import { v4 as uuidv4 } from "uuid";
@@ -22,7 +22,9 @@ export class FirebaseService {
 	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
 		this.signedIn = this.auth.authState.pipe(
 			switchMap((user) => {
-				if (user) {
+            if (user) {
+               console.log("Firebase pipe user exists");
+               console.log(user);
 					return this.firestore.doc<User>(`users/${user.uid}`).valueChanges();
 				} else {
 					return of(null);
@@ -41,23 +43,61 @@ export class FirebaseService {
 
 	// Updates or sets user data in Firebase
 	private async setUserData(user: any) {
-		const userRef: AngularFirestoreDocument<User> = this.firestore.doc(`users/${user.uid}`);
+      const userRef: AngularFirestoreDocument<User> = this.firestore.doc(`users/${user.uid}`);
 
-		const data = {
-			uid: user.uid,
-			email: user.email,
-			displayName: user.displayName,
-			photoURL: user.photoURL,
-			color: user.color || "orange",
-			chats: user.chats || [],
-         username: user.username || user.displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0,5).join(""),
-         favoritedGifs: user.favoritedGifs || [],
-      };
+      // let userData: any = null;
       
-      this.userData = data;
-      this.Store.activeUser_Firebase = data;
+      userRef.get().pipe(
+         take(1),
+         map((item: any) => {
+            console.log("Firebase user data:");
+            console.log(item.data());
+            let userData = item.data();
 
-		return userRef.set(data, {merge: true});
+
+            const data = {
+               uid: userData?.uid || user.uid,
+               email: userData?.email || user.email,
+               displayName: userData?.displayName || user.displayName,
+               photoURL: userData?.photoURL || user.photoURL,
+               color: userData?.color || "orange",
+               chats: userData?.chats || [],
+               username: userData?.username || user.displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0,5).join(""),
+               favoritedGifs: userData?.favoritedGifs || [],
+            };
+
+            console.log("Got data:");
+            console.log(data);
+            
+            this.userData = data;
+            this.Store.activeUser_Firebase = data;
+            if (item.data() == undefined) {
+               this.Store.isNewUser = true;
+            }
+      
+            return userRef.set(data, {merge: true});
+
+         }),
+      ).subscribe();
+
+		// const data = {
+		// 	uid: userRef. data().uid,
+		// 	email: userRef. data().email,
+		// 	displayName: userRef. data().displayName,
+		// 	photoURL: userRef. data().photoURL,
+		// 	color: userRef. data().color || "orange",
+		// 	chats: userRef. data().chats || [],
+      //    username: userRef. data().username || userRef. data().displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0,5).join(""),
+      //    favoritedGifs: userRef. data().favoritedGifs || [],
+      // };
+
+      // console.log("Got user:");
+      // console.log(user);
+
+      // console.log("Firebase user ref:");
+      // console.log(userRef);
+
+		
    }
    
    async setNewUsername(newName: any) {
@@ -69,12 +109,17 @@ export class FirebaseService {
    }
 
    updateUser(userId: string, newData: any, type: string) {
+      console.log(`Updating user with action type ${type}`);
       switch (type) {
          case "newChat":
             this.firestore.doc(`users/${userId}`).update({
                chats: firebase.firestore.FieldValue.arrayUnion(newData)
             });
             break;
+         case "favorited":
+            this.firestore.doc(`users/${userId}`).update({
+               favoritedGifs: firebase.firestore.FieldValue.arrayUnion(newData)
+            });
       }
    }
 
