@@ -287,3 +287,16 @@ $theme-red: #ff0015;
       filter: brightness(80%);
    }
 }
+
+.full-size {
+   position: relative;
+   width: 100%;
+   background: $theme-black-light;
+   text-align: center;
+   padding-top: 10px;
+   padding-bottom: 10px;
+   margin-bottom: 50px;
+   margin-top: 50px;
+   color: $theme-white;
+   cursor: pointer;
+}

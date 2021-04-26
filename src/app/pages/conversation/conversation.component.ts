@@ -13,6 +13,7 @@ export class ConversationComponent implements AfterViewInit {
 
 	heart = "assets/heartOutline.png";
 	messages: any = [];
+   allMessages: any = [];
 	searchTerm = "";
 	searchResult: any = [];
 	retrieved = false;
@@ -21,12 +22,14 @@ export class ConversationComponent implements AfterViewInit {
 	scrollCheckInt: any;
    favoriteAllowed = true;
    choosingFavorite = false;
+   endOffset = 0;
 
 	// config
 	cache = true;
 	retrieveCount = 10;
 	scrollAllowance = 500;
 	favoriteCooldown = 1000;
+   messagesToRecieve = 10;
 
 	constructor(public Store: StoreService, private firebase: FirebaseService, private Giphy: GiphyService) {
 		this.messages.forEach((message: any) => {
@@ -89,30 +92,41 @@ export class ConversationComponent implements AfterViewInit {
 		this.scrollCheckInt = setInterval(() => {
 			this.checkForScroll();
 		}, 500);
-	}
+   }
+   
+   loadMoreMessages() {
+      this.offset += this.messagesToRecieve;
+      this.messages = this.allMessages.slice(this.allMessages.length - this.messagesToRecieve - this.offset);
+      this.sortMessages();
+   }
 
 	getMessages() {
 		this.firebase.getChat("test-chat", (data: any) => {
-			this.messages = data;
-			this.messages.forEach((message: any) => {
-				// sent vs recieved text correction
-				if (message.user == this.Store.activeUser_Google.uid) {
-					this.messages[this.messages.indexOf(message)].type = "sent";
-					this.messages[this.messages.indexOf(message)].senderName = "you";
-				} else {
-					this.messages[this.messages.indexOf(message)].type = "";
-				}
-				// favorited
-				if (this.Store.activeUser_Firebase.favoritedGifs.includes(message.url)) {
-					this.messages[this.messages.indexOf(message)].heart = "assets/heart.png";
-				} else {
-					this.messages[this.messages.indexOf(message)].heart = "assets/heartOutline.png";
-				}
-				// timestamp
-				this.messages[this.messages.indexOf(message)].time = this.getTime(message.timestamp);
-			});
+         this.allMessages = data;
+         this.messages = data.slice(data.length - this.messagesToRecieve - this.offset, data.length - this.offset);
+         this.sortMessages();
 		});
-	}
+   }
+   
+   sortMessages() {
+      this.messages.forEach((message: any) => {
+         // sent vs recieved text correction
+         if (message.user == this.Store.activeUser_Google.uid) {
+            this.messages[this.messages.indexOf(message)].type = "sent";
+            this.messages[this.messages.indexOf(message)].senderName = "you";
+         } else {
+            this.messages[this.messages.indexOf(message)].type = "";
+         }
+         // favorited
+         if (this.Store.activeUser_Firebase.favoritedGifs.includes(message.url)) {
+            this.messages[this.messages.indexOf(message)].heart = "assets/heart.png";
+         } else {
+            this.messages[this.messages.indexOf(message)].heart = "assets/heartOutline.png";
+         }
+         // timestamp
+         this.messages[this.messages.indexOf(message)].time = this.getTime(message.timestamp);
+      });
+   }
 
 	scrollToBottom() {
 		this.messageWrapper.nativeElement.scroll({

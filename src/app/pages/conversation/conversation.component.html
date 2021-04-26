@@ -8,6 +8,8 @@
 		</div>
 		<div class="messages" id="messages" #messageWrapper>
 
+         <div class="full-size load-more-messages" (click)="loadMoreMessages()">Load more messages</div>
+
 			<div *ngFor="let message of messages" class="message-wrap {{message.type}}">
 				<div class="user" style="background-image: url({{message.senderPhotoURL}})"></div>
 				<div class="img">

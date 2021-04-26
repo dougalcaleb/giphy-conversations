@@ -142,6 +142,8 @@ export class FirebaseService {
       this.Store.activeChat = uid;
       this.firestore.doc(`chats/${uid}`).get().pipe(
          tap((item: any) => {
+            // if ()
+            // let toReturn = item.data().messages;
             callback(item.data().messages);
          })
       ).subscribe();
