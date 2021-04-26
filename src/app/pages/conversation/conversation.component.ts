@@ -19,15 +19,16 @@ export class ConversationComponent implements AfterViewInit {
 	offset = 0;
 	scrolled = false;
 	scrollCheckInt: any;
-	favoriteAllowed = true;
+   favoriteAllowed = true;
+   choosingFavorite = false;
 
 	// config
 	cache = true;
 	retrieveCount = 10;
 	scrollAllowance = 500;
-	favoriteCooldown = 2000;
+	favoriteCooldown = 1000;
 
-	constructor(private Store: StoreService, private firebase: FirebaseService, private Giphy: GiphyService) {
+	constructor(public Store: StoreService, private firebase: FirebaseService, private Giphy: GiphyService) {
 		this.messages.forEach((message: any) => {
 			message.type = this.Store.activeUser_Google.uid == message.user ? "sent" : "";
 		});
@@ -196,7 +197,17 @@ export class ConversationComponent implements AfterViewInit {
 		this.closeGifPicker();
 	}
 
-	async getSearch(startAt: any = 0) {
+   openFavorites() {
+      this.choosingFavorite = !this.choosingFavorite;
+      this.closeGifPicker();
+   }
+
+   closeFavorites() {
+      this.choosingFavorite = false;
+   }
+
+   async getSearch(startAt: any = 0) {
+      this.closeFavorites();
 		// cached data
 		if (this.cache && localStorage.getItem("gif-cache")) {
 			let parsedData = JSON.parse(localStorage.getItem("gif-cache") || "");

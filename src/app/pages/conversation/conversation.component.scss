@@ -6,6 +6,9 @@ $theme-black-light: #282828;
 $theme-black-medium: #191919;
 $theme-black-dark: #070707;
 
+// needs tweaking
+$theme-red: #ff0015;
+
 .page {
 	display: flex;
 }
@@ -74,7 +77,14 @@ $theme-black-dark: #070707;
 	}
 
    .cancelPicker {
-      background: #ff0015;
+      background: $theme-red;
+   }
+
+
+   .favorites {
+      img {
+         height: 20px;
+      }
    }
 
    .msgSend {
@@ -146,7 +156,7 @@ $theme-black-dark: #070707;
 	}
 }
 
-.gifs {
+.gifs, .gifs-favorite {
 	max-width: 100%;
 	display: flex;
 	justify-content: flex-start;
@@ -192,7 +202,7 @@ $theme-black-dark: #070707;
 	}
 }
 
-.load-more {
+.load-more, .no-favorites {
    width: 100px;
    svg {
       color: $theme-blue-light;
@@ -213,7 +223,11 @@ $theme-black-dark: #070707;
    }
 }
 
-.closeGifPicker {
+.no-favorites {
+   cursor: default;
+}
+
+.closeGifPicker, .exitFavoritePicker {
    position: fixed;
    top: 0;
    left: 0;

@@ -61,6 +61,7 @@
 		</div>
 		<div class="send">
 			<input type="text" placeholder="Search for a GIF" [(ngModel)]="searchTerm" (keydown)="search($event)"/>
+			<button class="favorites" (click)="openFavorites()"><img src="assets/heart.png"></button>
 			<button class="cancelPicker" (click)="cancelGifPicker()">Cancel</button>
 			<!-- <button class="msgSend">Send</button> -->
 			<div class="gradient"></div>
@@ -80,6 +81,19 @@
                   <path fill="currentColor" d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z" />
               </svg>
               <p>Load More</p>
+            </span>
+         </div>
+
+         <div class="gifs-favorite" *ngIf="choosingFavorite">
+            <div class="exitFavoritePicker" (click)="closeFavorites()"></div>
+            <span *ngFor="let gif of Store.activeUser_Firebase.favoritedGifs;" (click)="selectGif(gif)">
+               <video autoplay loop src={{gif}}></video>
+               <div class="spinner-wrap">
+                  <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+               </div>
+            </span>
+            <span class="no-favorites" *ngIf="Store.activeUser_Firebase.favoritedGifs.length == 0">
+              <p>No favorited GIFs</p>
             </span>
          </div>
 
