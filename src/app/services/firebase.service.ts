@@ -94,6 +94,12 @@ export class FirebaseService {
             this.firestore.doc(`users/${userId}`).update({
                favoritedGifs: firebase.firestore.FieldValue.arrayUnion(newData)
             });
+            break;
+         case "unFavorited":
+            this.firestore.doc(`users/${userId}`).update({
+               favoritedGifs: firebase.firestore.FieldValue.arrayRemove(newData)
+            });
+            break;
       }
    }
 

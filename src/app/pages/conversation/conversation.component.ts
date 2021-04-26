@@ -53,7 +53,8 @@ export class ConversationComponent implements AfterViewInit {
 					} else {
 						this.messages[this.messages.indexOf(message)].heart = "assets/heartOutline.png";
 					}
-				});
+            });
+            this.firebase.updateUser(this.Store.activeUser_Firebase.uid, gifUrl, "favorited");
 				// remove favorite gif
 			} else {
 				this.Store.activeUser_Firebase.favoritedGifs.splice(this.Store.activeUser_Firebase.favoritedGifs.indexOf(gifUrl), 1);
@@ -63,10 +64,11 @@ export class ConversationComponent implements AfterViewInit {
 					} else {
 						this.messages[this.messages.indexOf(message)].heart = "assets/heartOutline.png";
 					}
-				});
+            });
+            this.firebase.updateUser(this.Store.activeUser_Firebase.uid, gifUrl, "unFavorited");
          }
 
-         this.firebase.updateUser(this.Store.activeUser_Firebase.uid, gifUrl, "favorited");
+         
          
          setTimeout(() => {
             this.favoriteAllowed = true;
