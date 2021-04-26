@@ -88,6 +88,7 @@
             <div class="exitFavoritePicker" (click)="closeFavorites()"></div>
             <span *ngFor="let gif of Store.activeUser_Firebase.favoritedGifs;" (click)="selectGif(gif)">
                <video autoplay loop src={{gif}}></video>
+               <img src="assets/heart.png" class="unfavorite-gif" (click)="heartToggle(gif)" title="Unfavorite this GIF">
                <div class="spinner-wrap">
                   <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
                </div>
