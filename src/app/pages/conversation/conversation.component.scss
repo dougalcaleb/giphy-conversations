@@ -234,3 +234,28 @@ $theme-black-dark: #070707;
    z-index: 999;
 
 }
+
+.scrollToBottom {
+   z-index: 888;
+   height: 40px;
+   width: 40px;
+   border-radius: 100%;
+   background: $theme-blue-dark;
+   position: absolute;
+   cursor: pointer;
+   margin: auto;
+   left: 0;
+   right: 0;
+   bottom: 50px;
+   svg {
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      height: 30px;
+      width: 30px;
+      color: $theme-white;
+   }
+}

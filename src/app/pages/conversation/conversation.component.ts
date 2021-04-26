@@ -9,25 +9,27 @@ import {StoreService} from "src/app/services/store.service";
 	styleUrls: ["./conversation.component.scss"],
 })
 export class ConversationComponent implements AfterViewInit {
-   @ViewChild("messageWrapper", { read: ElementRef }) public messageWrapper: any;
+	@ViewChild("messageWrapper", {read: ElementRef}) public messageWrapper: any;
 	heart = "assets/heartOutline.png";
 	messages: any = [];
 
 	searchTerm = "";
 	searchResult: any = [];
-   retrieved = false;
-   offset = 0;
-
-
-   cache = true;
-   retrieveCount = 10;
+	retrieved = false;
+	offset = 0;
+	scrolled = false;
+	scrollCheckInt: any;
+	// config
+	cache = true;
+	retrieveCount = 10;
+	scrollAllowance = 100;
 
 	constructor(private Store: StoreService, private firebase: FirebaseService, private Giphy: GiphyService) {
 		this.messages.forEach((message: any) => {
 			message.type = this.Store.activeUser_Google.uid == message.user ? "sent" : "";
 		});
 	}
-   
+
 	toggleModal() {
 		if (this.Store.display == false) {
 			this.Store.display = true;
@@ -50,6 +52,12 @@ export class ConversationComponent implements AfterViewInit {
 			console.log("Snapshot!!");
 			this.getMessages();
 		});
+
+		this.checkForScroll();
+
+		this.scrollCheckInt = setInterval(() => {
+			this.checkForScroll();
+		}, 500);
 	}
 
 	getMessages() {
@@ -65,20 +73,41 @@ export class ConversationComponent implements AfterViewInit {
 				this.messages[this.messages.indexOf(message)].time = this.getTime(message.timestamp);
 			});
 		});
-      // this.messageWrapper.nativeElement.scrollTop = this.messageWrapper.nativeElement.scrollHeight;
-      setTimeout(() => {
-         this.messageWrapper.nativeElement.scroll({
-            top: this.messageWrapper.nativeElement.scrollHeight*2,
-            left: 0,
-            behavior: "smooth",
-         });
-      }, 300);
-   }
-   
-   loadMore() {
-      this.offset += this.retrieveCount;
-      this.getSearch(this.offset);
-   }
+		// this.messageWrapper.nativeElement.scrollTop = this.messageWrapper.nativeElement.scrollHeight;
+		// setTimeout(() => {
+		//    this.scrollToBottom();
+		//    this.scrolled = false;
+		// }, 300);
+	}
+
+	scrollToBottom() {
+		this.messageWrapper.nativeElement.scroll({
+			top: this.messageWrapper.nativeElement.scrollHeight * 2,
+			left: 0,
+			behavior: "smooth",
+		});
+		this.scrolled = true;
+		clearInterval(this.scrollCheckInt);
+		setTimeout(() => {
+			this.scrollCheckInt = setInterval(() => {
+				this.checkForScroll();
+			}, 500);
+		}, 1000);
+	}
+
+	checkForScroll() {
+		if (
+			this.messageWrapper.nativeElement.scrollTop <
+			this.messageWrapper.nativeElement.scrollHeight - this.messageWrapper.nativeElement.offsetHeight - this.scrollAllowance
+		) {
+			this.scrolled = false;
+		}
+	}
+
+	loadMore() {
+		this.offset += this.retrieveCount;
+		this.getSearch(this.offset);
+	}
 
 	getTime(date: any) {
 		var seconds = Math.floor((Date.now() - date) / 1000);
@@ -120,27 +149,27 @@ export class ConversationComponent implements AfterViewInit {
 
 	selectGif(url: any) {
 		this.firebase.sendMessage(url, () => {
-         this.getMessages();
-         this.closeGifPicker();
-      });
-   }
-   
-   closeGifPicker() {
-      this.searchResult = [];
-      this.retrieved = false;
-   }
+			this.getMessages();
+			this.closeGifPicker();
+		});
+	}
 
-   cancelGifPicker() {
-      this.searchTerm = "";
-      this.closeGifPicker();
-   }
+	closeGifPicker() {
+		this.searchResult = [];
+		this.retrieved = false;
+	}
+
+	cancelGifPicker() {
+		this.searchTerm = "";
+		this.closeGifPicker();
+	}
 
 	async getSearch(startAt: any = 0) {
-      if (this.cache && localStorage.getItem("gif-cache")) {
-         let parsedData = JSON.parse(localStorage.getItem("gif-cache") || "");
-         parsedData.data.forEach((gif: any) => {
-            this.searchResult.push(gif);
-         });
+		if (this.cache && localStorage.getItem("gif-cache")) {
+			let parsedData = JSON.parse(localStorage.getItem("gif-cache") || "");
+			parsedData.data.forEach((gif: any) => {
+				this.searchResult.push(gif);
+			});
 			this.retrieved = true;
 			return;
 		}
@@ -149,10 +178,10 @@ export class ConversationComponent implements AfterViewInit {
 			(data) => {
 				// console.log("Retrieval was successful. Outputting data:");
 				// console.log("Raw:");
-            // console.log(data);
-            data.data.forEach((gif:any) => {
-               this.searchResult.push(gif);
-            })
+				// console.log(data);
+				data.data.forEach((gif: any) => {
+					this.searchResult.push(gif);
+				});
 				// this.searchResult = data;
 				this.retrieved = true;
 				if (this.cache) {

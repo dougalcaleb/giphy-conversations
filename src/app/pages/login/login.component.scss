@@ -1,10 +1,24 @@
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+
+
+
+
+
+
 .wrap {
+   
     width: 100vw;
-    height: 90vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background: $theme-black-medium;
     .userIcon {
         width: 15em;
         height: 15em;
@@ -17,7 +31,7 @@
         align-items: center;
         position: relative;
         .head {
-            background: white;
+            background: $theme-white;
             width: 4em;
             height: 4em;
             border-radius: 100%;
@@ -28,7 +42,7 @@
         .body {
             width: 8em;
             height: 4em;
-            background: white;
+            background: $theme-white;
             z-index: 0;
             border-radius: 6em 6em 0 0;
             margin-top: -2em;
@@ -46,9 +60,11 @@
     button {
         border: none;
         outline: none;
-        color: white;
-        background: #00b7ff;
-        padding: 1em;
+        color: $theme-white;
+        background: $theme-blue-dark;
+        padding: 15px;
+        padding-left: 30px;
+        padding-right: 30px;
         font-size: 1.5em;
         width: fit-content;
         border-radius: 7px;
