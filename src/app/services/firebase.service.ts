@@ -42,14 +42,11 @@ export class FirebaseService {
 	// Updates or sets user data in Firebase
 	private async setUserData(user: any) {
       const userRef: AngularFirestoreDocument<User> = this.firestore.doc(`users/${user.uid}`);
-
-      // let userData: any = null;
       
       userRef.get().pipe(
          take(1),
          map((item: any) => {
             let userData = item.data();
-
 
             const data = {
                uid: userData?.uid || user.uid,
@@ -64,6 +61,7 @@ export class FirebaseService {
             
             this.userData = data;
             this.Store.activeUser_Firebase = data;
+            
             if (item.data() == undefined) {
                this.Store.isNewUser = true;
             }
@@ -74,6 +72,7 @@ export class FirebaseService {
       ).subscribe();
    }
    
+   // UNFINISHED, NEEDS VALIDATION sets a user's username
    async setNewUsername(newName: any) {
       this.searchUser(newName, (returnVal: any) => {
          if (returnVal != null) {
@@ -82,6 +81,7 @@ export class FirebaseService {
       }, "username");
    }
 
+   // edits user data
    updateUser(userId: string, newData: any, type: string) {
       console.log(`Updating user with action type ${type}`);
       switch (type) {
@@ -112,9 +112,8 @@ export class FirebaseService {
 		this.router.navigate(["/"]);
 	}
 
+   // check if a user with a given piece of data exists
    public async searchUser(searchTerm: string, callback: any, searchFor: any = "username"): Promise<any> {
-      let result = null;
-      let found = false;
       this.firestore
          .collection("users", (ref) => ref.where(searchFor, "==", searchTerm))
          .get()
@@ -138,17 +137,17 @@ export class FirebaseService {
       this.firestore.doc(`chats/${uid}`).set(emptyData);
    }
 
+   // get all messages from a chat. called from conversation
    public getChat(uid: any, callback: any) {
       this.Store.activeChat = uid;
       this.firestore.doc(`chats/${uid}`).get().pipe(
          tap((item: any) => {
-            // if ()
-            // let toReturn = item.data().messages;
             callback(item.data().messages);
          })
       ).subscribe();
    }
 
+   // post a new message to Firebase
    public sendMessage(text: any, callback: any) {
       console.log("active username: ",this.Store.activeUser_Firebase?.username);
       let message = {
@@ -165,6 +164,7 @@ export class FirebaseService {
       });
    }
 
+   // listen for new messages from a chat
    public subscribeToChat(uid: string, callback: any) {
       this.firestore.collection("chats").doc(uid).valueChanges().subscribe(() => {
          callback();

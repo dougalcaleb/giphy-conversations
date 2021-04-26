@@ -8,8 +8,10 @@
 		</div>
 		<div class="messages" id="messages" #messageWrapper>
 
+         <!-- Load more messages button at top -->
          <div class="full-size load-more-messages" (click)="loadMoreMessages()">Load more messages</div>
 
+         <!-- All messages -->
 			<div *ngFor="let message of messages" class="message-wrap {{message.type}}">
 				<div class="user" style="background-image: url({{message.senderPhotoURL}})"></div>
 				<div class="img">
@@ -21,59 +23,24 @@
 				</div>
 			</div>
 
-         <!-- <div class="message-wrap sent">
-				<div class="user"></div>
-				<div class="img">
-               <video autoplay loop src="https://media0.giphy.com/media/uQvxobRExS9nG/giphy.mp4?cid=1480d408mmg9n7yya1yopwn6jnrtj4cdlnx6ljglkkb2xslq&rid=giphy.mp4&ct=g"></video>
-					<div class="imginfo">
-						<p>3 minutes ago</p>
-						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
-					</div>
-				</div>
-         </div>
-         <div class="message-wrap sent">
-				<div class="user"></div>
-				<div class="img">
-               <video autoplay loop src="https://media0.giphy.com/media/uQvxobRExS9nG/giphy.mp4?cid=1480d408mmg9n7yya1yopwn6jnrtj4cdlnx6ljglkkb2xslq&rid=giphy.mp4&ct=g"></video>
-					<div class="imginfo">
-						<p>3 minutes ago</p>
-						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
-					</div>
-				</div>
-         </div>
-         <div class="message-wrap">
-				<div class="user"></div>
-				<div class="img">
-               <video autoplay loop src="https://media0.giphy.com/media/uQvxobRExS9nG/giphy.mp4?cid=1480d408mmg9n7yya1yopwn6jnrtj4cdlnx6ljglkkb2xslq&rid=giphy.mp4&ct=g"></video>
-					<div class="imginfo">
-						<p>3 minutes ago</p>
-						<img src="{{ heart }}" alt="" class="heart" (click)="heartToggle()" />
-					</div>
-				</div>
-         </div> -->
-
-			<!-- <app-message></app-message>
-			<app-message></app-message>
-			<app-message></app-message>
-			<app-message></app-message>
-			<app-message></app-message>
-			<app-message></app-message>
-			<app-message></app-message>
-			<app-message></app-message> -->
 		</div>
+
+      <!-- Input and buttons area -->
+
 		<div class="send">
 			<input type="text" placeholder="Search for a GIF" [(ngModel)]="searchTerm" (keydown)="search($event)"/>
 			<button class="favorites" (click)="openFavorites()"><img src="assets/heart.png"></button>
 			<button class="cancelPicker" (click)="cancelGifPicker()">Cancel</button>
-			<!-- <button class="msgSend">Send</button> -->
+			
 			<div class="gradient"></div>
 
          <div class="closeGifPicker" (click)="closeGifPicker()" *ngIf="retrieved"></div>
 
+         <!-- Dynamic GIF picker -->
          <div class="gifs" *ngIf="retrieved">
             <div class="exitGifPicker" (click)="closeGifPicker()"></div>
             <span *ngFor="let gif of searchResult;" (click)="selectGif(gif.images.original.mp4)">
-               <video autoplay loop src={{gif.images.fixed_height.mp4}}></video>
+               <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src={{gif.images.fixed_height.mp4}}></video>
                <div class="spinner-wrap">
                   <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
                </div>
@@ -86,10 +53,11 @@
             </span>
          </div>
 
+         <!-- Favorite GIF picker -->
          <div class="gifs-favorite" *ngIf="choosingFavorite">
             <div class="exitFavoritePicker" (click)="closeFavorites()"></div>
             <span *ngFor="let gif of Store.activeUser_Firebase.favoritedGifs;" (click)="selectGif(gif)">
-               <video autoplay loop src={{gif}}></video>
+               <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src={{gif}}></video>
                <img src="assets/heart.png" class="unfavorite-gif" (click)="heartToggle(gif)" title="Unfavorite this GIF">
                <div class="spinner-wrap">
                   <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
@@ -100,6 +68,7 @@
             </span>
          </div>
 
+         <!-- Autoscroll button -->
          <div class="scrollToBottom" title="Scroll to bottom" (click)="scrollToBottom()" *ngIf="!scrolled">
             <svg viewBox="0 0 24 24">
                <path fill="currentColor" d="M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z" />

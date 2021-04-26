@@ -35,7 +35,20 @@ export class ConversationComponent implements AfterViewInit {
 		this.messages.forEach((message: any) => {
 			message.type = this.Store.activeUser_Google.uid == message.user ? "sent" : "";
 		});
-	}
+   }
+   
+   ngAfterViewInit(): void {
+		this.getMessages();
+		this.firebase.subscribeToChat(this.Store.activeChat, () => {
+			this.getMessages();
+		});
+
+		this.checkForScroll();
+
+		this.scrollCheckInt = setInterval(() => {
+			this.checkForScroll();
+		}, 500);
+   }
 
 	toggleModal() {
 		if (this.Store.display == false) {
@@ -45,6 +58,7 @@ export class ConversationComponent implements AfterViewInit {
 		}
 	}
 
+   // favorite and unfavorite gifs
 	heartToggle(gifUrl: any) {
       if (this.favoriteAllowed) { // helps prevent firebase input spam
          this.favoriteAllowed = false;
@@ -71,8 +85,6 @@ export class ConversationComponent implements AfterViewInit {
             });
             this.firebase.updateUser(this.Store.activeUser_Firebase.uid, gifUrl, "unFavorited");
          }
-
-         
          
          setTimeout(() => {
             this.favoriteAllowed = true;
@@ -80,26 +92,16 @@ export class ConversationComponent implements AfterViewInit {
 		}
 	}
 
-	ngAfterViewInit(): void {
-		this.getMessages();
-		this.firebase.subscribeToChat(this.Store.activeChat, () => {
-			console.log("Snapshot!!");
-			this.getMessages();
-		});
-
-		this.checkForScroll();
-
-		this.scrollCheckInt = setInterval(() => {
-			this.checkForScroll();
-		}, 500);
-   }
+	
    
+   // loads additional gifs on click
    loadMoreMessages() {
       this.offset += this.messagesToRecieve;
       this.messages = this.allMessages.slice(this.allMessages.length - this.messagesToRecieve - this.offset);
       this.sortMessages();
    }
 
+   // initial load
 	getMessages() {
 		this.firebase.getChat("test-chat", (data: any) => {
          this.allMessages = data;
@@ -108,6 +110,7 @@ export class ConversationComponent implements AfterViewInit {
 		});
    }
    
+   // takes raw message data and assigns them to who sent them, indicates if they are favorited, and makes timestamp useful
    sortMessages() {
       this.messages.forEach((message: any) => {
          // sent vs recieved text correction
@@ -143,6 +146,7 @@ export class ConversationComponent implements AfterViewInit {
 		}, 1000);
 	}
 
+   // checks to see if scrolltobottom button should enable
 	checkForScroll() {
 		if (
 			this.messageWrapper.nativeElement.scrollTop <
@@ -152,6 +156,7 @@ export class ConversationComponent implements AfterViewInit {
 		}
 	}
 
+   // load more gifs in gif picker
 	loadMore() {
 		this.offset += this.retrieveCount;
 		this.getSearch(this.offset);
@@ -183,23 +188,27 @@ export class ConversationComponent implements AfterViewInit {
 		return "Just now";
 	}
 
+   // start search event
 	search(event: any) {
 		if (event.key == "Enter") {
-			console.log(this.searchTerm);
 			this.getSearch();
 		}
 	}
 
+   // trending gifs. for testing
 	getTrendingData() {
 		this.Giphy.getTrending();
 	}
 
+   // select and send a gif on click
 	selectGif(url: any) {
 		this.firebase.sendMessage(url, () => {
 			this.getMessages();
 			this.closeGifPicker();
 		});
-	}
+   }
+   
+   // gif picker events
 
 	closeGifPicker() {
 		this.searchResult = [];
@@ -220,6 +229,7 @@ export class ConversationComponent implements AfterViewInit {
       this.choosingFavorite = false;
    }
 
+   // either retrieve cache data or data from Giphy
    async getSearch(startAt: any = 0) {
       this.closeFavorites();
 		// cached data
