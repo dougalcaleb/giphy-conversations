@@ -16,22 +16,15 @@ export class AuthGuard implements CanActivate {
       return this.auth.signedIn.pipe(
          take(1),
          map(user => {
-            console.log("From map:");
-            console.log(user);
-            console.log("Returning to pipe: ", !!user);
             if (!user && this.Store.isNewUser && this.Store.loggedIn) {
                return true;
             }
             return !!user;
          }),
          tap(loggedIn => {
-            console.log("Testing access: ", (!loggedIn && !this.Store.isNewUser), this.Store.loggedIn);
             if ((!loggedIn && !this.Store.isNewUser) || !this.Store.loggedIn) {
                console.warn("Access denied", loggedIn, this.Store.loggedIn);
                this.Store.loggedIn = false;
-               setTimeout(() => {
-                  console.log(loggedIn);
-               }, 1000);
                this.router.navigate(["/login"]);
             } else {
                console.log("Access granted");

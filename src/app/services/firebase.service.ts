@@ -23,8 +23,6 @@ export class FirebaseService {
 		this.signedIn = this.auth.authState.pipe(
 			switchMap((user) => {
             if (user) {
-               console.log("Firebase pipe user exists");
-               console.log(user);
 					return this.firestore.doc<User>(`users/${user.uid}`).valueChanges();
 				} else {
 					return of(null);
@@ -50,8 +48,6 @@ export class FirebaseService {
       userRef.get().pipe(
          take(1),
          map((item: any) => {
-            console.log("Firebase user data:");
-            console.log(item.data());
             let userData = item.data();
 
 
@@ -65,9 +61,6 @@ export class FirebaseService {
                username: userData?.username || user.displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0,5).join(""),
                favoritedGifs: userData?.favoritedGifs || [],
             };
-
-            console.log("Got data:");
-            console.log(data);
             
             this.userData = data;
             this.Store.activeUser_Firebase = data;
@@ -79,25 +72,6 @@ export class FirebaseService {
 
          }),
       ).subscribe();
-
-		// const data = {
-		// 	uid: userRef. data().uid,
-		// 	email: userRef. data().email,
-		// 	displayName: userRef. data().displayName,
-		// 	photoURL: userRef. data().photoURL,
-		// 	color: userRef. data().color || "orange",
-		// 	chats: userRef. data().chats || [],
-      //    username: userRef. data().username || userRef. data().displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0,5).join(""),
-      //    favoritedGifs: userRef. data().favoritedGifs || [],
-      // };
-
-      // console.log("Got user:");
-      // console.log(user);
-
-      // console.log("Firebase user ref:");
-      // console.log(userRef);
-
-		
    }
    
    async setNewUsername(newName: any) {
@@ -184,9 +158,7 @@ export class FirebaseService {
    }
 
    public subscribeToChat(uid: string, callback: any) {
-      console.log("Subscribing to chat", uid);
       this.firestore.collection("chats").doc(uid).valueChanges().subscribe(() => {
-         console.log("Maybe now??");
          callback();
       })
    }
