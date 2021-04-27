@@ -10,6 +10,11 @@ import { StoreService } from 'src/app/services/store.service';
 })
 export class ChatsComponent implements OnInit {
 
+   //! may not be right
+   userSearchTerm: any = "";
+   inProgressUsers: any = [];
+   suggested: any = [];
+
   constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) { }
 
    ngOnInit(): void {
@@ -20,6 +25,17 @@ export class ChatsComponent implements OnInit {
       this.Store.activeChat = uid;
       this.router.navigate(["/conversation"]);
    }
+
+   removeFromChat(chatId: any) {
+      this.Firebase.updateUser(this.Store.activeUser_Firebase.uid, chatId, "removeChat");
+      this.Firebase.removeFromChat(chatId);
+   }
+
+   startNewChat() {}
+   clearSuggested() { }
+   handleKey(event: any) { }
+   selectUser(someInput: any) { }
+   finishNewChat() {}
 
    // return more useful relative timestamp
 	getTime(date: any) {

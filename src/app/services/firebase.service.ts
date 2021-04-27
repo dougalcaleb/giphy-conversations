@@ -41,7 +41,28 @@ export class FirebaseService {
 			})
       );
       
-	}
+   }
+   
+   addTestingData() {
+      this.firestore.doc(`chats-meta/testing-chatter`).set({
+         last: {
+            from: "Mr. Lolololol",
+            timestamp: 1619336781631,
+            url: "https://media0.giphy.com/media/26FffpngNB7A356cU/giphy.mp4?cid=1480d408wq1ertr02t6467bnrlaefkxvr9aj46hhfn0snxcv&rid=giphy.mp4&ct=g"
+         },
+         members: [
+            {
+               name: "Mr. Lolololol",
+               photoUrl: "assets/error.png"
+            },
+            {
+               name: "CalebDougal-BRUH",
+               photoURL: "https://lh3.googleusercontent.com/a-/AOh14GgRMRGqd5bWTfmaabyg_ME2CRTVo_FZNvwPjvHI7g=s96-c",
+               uid: "t47FWrBXcrX0ks4KWyEmh5npnqJ3"
+            }
+         ]
+      });
+   }
 
 	// Google signin popup
 	async googleSignIn() {
@@ -113,6 +134,11 @@ export class FirebaseService {
                favoritedGifs: firebase.firestore.FieldValue.arrayRemove(newData)
             });
             break;
+         case "removeChat":
+            this.firestore.doc(`users/${userId}`).update({
+               chats: firebase.firestore.FieldValue.arrayRemove(newData)
+            });
+            break;
       }
    }
 
@@ -161,29 +187,48 @@ export class FirebaseService {
       ).subscribe();
    }
 
+   removeFromChat(chatId: any) {
+      this.firestore.doc(`chats-meta/${chatId}`).update({
+         members: firebase.firestore.FieldValue.arrayRemove({
+            name: this.Store.activeUser_Firebase.username,
+            photoURL: this.Store.activeUser_Firebase.photoURL,
+            uid: this.Store.activeUser_Firebase.uid
+         })
+      });
+   }
+
    // loads simple chat data for the list of chats page
    public loadUserChats(loadChats: any = [], finished = false) {
+      console.log(this.Store.chats);
       if (finished) {
          return;
       }
       if (loadChats.length == 0) {
+         if (this.Store.activeUser_Firebase.chats.length == 0) {
+            return;
+         }
          loadChats = this.Store.activeUser_Firebase.chats.slice();
       }
-      console.log("Will load:");
-      console.log(loadChats);
-      console.log(this.Store.activeUser_Firebase.chats);
-      this.firestore.doc(`chats-meta/${loadChats[0]}`).get().pipe(
-         // take(1),
-         tap((item: any) => {
-            console.log("Got")
-            this.Store.chats.push(item.data());
-            loadChats.shift();
-            if (loadChats.length == 0) {
-               finished = true;
-            }
-            this.loadUserChats(loadChats, finished);
-         })
-      ).subscribe();
+      if (this.Store.loadedChats.includes(loadChats[0])) {
+         loadChats.shift();
+         if (loadChats.length == 0) {
+            finished = true;
+         }
+         this.loadUserChats(loadChats, finished);
+      } else {
+         this.Store.loadedChats.push(loadChats[0]);
+         this.firestore.doc(`chats-meta/${loadChats[0]}`).get().pipe(
+            // take(1),
+            tap((item: any) => {
+               this.Store.chats.push(item.data());
+               loadChats.shift();
+               if (loadChats.length == 0) {
+                  finished = true;
+               }
+               this.loadUserChats(loadChats, finished);
+            })
+         ).subscribe();
+      }      
    }
 
    // post a new message to Firebase

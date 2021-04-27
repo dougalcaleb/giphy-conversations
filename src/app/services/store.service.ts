@@ -13,6 +13,7 @@ export class StoreService {
    public activeChat: string = "";
    public isNewUser: boolean = false;
    public chats: any = [];
+   public loadedChats: any = [];
 
 
    public static defaultFirebaseUser = {
