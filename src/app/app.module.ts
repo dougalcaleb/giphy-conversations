@@ -30,6 +30,7 @@ import {TestChatlistComponent} from "./pages/test-chatlist/test-chatlist.compone
 import { PagenotfoundComponent } from "./pages/pagenotfound/pagenotfound.component";
 import { ChatsComponent } from './pages/chats/chats.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { UsersNotMePipe } from './pipes/users-not-me.pipe';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { ChatComponent } from './components/chat/chat.component';
 		PagenotfoundComponent,
   ChatsComponent,
   ChatComponent,
+  UsersNotMePipe,
 	],
 	imports: [
 		FormsModule,
