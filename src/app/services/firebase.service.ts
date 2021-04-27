@@ -19,7 +19,18 @@ export class FirebaseService {
 	public signedIn: Observable<User | null | undefined>;
 	public userData: any;
 
-	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
+   constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
+
+      if (sessionStorage.getItem("GC_loggedInUser_Google")) {
+         this.Store.activeUser_Google = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Google") || "null");
+         this.Store.activeUser_Firebase = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Firebase") || "null");
+         this.Store.loggedIn = true;
+         this.setUserData(this.Store.activeUser_Firebase);
+      } else {
+         this.Store.activeUser_Firebase = StoreService.defaultFirebaseUser;
+      }
+
+
 		this.signedIn = this.auth.authState.pipe(
 			switchMap((user) => {
             if (user) {
@@ -28,7 +39,8 @@ export class FirebaseService {
 					return of(null);
 				}
 			})
-		);
+      );
+      
 	}
 
 	// Google signin popup
@@ -73,7 +85,7 @@ export class FirebaseService {
       ).subscribe();
    }
    
-   // UNFINISHED, NEEDS VALIDATION sets a user's username
+   //! UNFINISHED, NEEDS VALIDATION sets a user's username
    async setNewUsername(newName: any) {
       this.searchUser(newName, (returnVal: any) => {
          if (returnVal != null) {
@@ -133,6 +145,7 @@ export class FirebaseService {
          .subscribe();
    }
    
+   //! unfinished, needs validation and chats-meta creation
    public createChat(uid: any) {
       const emptyData = { messages: [] };
       this.firestore.doc(`chats/${uid}`).set(emptyData);
@@ -148,9 +161,35 @@ export class FirebaseService {
       ).subscribe();
    }
 
+   // loads simple chat data for the list of chats page
+   public loadUserChats(loadChats: any = [], finished = false) {
+      if (finished) {
+         return;
+      }
+      if (loadChats.length == 0) {
+         loadChats = this.Store.activeUser_Firebase.chats.slice();
+      }
+      console.log("Will load:");
+      console.log(loadChats);
+      console.log(this.Store.activeUser_Firebase.chats);
+      this.firestore.doc(`chats-meta/${loadChats[0]}`).get().pipe(
+         // take(1),
+         tap((item: any) => {
+            console.log("Got")
+            this.Store.chats.push(item.data());
+            loadChats.shift();
+            if (loadChats.length == 0) {
+               finished = true;
+            }
+            this.loadUserChats(loadChats, finished);
+         })
+      ).subscribe();
+   }
+
    // post a new message to Firebase
    public sendMessage(text: any, callback: any) {
-      console.log("active username: ",this.Store.activeUser_Firebase?.username);
+      console.log("active username: ", this.Store.activeUser_Firebase?.username);
+      // prepare message data
       let message = {
          senderName: this.Store.activeUser_Firebase?.username,
          senderPhotoURL: this.Store.activeUser_Google.photoURL,
@@ -158,11 +197,20 @@ export class FirebaseService {
          user: this.Store.activeUser_Google.uid,
          timestamp: Date.now(),
       }
+      // add message to message list
       this.firestore.doc(`chats/${this.Store.activeChat}`).update({
          messages: firebase.firestore.FieldValue.arrayUnion(message)
       }).then(() => {
          callback();
       });
+      // update chat meta
+      this.firestore.doc(`chats-meta/${this.Store.activeChat}`).set({
+         last: {
+            from: this.Store.activeUser_Firebase.username,
+            timestamp: Date.now(),
+            url: text
+         }
+      }, { merge: true });
    }
 
    // listen for new messages from a chat

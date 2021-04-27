@@ -1,9 +1,121 @@
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+$theme-red: #ff0015;
+
+
 .page {
     display: flex;
 }
 .wrap {
     width: 100vw;
     height: 90vh;
+    background: $theme-black-medium;
+    padding-top: 15px;
+}
+
+.chat {
+   height: 10vh;
+   width: 100%;
+   background: $theme-black-dark;
+   border-radius: 20px;
+   margin-bottom: 15px;
+   display: flex;
+   user-select: none;
+   div {
+      position: relative;
+      .seperator {
+         height: 70%;
+         width: 3px;
+         position: absolute;
+         right: 0;
+         margin: auto;
+         top: 0;
+         bottom: 0;
+         background: $theme-black-light;
+      }
+   }
+   .members {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      .member {
+         height: 30px;
+         width: 30px;
+         border-radius: 100%;
+         background: $theme-blue-light;
+         margin: 10px;
+         background-size: cover;
+         background-position: center center;
+      }
+      // background: orange;
+   }
+   .chat-name {
+      flex: 3;
+      display: flex;
+      align-items: center;
+      position: relative;
+      p {
+         font-family: "Ubuntu", sans-serif;
+         color: $theme-blue-light;
+         font-size: 1.5vw;
+         text-align: center;
+         position: relative;
+         width: 100%;
+         margin-bottom: 0;
+      }
+      // background: blue;
+   }
+   .last-message {
+      flex: 5;
+      display: flex;
+      align-items: center;
+      position: relative;
+      video {
+         height: 70%;
+         border: 2px solid $theme-blue-dark;
+         position: absolute;
+         right: 20px;
+         border-radius: 5px;
+      }
+      p {
+         font-family: "Ubuntu", sans-serif;
+         color: $theme-white;
+         font-size: 0.8vw;
+         position: relative;
+         left: 20px;
+         margin-bottom: 0;
+         .username-at {
+            color: rgb(64, 64, 64);
+         }
+         .username {
+            color: $theme-blue-dark;
+         }
+      }
+      // background: purple;
+   }
+   .remove {
+      flex: 0.5;
+      position: relative;
+      cursor: pointer;
+      svg {
+         position: absolute;
+         margin: auto;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         top: 0;
+         color: $theme-red;
+         height: 35px;
+         width: 35px;
+      }
+      // background: red;
+   }
 }
 
 .toconvo {

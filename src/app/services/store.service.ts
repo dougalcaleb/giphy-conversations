@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {User} from "../models/user";
+import { FirebaseService } from "./firebase.service";
 
 @Injectable({
 	providedIn: "root",
@@ -7,10 +8,11 @@ import {User} from "../models/user";
 export class StoreService {
 	// User data
 	public activeUser_Google: any = null;
-	public activeUser_Firebase: User;
+	public activeUser_Firebase: User | any;
 	public loggedIn: boolean = false;
    public activeChat: string = "";
    public isNewUser: boolean = false;
+   public chats: any = [];
 
 
    public static defaultFirebaseUser = {
@@ -26,16 +28,19 @@ export class StoreService {
 
 	display = false;
 
-	constructor() {
-      if (sessionStorage.getItem("GC_loggedInUser_Google")) {
-         this.activeUser_Google = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Google") || "null");
-         this.activeUser_Firebase = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Firebase") || "null");
-         this.loggedIn = true;
-      } else {
-         this.activeUser_Firebase = StoreService.defaultFirebaseUser;
-      }
-      console.log("Firebase user is");
-      console.log(this.activeUser_Firebase);
+   constructor() {
+      // if (sessionStorage.getItem("GC_loggedInUser_Google")) {
+      //    this.setUserData(this.Store.activeUser_Firebase.uid);
+      // }
+      // if (sessionStorage.getItem("GC_loggedInUser_Google")) {
+      //    this.activeUser_Google = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Google") || "null");
+      //    this.activeUser_Firebase = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Firebase") || "null");
+      //    this.loggedIn = true;
+      // } else {
+      //    this.activeUser_Firebase = StoreService.defaultFirebaseUser;
+      // }
+      // console.log("Firebase user is");
+      // console.log(this.activeUser_Firebase);
    }
    
    saveUser() {
