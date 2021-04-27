@@ -77,10 +77,12 @@ $theme-red: #ff0015;
 	}
 
 	.cancelPicker {
+      z-index: 11;
 		background: $theme-red;
 	}
 
 	.favorites {
+      z-index: 11;
 		img {
 			height: 20px;
 		}
@@ -97,7 +99,7 @@ $theme-red: #ff0015;
 		border-radius: 5px;
 		display: block;
 		width: calc(75vw - 10.5em);
-		z-index: 1;
+		z-index: 11;
 
 		&:focus {
 			outline: none;
@@ -111,7 +113,7 @@ $theme-red: #ff0015;
 		bottom: -2em;
 		right: -2em;
 		background: rgba(255, 255, 255, 100);
-		z-index: 0;
+		z-index: 10;
 	}
 }
 
