@@ -61,6 +61,7 @@ export class FirebaseService {
             
             this.userData = data;
             this.Store.activeUser_Firebase = data;
+            this.Store.saveUser();
             
             if (item.data() == undefined) {
                this.Store.isNewUser = true;
