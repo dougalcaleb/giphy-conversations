@@ -166,7 +166,10 @@ export class ConversationComponent implements AfterViewInit {
 	getTime(date: any) {
 		var seconds = Math.floor((Date.now() - date) / 1000);
 		var interval = seconds / 31536000;
-		if (interval > 1) {
+      if (interval > 1) {
+         if (Math.floor(interval) > 5) {
+            return "a very long time ago"
+         }
 			return Math.floor(interval) + (Math.floor(interval) == 1 ? " year ago" : " years ago");
 		}
 		interval = seconds / 2592000;

@@ -3,9 +3,9 @@
     <!-- <app-chat></app-chat> -->
 
 
-      <div class="chat" *ngFor="let chat of Store.chats">
+      <div class="chat" *ngFor="let chat of Store.chats" (click)="selectChat(chat.uid)">
          <div class="members">
-            <div class="member" *ngFor="let user of chat.members" style="background-image: url({{user.photoURL}})"></div>
+            <div class="member" *ngFor="let user of chat.members" style="background-image: url({{user.photoURL}})" title="@{{user.name}}"></div>
             <div class="seperator"></div>
          </div>
          <div class="chat-name">

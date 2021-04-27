@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { StoreService } from 'src/app/services/store.service';
 
@@ -9,17 +10,25 @@ import { StoreService } from 'src/app/services/store.service';
 })
 export class ChatsComponent implements OnInit {
 
-  constructor(public Store: StoreService, private Firebase: FirebaseService) { }
+  constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) { }
 
    ngOnInit(): void {
       this.Firebase.loadUserChats();
    }
    
+   selectChat(uid: any) {
+      this.Store.activeChat = uid;
+      this.router.navigate(["/conversation"]);
+   }
+
    // return more useful relative timestamp
 	getTime(date: any) {
 		var seconds = Math.floor((Date.now() - date) / 1000);
 		var interval = seconds / 31536000;
-		if (interval > 1) {
+      if (interval > 1) {
+         if (Math.floor(interval) > 5) {
+            return "a very long time ago"
+         }
 			return Math.floor(interval) + (Math.floor(interval) == 1 ? " year ago" : " years ago");
 		}
 		interval = seconds / 2592000;

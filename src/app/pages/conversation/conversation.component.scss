@@ -128,10 +128,25 @@ $theme-red: #ff0015;
 		background-size: cover;
 		background-position: center center;
 	}
-	video {
-		width: 25vw;
-		border-radius: 4px;
+	.gif {
+      position: relative;
+		video {
+			width: 25vw;
+			border-radius: 4px;
+         z-index: 2;
+			position: relative;
+		}
+		.video-loader {
+			position: absolute;
+			margin: auto;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+         z-index: 1;
+		}
 	}
+
 	.imginfo {
 		display: flex;
 		width: calc(25vw-2em);
@@ -283,20 +298,20 @@ $theme-red: #ff0015;
 	height: 20px;
 	width: 20px;
 	z-index: 50;
-   &:hover {
-      filter: brightness(80%);
-   }
+	&:hover {
+		filter: brightness(80%);
+	}
 }
 
 .full-size {
-   position: relative;
-   width: 100%;
-   background: $theme-black-light;
-   text-align: center;
-   padding-top: 10px;
-   padding-bottom: 10px;
-   margin-bottom: 50px;
-   margin-top: 50px;
-   color: $theme-white;
-   cursor: pointer;
+	position: relative;
+	width: 100%;
+	background: $theme-black-light;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-bottom: 50px;
+	margin-top: 50px;
+	color: $theme-white;
+	cursor: pointer;
 }

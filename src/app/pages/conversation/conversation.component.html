@@ -14,7 +14,8 @@
          <!-- All messages -->
 			<div *ngFor="let message of messages" class="message-wrap {{message.type}}">
 				<div class="user" style="background-image: url({{message.senderPhotoURL}})"></div>
-				<div class="img">
+				<div class="gif">
+               <mat-progress-spinner mode="indeterminate" diameter="50" color="primary" class="video-loader"></mat-progress-spinner>
                <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{message.url}}">Your browser does not support embedded video.</video>
 					<div class="imginfo">
 						<p>{{message.time}} from {{message.senderName}}</p>
