@@ -5,7 +5,7 @@
         <h1 routerLink="/chats">GIPHER</h1>
     </div>
     <div class="user">
-        <div class="name">{{Store.activeUser_Firebase?.displayName}} [<span routerLink="/profile">@{{Store.activeUser_Firebase?.username}}</span>]</div>
+        <div class="name">{{Store.activeUser_Firebase?.displayName}} [<span routerLink="/profile"> <span class="username-at">@</span><span class="username">{{Store.activeUser_Firebase?.username}}</span></span>]</div>
         <div routerLink="/profile" class="profilePic" style="background-image: url({{Store.activeUser_Google.photoURL}})">
             <!-- <img src=""> -->
         </div>

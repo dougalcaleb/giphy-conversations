@@ -1,4 +1,10 @@
-$lightBlue: #00b7ff;
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+$theme-red: #b52626;
 
 .wrap {
     width: calc(100vw - 2em);
@@ -8,6 +14,7 @@ $lightBlue: #00b7ff;
     justify-content: space-between;
     align-items: center;
     padding: 0 1em;
+    user-select: none;
 
     .left {
         display: flex;
@@ -36,8 +43,13 @@ $lightBlue: #00b7ff;
             color: white;
 
             span {
-                color: #00b7ff;
                 cursor: pointer;
+            }
+            .username {
+               color: $theme-blue-dark
+            }
+            .username-at {
+               color: rgb(64, 64, 64);
             }
         }
 
@@ -46,7 +58,7 @@ $lightBlue: #00b7ff;
             height: 2em;
             border-radius: 100%;
             margin-left: .5em;
-            background: $lightBlue;
+            background: $theme-blue-light;
             cursor: pointer;
             background-size: cover;
             background-position: center center;
