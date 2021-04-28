@@ -41,6 +41,7 @@
             <div class="user-image" *ngFor="let user of inProgressUsers" style="background-image: url({{user.photoURL}});"></div>
          </div>
          <div class="user-suggestion" *ngIf="suggested.length > 0">
+            <div class="close-suggested" (click)="clearSuggested()"></div>
 
             <!-- <div class="suggested-user">
                <div class="profile-image"></div>

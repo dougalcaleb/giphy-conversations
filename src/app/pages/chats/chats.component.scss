@@ -167,6 +167,7 @@ $theme-red: #b52626;
    font-size: 25px;
    font-family: "Ubuntu", sans-serif;
    cursor: pointer;
+   z-index: 90;
 }
 
 
@@ -176,13 +177,14 @@ $theme-red: #b52626;
    background: $theme-black-light;
    height: 50vh;
    width: 30vw;
-   position: absolute;
+   position: fixed;
    margin: auto;
    left: 0;
    right: 0;
    bottom: 0;
    top: 0;
    border-radius: 5px;
+   z-index: 95;
 
    p {
       margin: .5em .5em 0 0;
@@ -226,6 +228,7 @@ $theme-red: #b52626;
       background: $theme-black-dark;
       // height: 200px;
       max-height: 250px;
+      // height: 250px;
       left: 0;
       right: 0;
       margin: auto;
@@ -233,13 +236,22 @@ $theme-red: #b52626;
       border-radius: 5px;
       overflow-y: auto;
 
+      .close-suggested {
+         position: fixed;
+         top: 0;
+         bottom: 0;
+         right: 0;
+         left: 0;
+         z-index: 100;
+      }
+
       .suggested-user {
          width: 100%;
          height: 70px;
          background: inherit;
          cursor: pointer;
          position: relative;
-
+         z-index: 101;
          &:hover {
             background: #171717;
          }

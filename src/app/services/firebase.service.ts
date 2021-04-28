@@ -194,9 +194,27 @@ export class FirebaseService {
    }
    
    //! unfinished, needs validation and chats-meta creation
-   public createChat(uid: any) {
+   public createChat(uid: any, members: any[]) {
       const emptyData = { messages: [] };
+      members = members.map((user:any) => {
+         let trimmed = {
+            name: user.username,
+            photoURL: user.photoURL,
+            uid: user.uid
+         };
+         return trimmed;
+      })
       this.firestore.doc(`chats/${uid}`).set(emptyData);
+      this.firestore.doc(`chats-meta/${uid}`).set({
+         last: {
+            from: "",
+            timestamp: 0,
+            url: ""
+         },
+         members: members,
+         name: "New Group Chat",
+         uid: uid
+      });
    }
 
    // get all messages from a chat. called from conversation

@@ -85,7 +85,7 @@ export class ChatsComponent implements OnInit {
    //! not done
    finishNewChat() {
       let chatId = uuidv4();
-      this.Firebase.createChat(chatId);
+      this.Firebase.createChat(chatId, this.inProgressUsers);
       this.inProgressUsers.forEach((user:any) => {
          this.Firebase.updateUser(user.uid, chatId, "newChat");
       });

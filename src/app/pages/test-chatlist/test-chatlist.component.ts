@@ -37,7 +37,7 @@ export class TestChatlistComponent implements OnInit {
 
    finishNewChat() {
       let chatId = uuidv4();
-      this.firebase.createChat(chatId);
+      // this.firebase.createChat(chatId);
       this.inProgressUsers.forEach((user:any) => {
          this.firebase.updateUser(user.uid, chatId, "newChat");
       });
