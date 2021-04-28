@@ -192,9 +192,8 @@ $theme-red: #b52626;
 
    .users {
       position: absolute;
-      top: 50px;
       width: calc(100% - 100px);
-      height: calc(100% - 150px);
+      height: calc(100% - 200px);
       overflow-y: auto;
       display: flex;
       flex-wrap: wrap;
@@ -202,7 +201,7 @@ $theme-red: #b52626;
       justify-content: center;
       border: 3px solid #222;
       border-radius: 5px;
-      background: white;
+      background: #282828;
       left: 0;
       right: 0;
       margin: auto;
@@ -213,29 +212,36 @@ $theme-red: #b52626;
          height: 50px;
          width: 50px;
          border-radius: 100%;
-         background: #00b7ff;
          margin: 25px;
+         background-position: center center;
+         background-size: cover;
+         background-color: $theme-blue-dark;
       }
    }
 
    .user-suggestion {
       position: absolute;
-      top: 82px;
+      top: 90px;
       width: calc(100% - 90px);
-      background: #fff;
-      height: 200px;
+      background: $theme-black-dark;
+      // height: 200px;
+      max-height: 250px;
       left: 0;
+      right: 0;
       margin: auto;
-      box-shadow:3px 3px 10px 3px #999;
+      box-shadow: 3px 3px 10px #111;
+      border-radius: 5px;
+      overflow-y: auto;
 
       .suggested-user {
          width: 100%;
          height: 70px;
          background: inherit;
          cursor: pointer;
+         position: relative;
 
          &:hover {
-            background: #eee;
+            background: #171717;
          }
 
          .profile-image {
@@ -256,11 +262,11 @@ $theme-red: #b52626;
             left: 70px;
             top: 0;
             // font-family: "Ubuntu";
-            color: #222;
+            color: $theme-white;
             user-select: none;
 
             .username {
-               color: #222;
+               color: $theme-blue-dark;
                margin-left: 25px;
             }
          }
@@ -281,5 +287,37 @@ $theme-red: #b52626;
       left: 0;
       right: 0;
       margin: auto;
+   }
+
+   .startChat {
+      position: absolute;
+      bottom: 10px;
+      right: 25px;
+      background: $theme-blue-dark;
+      color: $theme-white;
+      border-radius: 5px;
+      font-family: "Ubuntu", sans-serif;
+      outline: none;
+      padding: 7px;
+      padding-left: 20px;
+      padding-right: 20px;
+      border: none;
+      cursor: pointer;
+   }
+
+   .cancelChat {
+      position: absolute;
+      bottom: 10px;
+      left: 25px;
+      background: $theme-red;
+      color: $theme-white;
+      border-radius: 5px;
+      font-family: "Ubuntu", sans-serif;
+      outline: none;
+      padding: 7px;
+      padding-left: 20px;
+      padding-right: 20px;
+      border: none;
+      cursor: pointer;
    }
 }

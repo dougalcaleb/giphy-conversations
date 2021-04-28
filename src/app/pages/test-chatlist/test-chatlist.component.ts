@@ -44,15 +44,15 @@ export class TestChatlistComponent implements OnInit {
       this.firebase.updateUser(this.Store.activeUser_Google.uid, chatId, "newChat");
    }
 
-	newChat() {
-		let chat = {
-			messages: [],
-			members: [],
-			name: "",
-			uid: uuidv4(),
-		};
-		this.Store.activeUser_Firebase?.chats.push(chat.uid);
-	}
+	// newChat() {
+	// 	let chat = {
+	// 		messages: [],
+	// 		members: [],
+	// 		name: "",
+	// 		uid: uuidv4(),
+	// 	};
+	// 	this.Store.activeUser_Firebase?.chats.push(chat.uid);
+	// }
 
 	handleKey(event: any) {
 		if (event.key == "Enter") {

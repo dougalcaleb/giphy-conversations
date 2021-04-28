@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { StoreService } from 'src/app/services/store.service';
+import { v4 as uuidv4 } from "uuid";
 
 @Component({
   selector: 'app-chats',
@@ -10,10 +12,14 @@ import { StoreService } from 'src/app/services/store.service';
 })
 export class ChatsComponent implements OnInit {
 
-   //! may not be right
+   // searchThrottle = 500;
+
    userSearchTerm: any = "";
    inProgressUsers: any = [];
-   suggested: any = [];
+   inProgressUsersUIDs: any = [];
+   suggested: User[] = [];
+   // inProgress = true;
+   startingChat = false;
 
   constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) { }
 
@@ -31,11 +37,84 @@ export class ChatsComponent implements OnInit {
       this.Firebase.removeFromChat(chatId);
    }
 
-   startNewChat() {}
-   clearSuggested() { }
-   handleKey(event: any) { }
-   selectUser(someInput: any) { }
-   finishNewChat() {}
+   // cancel the new chat
+   cancelNewChat() {
+      this.suggested = [];
+      this.userSearchTerm = "";
+      this.inProgressUsers = [];
+      this.inProgressUsersUIDs = [];
+      this.startingChat = false;
+   }
+
+   // open the modal to start a new chat
+   startNewChat() {
+      this.startingChat = true;
+   }
+   
+   // remove the suggested users
+   clearSuggested() {
+      this.suggested = [];
+		this.userSearchTerm = "";
+   }
+
+   // handle search start
+   handleKey(event: any) {
+      if (event.key == "Enter") {
+			this.search();
+			// event.target.value = "";
+		}
+   }
+
+   // when clicked, add user to the selected users
+   selectUser(uid: any) {
+      this.suggested.forEach((user) => {
+         if (
+            user.uid == uid && // looping user is the selected user
+            !this.inProgressUsersUIDs.includes(user.uid) && // has not been selected already
+            user.uid != "ERROR" && // is not the error message
+            user.uid != this.Store.activeUser_Google.uid // is not self
+         ) {
+				this.inProgressUsers.push(user);
+				this.inProgressUsersUIDs.push(user.uid);
+				this.clearSuggested();
+			}
+		});
+   }
+
+   // add new chat to firebase
+   //! not done
+   finishNewChat() {
+      let chatId = uuidv4();
+      this.Firebase.createChat(chatId);
+      this.inProgressUsers.forEach((user:any) => {
+         this.Firebase.updateUser(user.uid, chatId, "newChat");
+      });
+      this.Firebase.updateUser(this.Store.activeUser_Google.uid, chatId, "newChat");
+   }
+
+   // search firebase users for a matching username
+   search() {
+		this.suggested = [];
+		let st = this.userSearchTerm;
+		if (this.userSearchTerm.split("")[0] == "@") {
+			st = this.userSearchTerm.split("").slice(1).join("");
+			// console.log(`Adjusted search term to '${st}'`);
+		}
+		this.Firebase.searchUser(st, (data: any) => {
+         if (data.length == 0) {
+            this.suggested.push({
+               uid: "ERROR",
+               photoURL: "assets/error.png",
+               username: "",
+               displayName: "No matching users."
+            } as User)
+         } else {
+            console.log("POGGERS");
+            console.log(data);
+				this.suggested = data;
+			}
+		});
+	}
 
    // return more useful relative timestamp
 	getTime(date: any) {

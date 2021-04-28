@@ -108,11 +108,11 @@ export class FirebaseService {
    
    //! UNFINISHED, NEEDS VALIDATION sets a user's username
    async setNewUsername(newName: any) {
-      this.searchUser(newName, (returnVal: any) => {
-         if (returnVal != null) {
-            alert("Username is taken");
-         }
-      }, "username");
+      // this.searchUser(newName, (returnVal: any) => {
+      //    if (returnVal != null) {
+      //       alert("Username is taken");
+      //    }
+      // }, "username");
    }
 
    // edits user data
@@ -152,23 +152,45 @@ export class FirebaseService {
 	}
 
    // check if a user with a given piece of data exists
-   public async searchUser(searchTerm: string, callback: any, searchFor: any = "username"): Promise<any> {
-      this.firestore
-         .collection("users", (ref) => ref.where(searchFor, "==", searchTerm))
-         .get()
-         .pipe(
-            take(1),
-            tap((item: any) => {
-               if (item.empty) {
-                  callback(null);
-               } else {
-                  item.docs.forEach((doc: any) => {
-                     callback(doc.data());
-                  });
+   public async searchUser(searchTerm: string, callback: any) {
+      this.firestore.collection("users").get().pipe(
+         take(1),
+         tap((users: any) => {
+            // console.log("Users coll:");
+            // console.log(users);
+            let allUsers: any = [];
+            let matchingUsers: any = [];
+            let reg = new RegExp(searchTerm, "i");
+
+            users.docs.map((doc: any) => {
+               allUsers.push(doc.data());
+            });
+            allUsers.forEach((user: any) => {
+               if (user.username.match(reg) || user.displayName.match(reg)) {
+                  matchingUsers.push(user);
                }
-            }),
-			)
-         .subscribe();
+            });
+            callback(matchingUsers);
+         })
+      ).subscribe();
+
+      //? save this for validation
+      // this.firestore
+      //    .collection("users", (ref) => ref.where(searchFor, "==", searchTerm))
+      //    .get()
+      //    .pipe(
+      //       take(1),
+      //       tap((item: any) => {
+      //          if (item.empty) {
+      //             callback(null);
+      //          } else {
+      //             item.docs.forEach((doc: any) => {
+      //                callback(doc.data());
+      //             });
+      //          }
+      //       }),
+		// 	)
+      //    .subscribe();
    }
    
    //! unfinished, needs validation and chats-meta creation
