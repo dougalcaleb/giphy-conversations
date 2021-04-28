@@ -102,8 +102,8 @@ export class ConversationComponent implements AfterViewInit {
    }
 
    // initial load
-	getMessages() {
-		this.firebase.getChat("test-chat", (data: any) => {
+   getMessages() {
+		this.firebase.getChat(this.Store.activeChat, (data: any) => {
          this.allMessages = data;
          this.messages = data.slice(data.length - this.messagesToRecieve - this.offset, data.length - this.offset);
          this.sortMessages();
@@ -113,10 +113,12 @@ export class ConversationComponent implements AfterViewInit {
    // takes raw message data and assigns them to who sent them, indicates if they are favorited, and makes timestamp useful
    sortMessages() {
       this.messages.forEach((message: any) => {
-         // sent vs recieved text correction
+         // sent vs recieved text vs notif correction
          if (message.user == this.Store.activeUser_Google.uid) {
             this.messages[this.messages.indexOf(message)].type = "sent";
             this.messages[this.messages.indexOf(message)].senderName = "you";
+         } else if (message.senderName == "GIPHY_CONVERSATIONS_NOTIFICATIONS") {
+            this.messages[this.messages.indexOf(message)].type = "notification";
          } else {
             this.messages[this.messages.indexOf(message)].type = "";
          }

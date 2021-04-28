@@ -205,6 +205,11 @@ export class FirebaseService {
          return trimmed;
       })
       this.firestore.doc(`chats/${uid}`).set(emptyData);
+      members.push({
+         name: this.Store.activeUser_Firebase.username,
+         photoURL: this.Store.activeUser_Firebase.photoURL,
+         uid: this.Store.activeUser_Firebase.uid
+      });
       this.firestore.doc(`chats-meta/${uid}`).set({
          last: {
             from: "",
@@ -215,6 +220,7 @@ export class FirebaseService {
          name: "New Group Chat",
          uid: uid
       });
+      this.Store.activeUser_Firebase.chats.push(uid);
    }
 
    // get all messages from a chat. called from conversation
@@ -235,11 +241,25 @@ export class FirebaseService {
             uid: this.Store.activeUser_Firebase.uid
          })
       });
+      this.firestore.doc(`chats/${this.Store.activeChat}`).update({
+         messages: firebase.firestore.FieldValue.arrayUnion({
+            senderName: "GIPHY_CONVERSATIONS_NOTIFICATIONS",
+            senderPhotoURL: this.Store.activeUser_Firebase.photoURL,
+            timestamp: Date.now(),
+            url: this.Store.activeUser_Firebase.uid,
+            user: this.Store.activeUser_Firebase.username,
+         })
+      });
+      this.Store.chats.forEach((chat:any) => {
+         if (chat.uid == chatId) {
+            this.Store.chats.splice(this.Store.chats.indexOf(chat), 1);
+         }
+      });
    }
 
    // loads simple chat data for the list of chats page
    public loadUserChats(loadChats: any = [], finished = false) {
-      console.log(this.Store.chats);
+      // console.log(this.Store.chats);
       if (finished) {
          return;
       }

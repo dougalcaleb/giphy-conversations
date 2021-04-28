@@ -25,6 +25,7 @@ export class ChatsComponent implements OnInit {
 
    ngOnInit(): void {
       this.Firebase.loadUserChats();
+      console.log(this.Store.chats);
    }
    
    selectChat(uid: any) {
@@ -90,6 +91,10 @@ export class ChatsComponent implements OnInit {
          this.Firebase.updateUser(user.uid, chatId, "newChat");
       });
       this.Firebase.updateUser(this.Store.activeUser_Google.uid, chatId, "newChat");
+      this.cancelNewChat();
+      setTimeout(() => {
+         this.Firebase.loadUserChats();
+      }, 1000);
    }
 
    // search firebase users for a matching username
