@@ -34,9 +34,9 @@
             <h3>Username:</h3>
             <input type="text" placeholder="Username" [(ngModel)]="Store.activeUser_Firebase.username">
             <h3>Theme Color:</h3>
-            <input type="color" id="user-color" value="#00b7ff">
+            <input type="color" id="user-color" value="#ff8c00" [(ngModel)]="Store.activeUser_Firebase.color">
             <button class="save" (click)="toggle()">Save</button>
-            <div class="x" (click)="toggle()">x</div>
+            <div class="x" (click)="updateInfo()">x</div>
          </div>
          
     </div>
