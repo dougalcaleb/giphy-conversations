@@ -10,7 +10,7 @@ $gray: #282828;
     flex-direction: column;
     justify-content: space-between;
     padding: 5em 3em;
-    width: calc(75vw - 6em);
+    width: fit-content;
     height: calc(90vh - 10em);
 
     .pic {
@@ -98,5 +98,22 @@ $gray: #282828;
             border-radius: 2px;
             width: 15em;
         }
+    }
+}
+
+.wrap2 {
+    padding: 5em 0;
+    overflow: scroll;
+    .gifs {
+        display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    span {
+        video {
+            border-radius: 5px;
+            height: 10em;
+            margin: 0 3px
+        }
+    }
     }
 }
