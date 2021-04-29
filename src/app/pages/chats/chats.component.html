@@ -14,11 +14,11 @@
             <div class="seperator"></div>
          </div>
          <div class="last-message">
-            <p>
+            <p  *ngIf="chat.last.url != ''">
                <span class="username-at">@</span>
                <span class="username">{{chat.last.from}}</span>
                , {{getTime(chat.last.timestamp)}}:</p>
-               <div class="lastGif">
+               <div class="lastGif" *ngIf="chat.last.url != ''">
                   <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{chat.last.url}}">Your browser does not support embedded video.</video>
                   <mat-progress-spinner mode="indeterminate" diameter="50" class="load-spinner"></mat-progress-spinner>
                </div>

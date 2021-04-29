@@ -91,16 +91,22 @@ $theme-red: #b52626;
          display: flex;
          justify-content: center;
          align-items: center;
+         border: 2px solid $theme-blue-dark;
+         border-radius: 5px;
+         overflow: hidden;
          video {
+            // border-radius: 5px;
             height: 100%;
-            position: absolute;
+            position: relative;
             right: 0;
             border: 2px solid $theme-blue-light;
             border-radius: 5px;
             z-index: 6;
          }
          .load-spinner {
-            position: relative;
+            position: absolute;
+            align-self: center;
+            flex: 1;
             z-index: 5;
          }
       }
