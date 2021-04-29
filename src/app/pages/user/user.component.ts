@@ -8,10 +8,17 @@ import { StoreService } from 'src/app/services/store.service';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
+  display = false;
+  toggle() {
+    if (this.display == false) {
+      this.display = true;
+    } else {
+      this.display = false;
+    }
+  }
 
   constructor(public Store: StoreService) { }
 
   ngOnInit(): void {
   }
-
 }

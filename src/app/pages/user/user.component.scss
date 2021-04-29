@@ -19,6 +19,9 @@ $gray: #282828;
         border-radius: 100%;
         background: $lightBlue;
         margin-bottom: 2em;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
     }
 
     .edit {
@@ -30,9 +33,70 @@ $gray: #282828;
         font-size: 1.5em;
         width: fit-content;
         border-radius: 7px;
+        cursor: pointer;
     }
 
     .username {
         color: $lightBlue
+    }
+}
+
+.modalmodal {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    .bg {
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.4);
+    }
+}
+
+.edit-modal {
+    width: 26em;
+    height: 36em;
+    position: absolute;
+    margin: -20em 0 0 -15em;
+    top: 40%;
+    left: 50%;
+    background: white;
+    border-radius: 4px;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    .save {
+        border: none;
+        outline: none;
+        color: white;
+        background: $lightBlue;
+        padding: 1em;
+        font-size: 1.5em;
+        width: fit-content;
+        border-radius: 7px;
+        position: absolute;
+        bottom: 2em;
+        cursor: pointer;
+    }
+    .x {
+        position: absolute;
+        top: .5em;
+        right: .5em;
+        font-size: 2em;
+        cursor: pointer;
+    }
+    h3 {
+        margin: .5em 0;
+    }
+    input {
+        display: block;
+        &[type=text] {
+            border: solid 2px #222;
+            padding: .25em;
+            outline: none;
+            border-radius: 2px;
+            width: 15em;
+        }
     }
 }

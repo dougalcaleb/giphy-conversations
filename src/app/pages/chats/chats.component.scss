@@ -95,7 +95,7 @@ $theme-red: #b52626;
             height: 100%;
             position: absolute;
             right: 0;
-            border: 2px solid $theme-blue-dark;
+            border: 2px solid $theme-blue-light;
             border-radius: 5px;
             z-index: 6;
          }
@@ -116,7 +116,7 @@ $theme-red: #b52626;
             color: rgb(64, 64, 64);
          }
          .username {
-            color: $theme-blue-dark;
+            color: $theme-blue-light;
          }
       }
       // background: purple;
