@@ -157,7 +157,7 @@ export class FirebaseService {
 			case "changeUsername":
 				this.firestore.doc(`users/${userId}`).update({
 					username: newData,
-				});
+            });
 				break;
 			case "changeDisplayName":
 				this.firestore.doc(`users/${userId}`).update({
