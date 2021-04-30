@@ -3,7 +3,7 @@ import {User} from "src/app/models/user";
 import {FirebaseService} from "src/app/services/firebase.service";
 import {GiphyService} from "src/app/services/giphy.service";
 import {StoreService} from "src/app/services/store.service";
-import {v4 as uuidv4} from "uuid";
+import {parse, v4 as uuidv4} from "uuid";
 
 @Component({
 	selector: "app-conversation",
@@ -222,17 +222,10 @@ export class ConversationComponent implements AfterViewInit {
 
 	// initial load
    getMessages() {
-      // console.log("Store chats is")
-      // console.log(this.Store.chatsMeta);
 		this.Firebase.getChat(this.Store.activeChat, (data: any) => {
          this.allMessages = data;
-         console.log("allMessages:");
-         console.log(this.allMessages);
-         console.log(`data length: ${data.length}; messagesTR: ${this.messagesToRecieve}; offset: ${this.offset}`);
-         this.messages = data.slice(data.length - this.messagesToRecieve - this.offset, data.length - this.offset);
-         console.log("GetMessages messages:");
-         console.log(this.messages);
-			this.sortMessages();
+         this.messages = data.slice(Math.max(data.length - this.messagesToRecieve - this.offset, 0), data.length - this.offset);
+         this.sortMessages();
 		});
 	}
 
@@ -256,7 +249,8 @@ export class ConversationComponent implements AfterViewInit {
 			}
 			// timestamp
 			this.messages[this.messages.indexOf(message)].time = this.getTime(message.timestamp);
-		});
+      });
+      this.scrollToBottom();
 	}
 
 	scrollToBottom() {
@@ -364,9 +358,9 @@ export class ConversationComponent implements AfterViewInit {
 	async getSearch(startAt: any = 0) {
 		this.closeFavorites();
 		// cached data
-		if (this.cache && localStorage.getItem("gif-cache")) {
-			let parsedData = JSON.parse(localStorage.getItem("gif-cache") || "");
-			parsedData.data.forEach((gif: any) => {
+      if (this.cache && localStorage.getItem("gif-cache")) {
+         let parsedData = JSON.parse(localStorage.getItem("gif-cache") || "");
+			parsedData.forEach((gif: any) => {
 				this.searchResult.push(gif);
 			});
 			this.retrieved = true;
