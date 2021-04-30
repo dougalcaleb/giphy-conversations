@@ -15,15 +15,6 @@
          <div class="user-image" *ngFor="let user of inProgressUsers" style="background-image: url({{user.photoURL}});"></div>
       </div>
       <div class="user-suggestion" *ngIf="suggested.length > 0">
-         <!-- <div class="suggested-user">
-            <div class="profile-image"></div>
-            <div class="profile-names">Caleb Dougal <span class="username">@dougalcaleb</span></div>
-         </div>
-         <div class="suggested-user">
-            <div class="profile-image"></div>
-            <div class="profile-names">Maleb Bugle <span class="username">@bruhboi</span></div>
-         </div> -->
-         
          <div class="suggested-user" *ngFor="let user of suggested" (click)="selectUser(user.uid)">
             <div class="profile-image" style="background-image: url({{user.photoURL}})"></div>
             <div class="profile-names">{{user.displayName}} <span class="username" *ngIf="user.username != ''">@{{user.username}}</span></div>

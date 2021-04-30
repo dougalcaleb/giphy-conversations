@@ -22,9 +22,9 @@ $theme-red: #b52626;
         align-items: center;
 
         img {
-            width: 2em;
-            height: 2em;
-            background: white;
+            width: 4em;
+            height: 4em;
+            // background: white;
         }
 
         h1 {
@@ -46,10 +46,7 @@ $theme-red: #b52626;
                 cursor: pointer;
             }
             .username {
-               color: $theme-blue-dark
-            }
-            .username-at {
-               color: rgb(64, 64, 64);
+               color: #00b7ff;
             }
         }
 

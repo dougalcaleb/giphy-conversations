@@ -13,20 +13,23 @@ $theme-red: #b52626;
 .wrap {
     width: 100vw;
     height: 90vh;
-    background: $theme-black-medium;
+   //  background: $theme-black-medium;
     padding-top: 15px;
 }
 
 .chat {
    height: 10vh;
-   width: 100%;
-   background: $theme-black-dark;
-   border-radius: 20px;
-   margin-bottom: 15px;
+   width: 95%;
+   margin-left: 2.5%;
+   background: white;
+   // border-radius: 20px;
+   margin-bottom: 8px;
+   padding-bottom: 8px;
    display: flex;
    user-select: none;
    cursor: pointer;
    position: relative;
+   border-bottom: 2px solid #222;
    .selectThisChat {
       height: 100%;
       width: 100%;
@@ -52,11 +55,12 @@ $theme-red: #b52626;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
+      overflow: hidden;
       .member {
          height: 30px;
          width: 30px;
          border-radius: 100%;
-         background: $theme-blue-light;
+         background: white;
          margin: 10px;
          background-size: cover;
          background-position: center center;
@@ -70,8 +74,8 @@ $theme-red: #b52626;
       position: relative;
       p {
          font-family: "Ubuntu", sans-serif;
-         color: $theme-blue-light;
-         font-size: 1.5vw;
+         color: #222;
+         font-size: 1.5em;
          text-align: center;
          position: relative;
          width: 100%;
@@ -99,6 +103,8 @@ $theme-red: #b52626;
             height: 100%;
             position: relative;
             right: 0;
+            border: 2px solid $theme-blue-light;
+            border-radius: 5px;
             z-index: 6;
          }
          .load-spinner {
@@ -112,7 +118,7 @@ $theme-red: #b52626;
       p {
          font-family: "Ubuntu", sans-serif;
          color: $theme-white;
-         font-size: 0.8vw;
+         font-size: 1em;
          position: relative;
          left: 20px;
          margin-bottom: 0;
@@ -120,7 +126,7 @@ $theme-red: #b52626;
             color: rgb(64, 64, 64);
          }
          .username {
-            color: $theme-blue-dark;
+            color: $theme-blue-light;
          }
       }
       // background: purple;
