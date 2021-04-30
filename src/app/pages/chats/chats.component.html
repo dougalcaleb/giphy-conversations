@@ -18,8 +18,6 @@
 			</div>
 			<div class="chat-name">
 				<p>
-					{{ chat.uid }}
-					<br />
 					{{ chat.name }}
 				</p>
 				<div class="seperator"></div>
@@ -39,7 +37,7 @@
 
 				<div class="seperator"></div>
 			</div>
-			<div class="remove" (click)="removeFromChat(chat.uid)">
+			<div class="remove" (click)="removeFromChat(chat.uid)" title="Leave this chat">
 				<svg viewBox="0 0 24 24">
 					<path
 						fill="currentColor"

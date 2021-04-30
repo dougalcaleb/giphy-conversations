@@ -35,7 +35,7 @@ export class ConversationComponent implements AfterViewInit {
    removeProgressUsersUIDs: any = [];
 
 	// config
-	cache = true;
+	cache = false;
 	retrieveCount = 10;
 	scrollAllowance = 500;
 	favoriteCooldown = 1000;
