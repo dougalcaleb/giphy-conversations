@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "giphy-conversations": {
+      "hosting": {
+        "giphy-conversations": [
+          "giphy-conversations"
+        ]
+      }
+    }
+  }
+}
