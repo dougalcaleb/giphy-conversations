@@ -12,8 +12,9 @@ export class StoreService {
 	public loggedIn: boolean = false;
    public activeChat: string = "";
    public isNewUser: boolean = false;
-   public chats: any = [];
+   public chatsMeta: any = [];
    public loadedChats: any = [];
+   public activeChatMeta: any;
 
 
    public static defaultFirebaseUser = {
@@ -26,8 +27,6 @@ export class StoreService {
       chats: [],
       favoritedGifs: [],
    };
-
-	display = false;
 
    constructor() {
       // if (sessionStorage.getItem("GC_loggedInUser_Google")) {

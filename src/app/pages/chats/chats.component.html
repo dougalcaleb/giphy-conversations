@@ -3,14 +3,14 @@
     <!-- <app-chat></app-chat> -->
 
 
-      <div class="chat" *ngFor="let chat of Store.chats" >
+      <div class="chat" *ngFor="let chat of Store.chatsMeta" >
          <div class="selectThisChat" (click)="selectChat(chat.uid)"></div>
          <div class="members">
             <div class="member" *ngFor="let user of chat.members | usersNotMe" style="background-image: url({{user.photoURL}})" title="@{{user.name}}"></div>
             <div class="seperator"></div>
          </div>
          <div class="chat-name">
-            <p>{{chat.name}}</p>
+            <p>{{chat.uid}} <br> {{chat.name}}</p>
             <div class="seperator"></div>
          </div>
          <div class="last-message">

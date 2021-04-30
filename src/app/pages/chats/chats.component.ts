@@ -25,7 +25,7 @@ export class ChatsComponent implements OnInit {
 
    ngOnInit(): void {
       this.Firebase.loadUserChats();
-      console.log(this.Store.chats);
+      // console.log(this.Store.chatsMeta);
    }
    
    selectChat(uid: any) {
@@ -83,7 +83,6 @@ export class ChatsComponent implements OnInit {
    }
 
    // add new chat to firebase
-   //! not done
    finishNewChat() {
       let chatId = uuidv4();
       this.Firebase.createChat(chatId, this.inProgressUsers);
@@ -92,6 +91,7 @@ export class ChatsComponent implements OnInit {
       });
       this.Firebase.updateUser(this.Store.activeUser_Google.uid, chatId, "newChat");
       this.cancelNewChat();
+      // could be better
       setTimeout(() => {
          this.Firebase.loadUserChats();
       }, 1000);
@@ -114,7 +114,7 @@ export class ChatsComponent implements OnInit {
                displayName: "No matching users."
             } as User)
          } else {
-            console.log("POGGERS");
+            // console.log("POGGERS");
             console.log(data);
 				this.suggested = data;
 			}

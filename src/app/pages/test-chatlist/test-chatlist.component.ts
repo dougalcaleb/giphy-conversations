@@ -21,13 +21,13 @@ export class TestChatlistComponent implements OnInit {
 
    constructor(public Store: StoreService, private firebase: FirebaseService) {}
    
-  toggleModal() {
-    if (this.Store.display == false) {
-      this.Store.display = true;
-    } else {
-      this.Store.display = false;
-    }
-  }
+//   toggleModal() {
+//     if (this.Store.display == false) {
+//       this.Store.display = true;
+//     } else {
+//       this.Store.display = false;
+//     }
+//   }
 
 	
 

@@ -97,24 +97,42 @@ export class FirebaseService {
 	}
 
 	// edits user data
-	updateUser(userId: string, newData: any, type: string, options: any = {}) {
+	updateUser(userId: string, newData: any, type: string, extraData: any = null) {
 		console.log(`Updating user with action type ${type}`);
 		switch (type) {
 			case "newChat":
 				this.firestore.doc(`users/${userId}`).update({
 					chats: firebase.firestore.FieldValue.arrayUnion(newData),
 				});
-				// if (options?.chatExists) {
-				// 	this.firestore.doc(`chats/${this.Store.activeChat}`).update({
-				// 		messages: firebase.firestore.FieldValue.arrayUnion({
-				// 			senderName: "GIPHY_CONVERSATIONS_NOTIFICATIONS",
-				// 			senderPhotoURL: "",
-				// 			timestamp: Date.now(),
-				// 			url: userId,
-				// 			user: user.username || user.name,
-				// 		}),
-				// 	});
-				// }
+				break;
+			case "addOtherToChat":
+				this.firestore.doc(`users/${userId}`).update({
+					chats: firebase.firestore.FieldValue.arrayUnion(newData),
+            });
+            this.Store.activeChatMeta.members.push({
+               displayName: extraData.displayName,
+               name: extraData.username,
+               photoURL: extraData.photoURL,
+               uid: extraData.uid
+            });
+				this.firestore.doc(`chats/${this.Store.activeChat}`).update({
+					messages: firebase.firestore.FieldValue.arrayUnion({
+						senderName: "GIPHY_CONVERSATIONS_NOTIFICATIONS",
+						senderPhotoURL: "",
+						timestamp: Date.now(),
+						url: userId,
+                  user: extraData.username,
+                  notifAction: "joined the chat"
+					}),
+            });
+            this.firestore.doc(`chats-meta/${this.Store.activeChat}`).update({
+               members: firebase.firestore.FieldValue.arrayUnion({
+                  displayName: extraData.displayName,
+                  name: extraData.username,
+                  photoURL: extraData.photoURL,
+                  uid: extraData.uid
+               })
+            });
 				break;
 			case "favorited":
 				this.firestore.doc(`users/${userId}`).update({
@@ -184,25 +202,27 @@ export class FirebaseService {
 				})
 			)
 			.subscribe();
-
-		//? save this for validation
-		// this.firestore
-		//    .collection("users", (ref) => ref.where(searchFor, "==", searchTerm))
-		//    .get()
-		//    .pipe(
-		//       take(1),
-		//       tap((item: any) => {
-		//          if (item.empty) {
-		//             callback(null);
-		//          } else {
-		//             item.docs.forEach((doc: any) => {
-		//                callback(doc.data());
-		//             });
-		//          }
-		//       }),
-		// 	)
-		//    .subscribe();
-	}
+   }
+   
+   getUserById(userId: any, callback: any) {
+      //? save this for validation
+		this.firestore
+		   .collection("users", (ref) => ref.where("uid", "==", userId))
+		   .get()
+		   .pipe(
+		      take(1),
+		      tap((item: any) => {
+		         if (item.empty) {
+		            callback(null);
+		         } else {
+		            item.docs.forEach((doc: any) => {
+		               callback(doc.data());
+		            });
+		         }
+		      }),
+			)
+		   .subscribe();
+   }
 
 	// creates a new chat
 	public createChat(uid: any, members: any[]) {
@@ -271,7 +291,8 @@ export class FirebaseService {
 					senderPhotoURL: user.photoURL,
 					timestamp: Date.now(),
 					url: user.uid,
-					user: user.username || user.name,
+               user: user.username || user.name,
+               notifAction: "left the chat"
 				}),
 			});
 			this.Store.chatsMeta.forEach((chat: any) => {
