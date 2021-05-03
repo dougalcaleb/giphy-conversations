@@ -20,7 +20,7 @@ export class ChatlistComponent implements OnInit {
          members: [
             {
                displayName: "Anders Rasmusson",
-               username: "AndersRasmusson-2325243453453",
+               username: "AndersRasmusson-1",
                photoURL: "https://lh3.googleusercontent.com/a-/AOh14GgT46aw0cSB3p42f8XcMQg0K2GfypgIF89nQ2EDVQ=s96-c",
                uid: "28w327oEPMRdw3GO9TYpdzJOJbo2"
             }
@@ -44,7 +44,7 @@ export class ChatlistComponent implements OnInit {
             },
             {
                displayName: "Anders Rasmusson",
-               username: "AndersRasmusson-2325243453453",
+               username: "AndersRasmusson-55",
                photoURL: "https://lh3.googleusercontent.com/a-/AOh14GgT46aw0cSB3p42f8XcMQg0K2GfypgIF89nQ2EDVQ=s96-c",
                uid: "28w327oEPMRdw3GO9TYpdzJOJbo2"
             },

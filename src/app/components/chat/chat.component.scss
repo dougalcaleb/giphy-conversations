@@ -4,6 +4,7 @@ $theme-blue-dark: #006b8c;
 $theme-black-light: #282828;
 $theme-black-medium: #191919;
 $theme-black-dark: #070707;
+$theme-red: #b52626;
 
 .wrap {
    width: calc(100% - 50px);
@@ -46,13 +47,15 @@ $theme-black-dark: #070707;
          background: $theme-blue-dark;
          border-radius: 100%;
          margin: 10px;
+         background-size: cover;
+         background-position: center center;
       }
    }
    .name {
       display: flex;
       flex: 2;
       justify-content: center;
-      font-family: "Montserrat";
+      font-family: "Miriam Libre";
       color: $theme-blue-light;
       font-size: 2vw;
       // background: orange;
@@ -64,11 +67,42 @@ $theme-black-dark: #070707;
       box-sizing: border-box;
       font-family: "Ubuntu";
       color: $theme-white;
+      position: relative;
+      .last-gif {
+         position: absolute;
+         right: 25px;
+         border-radius: 5px;
+         height: 8vh;
+         video {
+            border: 3px solid $theme-blue-dark;
+            position: relative;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            border-radius: 5px;
+            box-sizing: border-box;
+         }
+      }
       // background: yellow;
    }
    .leave {
       display: flex;
       flex: 0.5;
+      border-bottom-right-radius: 10px;
+      border-top-right-radius: 10px;
+      svg {
+         position: absolute;
+         height: 40%;
+         color: $theme-red;
+         margin: auto;
+         left: 0;
+         right: 0;
+         top: 0;
+         bottom: 0;
+      }
+      &:hover {
+         background: $theme-black-medium;
+      }
       // background: green;
    }
 }

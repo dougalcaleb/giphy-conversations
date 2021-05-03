@@ -14,3 +14,17 @@ $theme-black-dark: #070707;
    bottom: 0;
    left: 0;
 }
+
+.new-chat {
+   position: fixed;
+   right: 25px;
+   bottom: 25px;
+   background: $theme-blue-dark;
+   color: $theme-white;
+   font-family: "Ubuntu";
+   padding: 10px;
+   padding-left: 30px;
+   padding-right: 30px;
+   border-radius: 5px;
+   cursor: pointer;
+}
