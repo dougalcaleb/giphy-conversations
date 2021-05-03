@@ -3,7 +3,7 @@
 	<app-chat-list></app-chat-list>
 	<div class="wrap">
 		<div class="info">
-			<h1>Conversation 1</h1>
+			<h1>{{chatName}}</h1>
 			<p (click)="openEditModal()">i</p>
 		</div>
 		<div class="messages" id="messages" #messageWrapper>
@@ -85,6 +85,7 @@
 
       <div class="editchat-modal" *ngIf="editModalOpen">
          <div class="closeSuggested" (click)="clearSuggested()"></div>
+         <input type="text" class="groupChatName" [(ngModel)]="newChatName" placeholder="Chat name">
          <input type="text" class="user-search" placeholder="Search for someone to add" [(ngModel)]="userSearchTerm" (keydown)="handleKey($event)" spellcheck="false">
          <div class="users" >
             <div class="listed-user" *ngFor="let meta of Store.activeChatMeta.members">

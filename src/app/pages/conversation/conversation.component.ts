@@ -25,7 +25,9 @@ export class ConversationComponent implements AfterViewInit {
 	favoriteAllowed = true;
 	choosingFavorite = false;
 	endOffset = 0;
-	editModalOpen = false;
+   editModalOpen = false;
+   chatName: any = "";
+   newChatName: any = "";
 	//modal
 	userSearchTerm: any = "";
 	inProgressUsers: any = [];
@@ -59,7 +61,13 @@ export class ConversationComponent implements AfterViewInit {
 
 		this.scrollCheckInt = setInterval(() => {
 			this.checkForScroll();
-		}, 500);
+      }, 500);
+      
+      // console.log("Active chat meta:");
+      // console.log(this.Store.activeChatMeta);
+
+      this.chatName = this.Store.activeChatMeta.name;
+      this.newChatName = this.Store.activeChatMeta.name;
 	}
 
 	// edit modal utilities
@@ -110,9 +118,9 @@ export class ConversationComponent implements AfterViewInit {
 		// setTimeout(() => {
 		// 	this.Firebase.loadUserChats();
 		// }, 1000);
-      console.log("About to remove all progress users. Outputting IDs, then users:");
-      console.log(this.removeProgressUsersUIDs);
-      console.log(this.removeProgressUsers);
+      // console.log("About to remove all progress users. Outputting IDs, then users:");
+      // console.log(this.removeProgressUsersUIDs);
+      // console.log(this.removeProgressUsers);
       this.removeProgressUsersUIDs.forEach((userId: any) => {
          this.Firebase.updateUser(userId, this.Store.activeChat, "removeChat");
       });
@@ -120,15 +128,19 @@ export class ConversationComponent implements AfterViewInit {
          this.Firebase.removeFromChat(this.Store.activeChat, user);
       });
 
-      console.log("About to add new users. Outputting IDs, then users:");
-      console.log(this.inProgressUsersUIDs);
-      console.log(this.inProgressUsers);
+      // console.log("About to add new users. Outputting IDs, then users:");
+      // console.log(this.inProgressUsersUIDs);
+      // console.log(this.inProgressUsers);
       this.inProgressUsers.forEach((user: any) => {
          this.Firebase.getUserById(user.uid, (userdata: any) => {
             this.Firebase.updateUser(user.uid, this.Store.activeChat, "addOtherToChat", userdata);
          })
       });
       
+      this.Firebase.editChatMeta(this.newChatName);
+      this.chatName = this.newChatName + "";
+      this.Store.activeChatMeta.name = this.chatName + "";
+
       this.cancelEditChat();
 	}
 	// handle search start

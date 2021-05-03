@@ -529,6 +529,24 @@ $theme-red: #b52626;
       margin: auto;
    }
 
+   .groupChatName {
+      position: absolute;
+      top: 5px;
+      width: calc(100% - 100px);
+      border: none;
+      padding: 10px;
+      font-family: "Ubuntu", sans-serif;
+      color: $theme-white;
+      border-radius: 5px;
+      background: $theme-black-medium;
+      outline: none;
+      left: 0;
+      right: 0;
+      margin: auto;
+      text-align: center;
+      color: $theme-blue-light;
+   }
+
    .startChat {
       position: absolute;
       bottom: 10px;

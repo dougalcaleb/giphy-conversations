@@ -203,6 +203,12 @@ export class FirebaseService {
 			)
 			.subscribe();
    }
+
+   public editChatMeta(newName: string) {
+      this.firestore.doc(`chats-meta/${this.Store.activeChat}`).update({
+         name: newName
+      });
+   }
    
    getUserById(userId: any, callback: any) {
       //? save this for validation

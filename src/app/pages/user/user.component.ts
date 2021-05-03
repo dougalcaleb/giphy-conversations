@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {User} from "src/app/models/user";
 import {StoreService} from "src/app/services/store.service";
 import {FirebaseService} from "src/app/services/firebase.service";
+import { Router } from "@angular/router";
 
 @Component({
 	selector: "app-user",
@@ -9,7 +10,7 @@ import {FirebaseService} from "src/app/services/firebase.service";
 	styleUrls: ["./user.component.scss"],
 })
 export class UserComponent implements OnInit {
-	constructor(public Store: StoreService, private Firebase: FirebaseService) {}
+	constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) {}
 	display = false;
 	toggle() {
 		if (this.display == false) {
@@ -28,5 +29,10 @@ export class UserComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.Firebase.loadUserChats();
-	}
+   }
+   
+   goToChat(chatName: string) {
+      this.Store.activeChat = chatName;
+      this.router.navigate(["conversation"]);
+   }
 }
