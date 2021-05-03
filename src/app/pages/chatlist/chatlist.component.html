@@ -1,1 +1,6 @@
-<p>chatlist works!</p>
+<app-header></app-header>
+<div class="bg">
+	<app-chat *ngFor="let chat of chats" [members]="chat.members" [last]="chat.last" [name]="chat.name" [uid]="chat.uid"></app-chat>
+
+	<div class="new-chat">New Chat</div>
+</div>

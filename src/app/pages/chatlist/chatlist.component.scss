@@ -1,0 +1,16 @@
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+
+
+.bg {
+   background: $theme-black-light;
+   position: absolute;
+   top: 6vh;
+   right: 0;
+   bottom: 0;
+   left: 0;
+}
