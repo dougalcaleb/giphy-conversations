@@ -18,6 +18,7 @@ import {AngularFireModule} from "@angular/fire";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import { ChatComponent } from './components/chat/chat.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
 	declarations: [
@@ -30,6 +31,7 @@ import { ChatComponent } from './components/chat/chat.component';
 		MessageComponent,
 		PagenotfoundComponent,
   ChatComponent,
+  SpinnerComponent,
 	],
 	imports: [BrowserModule, AppRoutingModule, AngularFireModule.initializeApp(keys.firebase), AngularFirestoreModule, AngularFireAuthModule],
 	providers: [],
