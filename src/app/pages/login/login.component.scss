@@ -1,0 +1,74 @@
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+
+
+.bg {
+   background: $theme-black-light;
+   position: absolute;
+   top: 6vh;
+   right: 0;
+   bottom: 0;
+   left: 0;
+}
+
+.central {
+   position: absolute;
+   margin: auto;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   display: flex;
+   // background: orange;
+   // height: 50vh;
+   // width: 50vh;
+   align-items: center;
+   justify-content: center;
+   flex-direction: column;
+   .user-image {
+      height: 200px;
+      width: 200px;
+      border-radius: 100%;
+      margin-bottom: 50px;
+      background-size: cover;
+      background-position: center center;
+      div {
+         background-image: url("/assets/user.svg");
+         background-size: cover;
+         background-position: center center;
+         height: 100%;
+         width: 100%;
+      }
+      
+   }
+   .login {
+      background: $theme-blue-dark;
+      color: $theme-white;
+      border: none;
+      outline: none;
+      padding: 10px;
+      padding-left: 30px;
+      padding-right: 30px;
+      border-radius: 5px;
+      font-family: "Ubuntu";
+      font-size: min(3vw, 2vh);
+      cursor: pointer;
+   }
+   .login {
+      background: $theme-blue-dark;
+      color: $theme-white;
+      border: none;
+      outline: none;
+      padding: 10px;
+      padding-left: 30px;
+      padding-right: 30px;
+      border-radius: 5px;
+      font-family: "Ubuntu";
+      font-size: min(3vw, 2vh);
+      cursor: pointer;
+   }
+}

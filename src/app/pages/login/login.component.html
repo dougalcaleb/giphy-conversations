@@ -1,1 +1,11 @@
-<p>login works!</p>
+<app-header></app-header>
+
+<div class="bg">
+	<div class="central">
+		<div class="user-image" style="background-image: url({{Store.activeUser_Firebase.photoURL}})">
+         <div *ngIf="Store.activeUser_Firebase.photoURL == 'NONE'"></div>
+      </div>
+		<button class="login" *ngIf="!Store.loggedIn" (click)="signIn()">Log in with Google</button>
+		<button class="login" *ngIf="Store.loggedIn" (click)="goHome()">Home</button>
+	</div>
+</div>
