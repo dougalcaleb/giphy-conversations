@@ -1,15 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from "@angular/core";
+import {User} from "src/app/models/user";
+import {StoreService} from "src/app/services/store.service";
+import {FirebaseService} from "src/app/services/firebase.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+	selector: "app-user",
+	templateUrl: "./user.component.html",
+	styleUrls: ["./user.component.scss"],
 })
 export class UserComponent implements OnInit {
+	constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) {}
+	display = false;
+	toggle() {
+		if (this.display == false) {
+			this.display = true;
+		} else {
+			this.display = false;
+		}
+	}
 
-  constructor() { }
+	updateInfo() {
+		this.toggle();
+		this.Firebase.updateUser(this.Store.activeUser_Firebase.uid, this.Store.activeUser_Firebase.color, "changeColor");
+		this.Firebase.updateUser(this.Store.activeUser_Firebase.uid, this.Store.activeUser_Firebase.username, "changeUsername");
+		this.Firebase.updateUser(this.Store.activeUser_Firebase.uid, this.Store.activeUser_Firebase.displayName, "changeDisplayName");
+	}
 
-  ngOnInit(): void {
-  }
-
+	ngOnInit(): void {
+		this.Firebase.loadUserChats();
+   }
+   
+   goToChat(chatName: string) {
+      this.Store.activeChat = chatName;
+      this.router.navigate(["conversation"]);
+   }
 }

@@ -1,0 +1,113 @@
+.page {
+  display: flex;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5em 3em;
+  width: fit-content;
+  height: calc(90vh - 10em);
+}
+.wrap .pic {
+  width: 15em;
+  height: 15em;
+  border-radius: 100%;
+  background: #00b7ff;
+  margin-bottom: 2em;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.wrap .edit {
+  border: none;
+  outline: none;
+  color: white;
+  background: #00b7ff;
+  padding: 1em;
+  font-size: 1.5em;
+  width: fit-content;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.wrap .username {
+  color: #00b7ff;
+}
+
+.modalmodal {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+}
+.modalmodal .bg {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.edit-modal {
+  width: 26em;
+  height: 36em;
+  position: absolute;
+  margin: -20em 0 0 -15em;
+  top: 40%;
+  left: 50%;
+  background: white;
+  border-radius: 4px;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+}
+.edit-modal .save {
+  border: none;
+  outline: none;
+  color: white;
+  background: #00b7ff;
+  padding: 1em;
+  font-size: 1.5em;
+  width: fit-content;
+  border-radius: 7px;
+  position: absolute;
+  bottom: 2em;
+  cursor: pointer;
+}
+.edit-modal .x {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  font-size: 2em;
+  cursor: pointer;
+}
+.edit-modal h3 {
+  margin: 0.5em 0;
+}
+.edit-modal input {
+  display: block;
+}
+.edit-modal input[type=text] {
+  border: solid 2px #222;
+  padding: 0.25em;
+  outline: none;
+  border-radius: 2px;
+  width: 15em;
+}
+
+.wrap2 {
+  padding: 5em 0;
+  overflow: scroll;
+}
+.wrap2 .gifs {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: scroll;
+}
+.wrap2 .gifs span video {
+  border-radius: 5px;
+  height: 10em;
+  margin: 0 3px;
+}
+
+.chat-name {
+  cursor: pointer;
+}

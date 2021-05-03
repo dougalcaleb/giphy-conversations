@@ -1,0 +1,64 @@
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+$theme-red: #b52626;
+
+.wrap {
+    width: calc(100vw - 2em);
+    height: 10vh;
+    background: #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1em;
+    user-select: none;
+
+    .left {
+        display: flex;
+        height: 4em;
+        align-items: center;
+
+        img {
+            width: 4em;
+            height: 4em;
+            // background: white;
+        }
+
+        h1 {
+            color: #00b7ff;
+            margin: 0 0 0 0.5em;
+            font-size: 4em;
+            cursor: pointer;
+        }
+    }
+
+    .user {
+        display: flex;
+        align-items: center;
+
+        .name {
+            color: white;
+
+            span {
+                cursor: pointer;
+            }
+            .username {
+               color: #00b7ff;
+            }
+        }
+
+        .profilePic {
+            width: 2em;
+            height: 2em;
+            border-radius: 100%;
+            margin-left: .5em;
+            background: $theme-blue-light;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center center;
+        }
+    }
+}

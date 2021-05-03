@@ -1,1 +1,43 @@
-<p>user works!</p>
+<app-header></app-header>
+<div class="page">
+    <app-chat-list></app-chat-list>
+    <div class="wrap">
+        <div class="info">
+        <div class="pic" style="background-image: url({{Store.activeUser_Firebase.photoURL}}); border:5px solid {{Store.activeUser_Firebase.color}}"></div>
+            <h1>{{Store.activeUser_Firebase.displayName}}</h1>
+            <h3 class="username">@{{Store.activeUser_Firebase.username}}</h3>
+            <h1>Groups:</h1>
+            <div class="chats">
+                <div class="chat" *ngFor="let chat of Store.chatsMeta" >
+                    <div class="chat-name" (click)="goToChat(chat.uid)">
+                        <h3>{{chat.name}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="edit" (click)="toggle()">Edit Profile</button>
+    </div>
+    <div class="wrap2">
+        <h1>Favorite Gifs:</h1>
+        <div class="gifs">
+            <span *ngFor="let gif of Store.activeUser_Firebase.favoritedGifs;">
+                <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src={{gif}}></video>
+             </span>
+        </div>
+    </div>
+    <div class="modalmodal" *ngIf="display">
+        <div class="bg"></div>
+        <div class="edit-modal">
+            <h1>Edit Profile</h1>
+            <h3>Display Name:</h3>
+            <input type="text" placeholder="Display Name" [(ngModel)]="Store.activeUser_Firebase.displayName">
+            <h3>Username:</h3>
+            <input type="text" placeholder="Username" [(ngModel)]="Store.activeUser_Firebase.username">
+            <h3>Theme Color:</h3>
+            <input type="color" id="user-color" value="#ff8c00" [(ngModel)]="Store.activeUser_Firebase.color">
+            <button class="save" (click)="updateInfo()">Save</button>
+            <div class="x" (click)="toggle()">x</div>
+         </div>
+         
+    </div>
+</div>

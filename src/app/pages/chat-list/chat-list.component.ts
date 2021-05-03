@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-chat-list',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatListComponent implements OnInit {
 
-  constructor() { }
+   constructor(private Firebase: FirebaseService, private Store: StoreService) { }
 
   ngOnInit(): void {
   }
 
+   async logout() {
+      console.log("Signing out");
+      await this.Firebase.signOut();
+      this.Store.clearUserData();
+   }
 }

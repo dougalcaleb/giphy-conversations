@@ -1,1 +1,130 @@
-<p>conversation works!</p>
+<app-header></app-header>
+<div class="page">
+	<app-chat-list></app-chat-list>
+	<div class="wrap">
+		<div class="info">
+			<h1>{{chatName}}</h1>
+			<p (click)="openEditModal()">i</p>
+		</div>
+		<div class="messages" id="messages" #messageWrapper>
+
+         <!-- Load more messages button at top -->
+         <div class="full-size load-more-messages" (click)="loadMoreMessages()">Load more messages</div>
+
+         <!-- All messages -->
+			<div *ngFor="let message of messages" class="message-wrap {{message.type}}">
+         <div class="user" style="background-image: url({{message.senderPhotoURL}}); border: 4px solid {{message.color}}"></div>
+				<div class="gif" *ngIf="message.senderName != 'GIPHY_CONVERSATIONS_NOTIFICATIONS'">
+               <mat-progress-spinner mode="indeterminate" diameter="50" color="primary" class="video-loader"></mat-progress-spinner>
+               <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{message.url}}">Your browser does not support embedded video.</video>
+					<div class="imginfo">
+						<p>{{message.time}} from {{message.senderName}}</p>
+						<img src="{{ message.heart }}" class="heart" (click)="heartToggle(message.url)" />
+					</div>
+				</div>
+            <p class="notification-text" *ngIf="message.senderName == 'GIPHY_CONVERSATIONS_NOTIFICATIONS'">{{message.user}} {{message.notifAction}} {{message.time | lowercase}}</p>
+			</div>
+
+		</div>
+
+      <!-- Input and buttons area -->
+
+		<div class="send">
+			<input type="text" placeholder="Search for a GIF" [(ngModel)]="searchTerm" (keydown)="search($event)"/>
+			<button class="favorites" (click)="openFavorites()"><img src="assets/heart.png"></button>
+			<button class="cancelPicker" (click)="cancelGifPicker()">Cancel</button>
+			
+			<div class="gradient"></div>
+
+         <div class="closeGifPicker" (click)="closeGifPicker()" *ngIf="retrieved"></div>
+
+         <!-- Dynamic GIF picker -->
+         <div class="gifs" *ngIf="retrieved">
+            <div class="exitGifPicker" (click)="closeGifPicker()"></div>
+            <span *ngFor="let gif of searchResult;" (click)="selectGif(gif.images.original.mp4)">
+               <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src={{gif.images.fixed_height.mp4}}></video>
+               <div class="spinner-wrap">
+                  <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+               </div>
+            </span>
+            <span class="load-more" (click)="loadMore()">
+               <svg viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z" />
+              </svg>
+              <p>Load More</p>
+            </span>
+         </div>
+
+         <!-- Favorite GIF picker -->
+         <div class="gifs-favorite" *ngIf="choosingFavorite">
+            <div class="exitFavoritePicker" (click)="closeFavorites()"></div>
+            <span *ngFor="let gif of Store.activeUser_Firebase.favoritedGifs;" (click)="selectGif(gif)">
+               <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src={{gif}}></video>
+               <img src="assets/heart.png" class="unfavorite-gif" (click)="heartToggle(gif)" title="Unfavorite this GIF">
+               <div class="spinner-wrap">
+                  <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+               </div>
+            </span>
+            <span class="no-favorites" *ngIf="Store.activeUser_Firebase.favoritedGifs.length == 0">
+              <p>No favorited GIFs</p>
+            </span>
+         </div>
+
+         <!-- Autoscroll button -->
+         <div class="scrollToBottom" title="Scroll to bottom" (click)="scrollToBottom()" *ngIf="!scrolled">
+            <svg viewBox="0 0 24 24">
+               <path fill="currentColor" d="M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z" />
+           </svg>
+         </div>
+
+		</div>
+
+      <!-- Chat edit modal -->
+
+      <div class="editchat-bg" *ngIf="editModalOpen" (click)="cancelEditChat()"></div>
+
+      <div class="editchat-modal" *ngIf="editModalOpen">
+         <div class="closeSuggested" (click)="clearSuggested()"></div>
+         <input type="text" class="groupChatName" [(ngModel)]="newChatName" placeholder="Chat name">
+         <input type="text" class="user-search" placeholder="Search for someone to add" [(ngModel)]="userSearchTerm" (keydown)="handleKey($event)" spellcheck="false">
+         <div class="users" >
+            <div class="listed-user" *ngFor="let meta of Store.activeChatMeta.members">
+               <div class="user-image"style="background-image: url({{meta.photoURL}});"></div>
+               <div class="user-names">{{meta.displayName}} <span class="username">@{{meta.name}}</span></div>
+               <div class="remove-user" title="Remove this user" (click)="removeFromChat(meta.uid)">
+                  <svg viewBox="0 0 24 24">
+                     <path fill="currentColor" d="M19,3H5C3.89,3 3,3.89 3,5V9H5V5H19V19H5V15H3V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M10.08,15.58L11.5,17L16.5,12L11.5,7L10.08,8.41L12.67,11H3V13H12.67L10.08,15.58Z" />
+                 </svg>
+               </div>
+            </div>
+         </div>
+         <div class="user-suggestion" *ngIf="suggested.length > 0">
+            <div class="close-suggested" (click)="clearSuggested()"></div>
+
+            <!-- <div class="suggested-user">
+               <div class="profile-image"></div>
+               <div class="profile-names">Caleb Dougal <span class="username">@dougalcaleb</span></div>
+            </div>
+            <div class="suggested-user">
+               <div class="profile-image"></div>
+               <div class="profile-names">Maleb Bugle <span class="username">@bruhboi</span></div>
+            </div>
+            <div class="suggested-user">
+               <div class="profile-image"></div>
+               <div class="profile-names">Maleb Bugle <span class="username">@bruhboi</span></div>
+            </div> -->
+
+            
+            <div class="suggested-user" *ngFor="let user of suggested" (click)="selectUser(user.uid)">
+               <div class="profile-image" style="background-image: url({{user.photoURL}})"></div>
+               <div class="profile-names">{{user.displayName}} <span class="username" *ngIf="user.username != ''">@{{user.username}}</span></div>
+            </div>
+         </div>
+   
+         <button class="cancelChat" (click)="cancelEditChat()">Cancel</button>
+         <button class="startChat" (click)="confirmEditChat()">Confirm</button>
+      </div>
+
+	</div>
+	<!-- <app-test-chatlist></app-test-chatlist> -->
+</div>
