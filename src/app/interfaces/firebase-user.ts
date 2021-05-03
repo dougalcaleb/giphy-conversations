@@ -6,4 +6,5 @@ export interface FirebaseUser {
    photoURL: String;
    uid: String;
    username: String;
+   color: String;
 }
