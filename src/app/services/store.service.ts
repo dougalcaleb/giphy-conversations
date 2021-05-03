@@ -13,7 +13,7 @@ export class StoreService {
 	public activeChatId: string = "";
 	public isNewUser: boolean = false;
 	public chatsMeta: Array<ChatMeta> = [];
-	public loadedChatIds: Array<String> = [];
+	public loadedChatIds: Array<string> = [];
 	public activeChatMeta: ChatMeta;
 
 	public static defaultUser_Firebase: FirebaseUser = {

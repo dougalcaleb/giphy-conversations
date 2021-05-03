@@ -1,26 +1,27 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
+import {Component, Input, OnInit} from "@angular/core";
+import {FirebaseService} from "src/app/services/firebase.service";
+import {StoreService} from "src/app/services/store.service";
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+	selector: "app-chat",
+	templateUrl: "./chat.component.html",
+	styleUrls: ["./chat.component.scss"],
 })
 export class ChatComponent implements OnInit {
+	@Input() members: any[] = [];
+	@Input() last: any = {
+		from: "NONE",
+		timestamp: 0,
+		url: "NONE",
+	};
+	@Input() name: string = "NEW CHAT";
+	@Input() uid: string = "NONE";
 
-   @Input() members: any[] = [];
-   @Input() last: any = {
-      from: "NONE",
-      timestamp: 0,
-      url: "NONE"
-   };
-   @Input() name: string = "NEW CHAT";
-   @Input() uid: string = "NONE";
-   
+	constructor(public Store: StoreService, private Firebase: FirebaseService) {}
 
-   constructor(public Store: StoreService) { }
+	ngOnInit(): void {}
 
-  ngOnInit(): void {
-  }
-
+   leaveGroup() {
+      this.Firebase.removeMemberFromGroup(this.uid);
+   }
 }

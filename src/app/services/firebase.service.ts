@@ -99,5 +99,26 @@ export class FirebaseService {
 				})
 			)
 			.subscribe();
-	}
+   }
+   
+
+   /*
+   ?==========================================================================================================
+   ?
+   ?   Group member management
+   ?
+   ?==========================================================================================================
+   */
+   
+   // decide if ref or not
+
+   public removeMemberFromGroup(chatId: string, userId: string = this.Store.activeUser_Firebase.uid) {
+      /* this needs to:
+      1. remove from user's chats
+      2. remove from metadata
+      3. update local store to match firebase (could either pull or adjust here and trust it's in sync)
+      */
+   }
+
+
 }
