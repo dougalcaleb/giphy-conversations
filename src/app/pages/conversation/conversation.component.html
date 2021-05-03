@@ -13,7 +13,7 @@
 
          <!-- All messages -->
 			<div *ngFor="let message of messages" class="message-wrap {{message.type}}">
-         <div class="user" style="background-image: url({{message.senderPhotoURL}}); border: 4px solid {{Store.activeUser_Firebase.color}}"></div>
+         <div class="user" style="background-image: url({{message.senderPhotoURL}}); border: 4px solid {{message.color}}"></div>
 				<div class="gif" *ngIf="message.senderName != 'GIPHY_CONVERSATIONS_NOTIFICATIONS'">
                <mat-progress-spinner mode="indeterminate" diameter="50" color="primary" class="video-loader"></mat-progress-spinner>
                <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{message.url}}">Your browser does not support embedded video.</video>

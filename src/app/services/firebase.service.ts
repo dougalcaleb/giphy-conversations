@@ -353,7 +353,8 @@ export class FirebaseService {
 			senderPhotoURL: this.Store.activeUser_Google.photoURL,
 			url: text,
 			user: this.Store.activeUser_Google.uid,
-			timestamp: Date.now(),
+         timestamp: Date.now(),
+         color: this.Store.activeUser_Firebase.color
 		};
 		// add message to message list
 		this.firestore
@@ -370,7 +371,8 @@ export class FirebaseService {
 				last: {
 					from: this.Store.activeUser_Firebase.username,
 					timestamp: Date.now(),
-					url: text,
+               url: text,
+               color: this.Store.activeUser_Firebase.color,
 				},
 			},
 			{merge: true}
