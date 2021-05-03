@@ -17,6 +17,7 @@ import { MessageComponent } from "./components/message/message.component";
 import {AngularFireModule} from "@angular/fire";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {AngularFireAuthModule} from "@angular/fire/auth";
+import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
 	declarations: [
@@ -28,6 +29,7 @@ import {AngularFireAuthModule} from "@angular/fire/auth";
 		HeaderComponent,
 		MessageComponent,
 		PagenotfoundComponent,
+  ChatComponent,
 	],
 	imports: [BrowserModule, AppRoutingModule, AngularFireModule.initializeApp(keys.firebase), AngularFirestoreModule, AngularFireAuthModule],
 	providers: [],

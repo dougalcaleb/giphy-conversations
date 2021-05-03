@@ -17,7 +17,7 @@ import {Observable, of} from "rxjs";
 	providedIn: "root",
 })
 export class FirebaseService {
-	signedIn: Observable<FirebaseUser | null | undefined>;
+   signedIn: Observable<FirebaseUser | null | undefined>;
 
 	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
 		if (sessionStorage.getItem("GC_loggedInUser_Google")) {
@@ -38,13 +38,31 @@ export class FirebaseService {
 				}
 			})
 		);
-	}
+   }
+   
+   /*
+   ?==========================================================================================================
+   ?
+   ?   Sign in/out
+   ?
+   ?==========================================================================================================
+   */
 
 	// google signin popup
 	async googleSignIn() {
 		const provider = new firebase.auth.GoogleAuthProvider();
-		const cred = await this.auth.signInWithPopup(provider);
+      const cred = await this.auth.signInWithPopup(provider);
+      this.Store.activeUser_Google = cred.user;
 		return this.setUserData(cred.user);
+   }
+   
+   // sign out user
+   async signOut() {
+		await this.auth.signOut();
+		this.Store.activeUser_Google = null;
+		this.Store.activeUser_Firebase = StoreService.defaultUser_Firebase;
+		this.Store.loggedIn = false;
+		this.router.navigate(["/"]);
 	}
 
 	// updates or sets a user in Firebase
