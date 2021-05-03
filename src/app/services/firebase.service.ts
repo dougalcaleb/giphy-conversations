@@ -1,16 +1,16 @@
 // general
-import { Injectable } from "@angular/core";
+import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 // firebase
 import firebase from "firebase/app";
 import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/firestore";
-import { AngularFireAuth } from "@angular/fire/auth";
+import {AngularFireAuth} from "@angular/fire/auth";
 // helpers
 import {StoreService} from "./store.service";
-import { FirebaseUser } from "../interfaces/firebase-user";
-import { v4 as uuidv4 } from "uuid";
+import {FirebaseUser} from "../interfaces/firebase-user";
+import {v4 as uuidv4} from "uuid";
 // rxjs
-import { map, switchMap, take } from "rxjs/operators";
+import {map, switchMap, take} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 
 @Injectable({
@@ -38,44 +38,48 @@ export class FirebaseService {
 				}
 			})
 		);
-   }
-   
-   // google signin popup
-   async googleSignIn() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      const cred = await this.auth.signInWithPopup(provider);
-      return this.setUserData(cred.user);
-   }
+	}
 
-   // updates or sets a user in Firebase
-   private async setUserData(user: any) {
-      const userRef = this.firestore.doc(`users/${user.uid}`);
+	// google signin popup
+	async googleSignIn() {
+		const provider = new firebase.auth.GoogleAuthProvider();
+		const cred = await this.auth.signInWithPopup(provider);
+		return this.setUserData(cred.user);
+	}
 
-      userRef.get().pipe(
-         take(1),
-         map((item: any) => {
-            let userData = item.data();
+	// updates or sets a user in Firebase
+	private async setUserData(user: any) {
+		const userRef = this.firestore.doc(`users/${user.uid}`);
 
-            // allows for getting existing Firebase user data, or filling out the required data from Google if they're new
-            const data: FirebaseUser = {
-               chats: userData?.chats || [],
-               displayName: userData?.displayName || user.displayName,
-               email: userData?.email || user.email,
-               favoritedGifs: userData?.favoritedGifs || [],
-               photoURL: userData?.photoURL || user.photoURL,
-               uid: userData?.uid || user.uid,
-               username: userData?.username || user.displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0, 5).join("")
-            };
+		userRef
+			.get()
+			.pipe(
+				take(1),
+				map((item: any) => {
+					let userData = item.data();
 
-            this.Store.activeUser_Firebase = data;
-            this.Store.saveUser();
+					// allows for getting existing Firebase user data, or filling out the required data from Google if they're new
+					const data: FirebaseUser = {
+						chats: userData?.chats || [],
+						displayName: userData?.displayName || user.displayName,
+						email: userData?.email || user.email,
+						favoritedGifs: userData?.favoritedGifs || [],
+						photoURL: userData?.photoURL || user.photoURL,
+						uid: userData?.uid || user.uid,
+						username: userData?.username || user.displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0, 5).join(""),
+						color: userData?.color || "#ffffff",
+					};
 
-            if (item.data() == undefined) {
-               this.Store.isNewUser = true;
-            }
+					this.Store.activeUser_Firebase = data;
+					this.Store.saveUser();
 
-            return userRef.set(data, { merge: true });
-         })
-      ).subscribe();
-   }
+					if (item.data() == undefined) {
+						this.Store.isNewUser = true;
+					}
+
+					return userRef.set(data, {merge: true});
+				})
+			)
+			.subscribe();
+	}
 }

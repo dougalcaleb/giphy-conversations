@@ -1,4 +1,5 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
+// interfaces
 import {ChatMeta} from "../interfaces/chat-meta";
 import {FirebaseUser} from "../interfaces/firebase-user";
 
@@ -22,7 +23,8 @@ export class StoreService {
 		displayName: "NONE",
 		username: "NONE",
 		chats: [],
-		favoritedGifs: [],
+      favoritedGifs: [],
+      color: "black",
 	};
 
 	public static defaultChatMeta: ChatMeta = {
