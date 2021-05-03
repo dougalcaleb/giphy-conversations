@@ -1,0 +1,15 @@
+<div class="wrap">
+	<div class="members">
+      <div class="member" *ngFor="let member of members"></div>
+		<div class="right-border"></div>
+	</div>
+	<div class="name">
+      {{ name }}
+		<div class="right-border"></div>
+	</div>
+	<div class="last">
+      @{{ last.from }}, {{Store.getTimeSince(last.timestamp)}}:
+      <div class="right-border"></div>
+   </div>
+	<div class="leave"></div>
+</div>

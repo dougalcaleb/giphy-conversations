@@ -1,0 +1,74 @@
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+
+.wrap {
+   width: calc(100% - 50px);
+   background: $theme-black-dark;
+   border-radius: 10px;
+   cursor: pointer;
+   color: white;
+   display: flex;
+   margin-top: 15px;
+   height: 10vh;
+   position: relative;
+   left: 0;
+   right: 0;
+   margin-left: auto;
+   margin-right: auto;
+   div {
+      position: relative;
+      align-items: center;
+      .right-border {
+         position: absolute;
+         height: 70%;
+         background: $theme-black-light;
+         right: 0;
+         width: 3px;
+         margin-top: auto;
+         margin-bottom: auto;
+         top: 0;
+         bottom: 0;
+      }
+   }
+   .members {
+      display: flex;
+      flex: 2;
+      flex-wrap: wrap;
+      overflow: hidden;
+      // background: red;
+      .member {
+         height: 30px;
+         width: 30px;
+         background: $theme-blue-dark;
+         border-radius: 100%;
+         margin: 10px;
+      }
+   }
+   .name {
+      display: flex;
+      flex: 2;
+      justify-content: center;
+      font-family: "Montserrat";
+      color: $theme-blue-light;
+      font-size: 2vw;
+      // background: orange;
+   }
+   .last {
+      display: flex;
+      flex: 3;
+      padding-left: 25px;
+      box-sizing: border-box;
+      font-family: "Ubuntu";
+      color: $theme-white;
+      // background: yellow;
+   }
+   .leave {
+      display: flex;
+      flex: 0.5;
+      // background: green;
+   }
+}
