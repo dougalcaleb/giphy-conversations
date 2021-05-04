@@ -15,6 +15,14 @@ export class LoginComponent implements OnInit {
 	// public newUserData: any;
 	// loggedIn = false;
 
+   user: any = {
+      u: "",
+      p: "",
+   }
+
+   u: string = "";
+   p: string = "";
+
 	constructor(public Firebase: FirebaseService, public Store: StoreService, private router: Router) {}
 
    ngOnInit(): void {
@@ -39,5 +47,14 @@ export class LoginComponent implements OnInit {
          // this.loggedIn = false;
          this.Store.loggedIn = false;
       }
-	}
+   }
+   
+   async eapSignIn() {
+      if (!this.Store.loggedIn) {
+         // console.log("signing in with");
+         // console.log(`'${this.u.trim()}'`);
+         // console.log(`'${this.p.trim()}'`);
+         await this.Firebase.eapSignIn(this.u.trim(), this.p.trim());
+      }
+   }
 }

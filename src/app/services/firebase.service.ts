@@ -17,7 +17,9 @@ import {v4 as uuidv4} from "uuid";
 })
 export class FirebaseService {
 	public signedIn: Observable<User | null | undefined>;
-	public userData: any;
+   public userData: any;
+   public loginPasswordError = false;
+   public loginUnknownError = false;
 
 	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
 		// allows for refresh to prevent logout
@@ -43,32 +45,75 @@ export class FirebaseService {
 	}
 
 	// Google signin popup
-	async googleSignIn() {
+	public async googleSignIn() {
 		const provider = new firebase.auth.GoogleAuthProvider();
 		const cred = await this.auth.signInWithPopup(provider);
 		this.userData = cred.user;
 		return this.setUserData(cred.user);
-	}
+   }
+   
+   public async eapSignIn(email:string, password:string) {
+      this.auth.signInWithEmailAndPassword(email, password).then((cred) => {
+         this.userData = cred.user;
+         this.Store.loggedIn = true;
+         this.setUserData(cred.user).then(() => {
+            this.router.navigate(["chats"]);
+         });
+      }).catch((error) => {
+         if (error.code == "auth/user-not-found") {
+            this.auth.createUserWithEmailAndPassword(email, password).then((cred) => {
+               this.userData = cred.user;
+               this.Store.loggedIn = true;
+               this.setUserData(cred.user).then(() => {
+                  this.router.navigate(["chats"]);
+               });
+            }, (error) => {
+               this.loginUnknownError = true;
+               setTimeout(() => {
+                  this.loginUnknownError = false;
+               }, 2000);
+            });
+         }
+         if (error.code == "auth/wrong-password") {
+            this.loginPasswordError = true;
+            setTimeout(() => {
+               this.loginPasswordError = false;
+            }, 2000);
+         }
+      });
+   }
 
 	// Updates or sets user data in Firebase
-	private async setUserData(user: any) {
+   private async setUserData(user: any) {
+      // console.log("Setting User Data:");
+      // console.log(user);
 		const userRef: AngularFirestoreDocument<User> = this.firestore.doc(`users/${user.uid}`);
 
 		userRef
 			.get()
 			.pipe(
 				take(1),
-				map((item: any) => {
-					let userData = item.data();
+            map((item: any) => {
+               // console.log("item:");
+               // console.log(item);
+               // console.log(item.data());
+               let userData = item.data();
+               
+               let newUsername: any = null;
+               if (user.displayName == null) {
+                  newUsername = user.email.split("@")[0] + "-" + uuidv4().split("").slice(0, 5).join("");
+               } else {
+                  newUsername = user.displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0, 5).join("");
+               }
 
 					const data = {
 						uid: userData?.uid || user.uid,
 						email: userData?.email || user.email,
-						displayName: userData?.displayName || user.displayName,
-						photoURL: userData?.photoURL || user.photoURL,
+						displayName: userData?.displayName || user.displayName || newUsername,
+						photoURL: userData?.photoURL || user.photoURL || "http://localhost:4200/assets/error.png",
 						color: userData?.color || "#ff8c00",
 						chats: userData?.chats || [],
-						username: userData?.username || user.displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0, 5).join(""),
+						username: userData?.username || newUsername,
 						favoritedGifs: userData?.favoritedGifs || [],
 					};
 

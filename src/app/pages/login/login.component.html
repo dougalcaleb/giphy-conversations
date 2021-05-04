@@ -1,10 +1,18 @@
 <div class="wrap">
-    <div class="userIcon">
-        <div class="head"></div>
-        <div class="body"></div>
-        <div *ngIf="Store.loggedIn" class="userImage" style="background-image: url({{Store.activeUser_Google.photoURL}})"></div>
-    </div>
-    <button *ngIf="!Store.loggedIn" (click)="signIn()">LOGIN WITH GOOGLE</button>
-    <button *ngIf="Store.loggedIn" [routerLink]='["chats"]'>Home</button>
-    <!-- <button *ngIf="loggedIn" (click)="signIn()">SIGN OUT</button> -->
+	<div class="userIcon">
+		<div class="head"></div>
+		<div class="body"></div>
+		<div *ngIf="Store.loggedIn" class="userImage" style="background-image: url({{ Store.activeUser_Firebase.photoURL }})"></div>
+	</div>
+	<div *ngIf="!Store.loggedIn" class="not-logged-in">
+		<button (click)="signIn()">LOGIN WITH GOOGLE</button>
+		<p class="desc">Or, sign in with email and password:</p>
+		<input type="email" placeholder="Email" [(ngModel)]="u"/>
+		<input type="password" placeholder="Password"  [(ngModel)]="p"/>
+      <p class="invalid" *ngIf="Firebase.loginPasswordError">Error: Invalid email or password</p>
+      <p class="invalid" *ngIf="Firebase.loginUnknownError">Error: Unknown error, try again. Make sure you sign in the way you did the first time.</p>
+      <button (click)="eapSignIn()">Sign In</button>
+	</div>
+	<button *ngIf="Store.loggedIn" [routerLink]="['chats']">Home</button>
+	<!-- <button *ngIf="loggedIn" (click)="signIn()">SIGN OUT</button> -->
 </div>

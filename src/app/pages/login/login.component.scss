@@ -71,3 +71,36 @@ $theme-black-dark: #070707;
         cursor: pointer;
     }
 }
+
+.not-logged-in {
+   display: flex;
+   // justify-content: center;
+   flex-direction: column;
+   align-items: center;
+
+   .desc {
+      font-family: "Ubuntu";
+      color: $theme-white;
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 30px;
+   }
+   input {
+      border: none;
+      outline: none;
+      margin-bottom: 25px;
+      background: $theme-black-light;
+      padding: 10px;
+      border-radius: 5px;
+      color: $theme-white;
+      width: 100%;
+   }
+   .invalid {
+      font-family: "Ubuntu";
+      color: $theme-white;
+      text-align: center;
+      // margin-top: 30px;
+      margin-bottom: 30px;
+      color: #b52626;
+   }
+}

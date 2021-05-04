@@ -23,11 +23,11 @@ export class AuthGuard implements CanActivate {
          }),
          tap(loggedIn => {
             if ((!loggedIn && !this.Store.isNewUser) || !this.Store.loggedIn) {
-               console.warn("Access denied", loggedIn, this.Store.loggedIn);
+               // console.warn("Access denied", loggedIn, this.Store.loggedIn);
                this.Store.loggedIn = false;
                this.router.navigate(["/login"]);
             } else {
-               console.log("Access granted");
+               // console.log("Access granted");
                // this.router.navigate(["/chats"]);
             }
          })

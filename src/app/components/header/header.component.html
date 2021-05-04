@@ -6,7 +6,7 @@
     </div>
     <div class="user">
         <div class="name">{{Store.activeUser_Firebase?.displayName}} [<span routerLink="/profile"> <span class="username-at"></span><span class="username">@{{Store.activeUser_Firebase?.username}}</span></span>]</div>
-    <div routerLink="/profile" class="profilePic" style="background-image: url({{Store.activeUser_Google.photoURL}}); border: 2px solid {{Store.activeUser_Firebase?.color}}">
+    <div routerLink="/profile" class="profilePic" style="background-image: url({{Store.activeUser_Firebase.photoURL}}); border: 2px solid {{Store.activeUser_Firebase?.color}}">
             <!-- <img src=""> -->
         </div>
     </div>
