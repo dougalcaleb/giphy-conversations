@@ -5,7 +5,19 @@
 		<div class="user-image" style="background-image: url({{Store.activeUser_Firebase.photoURL}})">
          <div *ngIf="Store.activeUser_Firebase.photoURL == 'NONE'"></div>
       </div>
-		<button class="login" *ngIf="!Store.loggedIn" (click)="signIn()">Log in with Google</button>
+      <div class="login-methods">
+         <button class="login" *ngIf="!Store.loggedIn" (click)="signIn()">
+            <img src="assets/svgs/google-icon.svg" >
+            Continue with Google 
+         </button>
+         <button class="eap-login-show" *ngIf="!Store.loggedIn" (click)="showEap()">Log in with email and password</button>
+         <div class="eap-method" *ngIf="showingEap">
+            <input type="email" placeholder="Email" [(ngModel)]="userEmail">
+            <input type="password" placeholder="Password" [(ngModel)]="userPassword">
+            <button class="eap-submit">Submit (Nonfunctional)
+            </button>
+         </div>
+      </div>
 		<button class="login" *ngIf="Store.loggedIn" (click)="goHome()">Home</button>
 	</div>
 </div>

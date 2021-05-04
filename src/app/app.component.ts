@@ -10,6 +10,6 @@ export class AppComponent {
    title = 'giphy-conversations';
    
    constructor(private titleService: Title) {
-      this.titleService.setTitle("Giphy Conversations V2");
+      this.titleService.setTitle("Giphy Conversations");
    }
 }

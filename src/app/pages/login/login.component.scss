@@ -5,70 +5,121 @@ $theme-black-light: #282828;
 $theme-black-medium: #191919;
 $theme-black-dark: #070707;
 
-
 .bg {
-   background: $theme-black-light;
-   position: absolute;
-   top: 6vh;
-   right: 0;
-   bottom: 0;
-   left: 0;
+	background: $theme-black-light;
+	position: absolute;
+	top: 6vh;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 
 .central {
-   position: absolute;
-   margin: auto;
-   left: 0;
-   right: 0;
-   top: 0;
-   bottom: 0;
-   display: flex;
-   // background: orange;
-   // height: 50vh;
-   // width: 50vh;
-   align-items: center;
-   justify-content: center;
-   flex-direction: column;
-   .user-image {
-      height: 200px;
-      width: 200px;
-      border-radius: 100%;
-      margin-bottom: 50px;
-      background-size: cover;
-      background-position: center center;
-      div {
-         background-image: url("/assets/user.svg");
-         background-size: cover;
-         background-position: center center;
-         height: 100%;
-         width: 100%;
+	position: absolute;
+	margin: auto;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	display: flex;
+	// background: orange;
+	// height: 50vh;
+	// width: 50vh;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	.user-image {
+		height: min(150px, 50vw);
+		width: min(150px, 50vw);
+		border-radius: 100%;
+		margin-bottom: 50px;
+		background-size: cover;
+		background-position: center center;
+		div {
+			background-image: url("/assets/svgs/user.svg");
+			background-size: cover;
+			background-position: center center;
+			height: 100%;
+			width: 100%;
+		}
+	}
+	.login-methods {
+      display: flex;
+      flex-direction: column;
+      font-family: "Ubuntu";
+      .login-desc {
+         color: $theme-white;
+         margin-top: 15px;
       }
-      
-   }
-   .login {
-      background: $theme-blue-dark;
-      color: $theme-white;
-      border: none;
-      outline: none;
-      padding: 10px;
-      padding-left: 30px;
-      padding-right: 30px;
-      border-radius: 5px;
-      font-family: "Ubuntu";
-      font-size: min(3vw, 2vh);
-      cursor: pointer;
-   }
-   .login {
-      background: $theme-blue-dark;
-      color: $theme-white;
-      border: none;
-      outline: none;
-      padding: 10px;
-      padding-left: 30px;
-      padding-right: 30px;
-      border-radius: 5px;
-      font-family: "Ubuntu";
-      font-size: min(3vw, 2vh);
-      cursor: pointer;
-   }
+      input {
+         outline: none;
+         border: none;
+         padding: 10px;
+         border-radius: 5px;
+         background: $theme-black-medium;
+         margin-bottom: 15px;
+         color: $theme-white;
+         font-family: "Ubuntu";
+         &::placeholder {
+            font-family: "Ubuntu";
+         }
+      }
+		.login, .eap-login-show, .eap-submit {
+			
+			color: $theme-white;
+			border: none;
+			outline: none;
+			padding: 10px;
+			padding-left: 30px;
+			padding-right: 30px;
+			border-radius: 5px;
+			font-family: "Ubuntu";
+			font-size: 2vh;
+			cursor: pointer;
+         margin-bottom: 15px;
+         position: relative;
+         // display: flex;
+         // align-items: center;
+         // justify-content: center;
+         // height: 40px;
+         img {
+            position: absolute;
+            height: 25px;
+            width: 25px;
+            left: 15px;
+         }
+		}
+
+      .login {
+         background: $theme-white;
+         color: $theme-blue-dark;
+         padding-left: 60px;
+      }
+
+      .eap-login-show {
+         background: $theme-blue-dark;
+      }
+
+      .eap-submit {
+         background: $theme-blue-dark;
+         // width: 30%;
+         position: relative;
+         right: 0;
+         height: 30px;
+         margin: auto;
+         padding-top: 5px;
+         padding-bottom: 5px;
+         font-size: 1.8vh;
+      }
+
+      .eap-method {
+         display: flex;
+         flex-direction: column;
+         // background: $theme-black-dark;
+         border-radius: 10px;
+         // padding: 10px;
+         margin-top: 10px;
+         box-sizing: border-box;
+      }
+	}
 }

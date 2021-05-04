@@ -10,6 +10,11 @@ import { StoreService } from 'src/app/services/store.service';
 })
 export class LoginComponent {
 
+   userEmail: string = "";
+   userPassword: string = "";
+
+   showingEap = false;
+
   constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) { }
    
    async signIn() {
@@ -24,5 +29,9 @@ export class LoginComponent {
 
    goHome() {
 		this.router.navigate(["chatlist"]);
-	}
+   }
+   
+   showEap() {
+      this.showingEap = true;
+   }
 }
