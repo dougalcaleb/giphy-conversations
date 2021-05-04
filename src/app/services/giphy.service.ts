@@ -15,7 +15,7 @@ export class GiphyService {
    
    // Gets GIFs from the Trending section (testing purposes)
    public getTrending(): any {
-      this.req.open("GET", "http://"+this.trendingUrl + this.params, true);
+      this.req.open("GET", "https://"+this.trendingUrl + this.params, true);
       this.req.responseType = "text";
       this.req.send();
       this.req.onload = () => {
@@ -28,7 +28,7 @@ export class GiphyService {
 
    // Gets GIFs from a search term
    public async getSearch(query: string, offset: number, count: number): Promise<any> {
-      this.req.open("GET", `http://${this.searchUrl + this.params}&q=${query}&limit=${count}&offset=${offset}`, true);
+      this.req.open("GET", `https://${this.searchUrl + this.params}&q=${query}&limit=${count}&offset=${offset}`, true);
       this.req.responseType = "text";
       this.req.send();
 

@@ -27,20 +27,7 @@ export class StoreService {
 		favoritedGifs: [],
 	};
 
-	constructor() {
-		// if (sessionStorage.getItem("GC_loggedInUser_Google")) {
-		//    this.setUserData(this.Store.activeUser_Firebase.uid);
-		// }
-		// if (sessionStorage.getItem("GC_loggedInUser_Google")) {
-		//    this.activeUser_Google = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Google") || "null");
-		//    this.activeUser_Firebase = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Firebase") || "null");
-		//    this.loggedIn = true;
-		// } else {
-		//    this.activeUser_Firebase = StoreService.defaultFirebaseUser;
-		// }
-		// console.log("Firebase user is");
-		// console.log(this.activeUser_Firebase);
-	}
+   constructor() {}
 
 	saveUser() {
 		sessionStorage.setItem("GC_loggedInUser_Google", JSON.stringify(this.activeUser_Google));

@@ -86,16 +86,6 @@ export class FirebaseService {
 			.subscribe();
 	}
 
-	//! UNFINISHED, NEEDS VALIDATION
-	// sets a user's username
-	async setNewUsername(newName: any) {
-		// this.searchUser(newName, (returnVal: any) => {
-		//    if (returnVal != null) {
-		//       alert("Username is taken");
-		//    }
-		// }, "username");
-	}
-
 	// edits user data
 	updateUser(userId: string, newData: any, type: string, extraData: any = null) {
 		console.log(`Updating user with action type ${type}`);
