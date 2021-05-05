@@ -1,17 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from "@angular/core";
 
 @Component({
-  selector: 'app-spinner',
-  templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.scss']
+	selector: "app-spinner",
+	templateUrl: "./spinner.component.html",
+	styleUrls: ["./spinner.component.scss"],
 })
 export class SpinnerComponent implements OnInit {
+	@Input() size: number = 50;
+	sizeString: string = "50px";
 
-   @Input() size: string = "50px";
+	constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+	ngOnInit(): void {
+		this.sizeString = this.size.toString() + "px";
+	}
 }
