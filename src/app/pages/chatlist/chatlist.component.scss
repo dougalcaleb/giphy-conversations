@@ -4,27 +4,132 @@ $theme-blue-dark: #006b8c;
 $theme-black-light: #282828;
 $theme-black-medium: #191919;
 $theme-black-dark: #070707;
-
+$theme-red: #b52626;
 
 .bg {
-   background: $theme-black-light;
-   position: absolute;
-   top: 6vh;
-   right: 0;
-   bottom: 0;
-   left: 0;
+	background: $theme-black-light;
+	position: absolute;
+	top: 6vh;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 
 .new-chat {
-   position: fixed;
-   right: 25px;
-   bottom: 25px;
-   background: $theme-blue-dark;
-   color: $theme-white;
-   font-family: "Ubuntu";
-   padding: 10px;
-   padding-left: 30px;
-   padding-right: 30px;
-   border-radius: 5px;
-   cursor: pointer;
+	position: fixed;
+	right: 25px;
+	bottom: 25px;
+	background: $theme-blue-dark;
+	color: $theme-white;
+	font-family: "Ubuntu";
+	padding: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.new-chat-modal-bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 90;
+}
+
+.new-chat-modal {
+	height: 50vh;
+	width: 50vh;
+	background: $theme-black-light;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	margin: auto;
+	z-index: 100;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-bottom: 50px;
+	padding-top: 10px;
+	box-sizing: border-box;
+	box-shadow: 5px 5px 10px rgb(7, 7, 7);
+	.user-search-wrap {
+		// background: orange;
+		width: 100%;
+		position: relative;
+		height: 50px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		.user-search {
+			width: calc(90% - 16px);
+		}
+		.user-search-results {
+			padding-top: 10px;
+			background: $theme-black-medium;
+			position: absolute;
+			width: 90%;
+			height: 200px;
+			top: 39px;
+			z-index: 5;
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+         border-right: 4px solid $theme-black-medium;
+			overflow-y: auto;
+         border-bottom: 5px solid $theme-black-medium;
+		}
+	}
+	.modal-action {
+		position: absolute;
+		bottom: 10px;
+		padding: 5px;
+		padding-left: 15px;
+		padding-right: 15px;
+		border: none;
+		outline: none;
+		font-family: "Ubuntu";
+		border-radius: 5px;
+		cursor: pointer;
+		color: $theme-white;
+	}
+	.modal-cancel {
+		left: 10px;
+		background: $theme-red;
+	}
+	.modal-finish {
+		right: 10px;
+		background: $theme-blue-dark;
+	}
+	.members {
+		height: 30vh;
+		width: 90%;
+		position: relative;
+		background: $theme-black-light;
+		border: 2px solid $theme-blue-dark;
+		border-radius: 5px;
+	}
+	.name {
+		text-align: center;
+	}
+	input {
+		border: none;
+		outline: none;
+		background: $theme-black-medium;
+		border-radius: 5px;
+		padding: 10px;
+		color: $theme-white;
+		font-family: "Ubuntu";
+		margin: auto;
+		left: 0;
+		right: 0;
+		position: relative;
+		&::placeholder {
+			font-family: "Ubuntu";
+		}
+	}
 }

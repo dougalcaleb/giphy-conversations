@@ -1,0 +1,54 @@
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+$theme-red: #b52626;
+
+.wrap {
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+   padding: 10px;
+   border-radius: 5px;
+   margin-left: 5px;
+   margin-right: 5px;
+   &:hover {
+      background: $theme-black-light;
+   }
+	.profile-image {
+		height: 40px;
+		width: 40px;
+		border-radius: 100%;
+		background: $theme-blue-light;
+      margin-left: 10px;
+      margin-right: 15px;
+	}
+   .username {
+      color: $theme-white;
+      font-family: "Ubuntu";
+   }
+   .remove-user {
+      position: absolute;
+      height: 60px;
+      width: 60px;
+      right: 5px;
+      // background: orange;
+      border-radius: 5px;
+      &:hover {
+         background: #202020;
+      }
+      svg {
+         height: 30px;
+         width: 30px;
+         position: absolute;
+         left: 0;
+         right: 0;
+         top: 0;
+         bottom: 0;
+         margin: auto;
+         color: $theme-red;
+      }
+   }
+}

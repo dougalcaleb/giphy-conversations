@@ -20,6 +20,7 @@ import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {ChatComponent} from "./components/chat/chat.component";
 import {SpinnerComponent} from "./components/spinner/spinner.component";
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 @NgModule({
 	declarations: [
@@ -33,6 +34,7 @@ import {SpinnerComponent} from "./components/spinner/spinner.component";
 		PagenotfoundComponent,
 		ChatComponent,
 		SpinnerComponent,
+  UserProfileComponent,
 	],
 	imports: [
 		FormsModule,
