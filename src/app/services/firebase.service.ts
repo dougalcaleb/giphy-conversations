@@ -51,20 +51,29 @@ export class FirebaseService {
 
 	// google signin popup
 	async googleSignIn(): Promise<void> {
-		const provider = new firebase.auth.GoogleAuthProvider();
-		const cred = await this.auth.signInWithPopup(provider);
-		this.Store.activeUser_Google = cred.user;
-		this.Store.loggedIn = true;
-		return this.setUserData(cred.user);
+      const provider = new firebase.auth.GoogleAuthProvider();
+      let cred: any;
+      let sud: any = null;
+      try {
+         cred = await this.auth.signInWithPopup(provider);
+         this.Store.activeUser_Google = cred.user;
+         this.Store.loggedIn = true;
+         sud = this.setUserData(cred.user);
+      } catch (error) {
+         if (error.code == "auth/popup-closed-by-user") {
+            console.warn("Popup closed");
+         }
+      }
+      return sud;
 	}
 
 	// sign out user
-	async signOut() {
+   async signOut() {
 		await this.auth.signOut();
 		this.Store.activeUser_Google = null;
 		this.Store.activeUser_Firebase = StoreService.defaultUser_Firebase;
 		this.Store.loggedIn = false;
-		this.router.navigate(["/"]);
+      this.router.navigate(["/"]);
 	}
 
 	// updates or sets a user in Firebase

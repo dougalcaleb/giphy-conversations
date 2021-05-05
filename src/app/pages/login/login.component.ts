@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
    }
    
    async signIn() {
+      await this.Firebase.signOut();
       if (!this.Store.loggedIn) {
          await this.Firebase.googleSignIn();
          this.Store.saveUser();

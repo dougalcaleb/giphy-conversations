@@ -23,11 +23,14 @@ $theme-black-dark: #070707;
 	bottom: 0;
 	display: flex;
 	// background: orange;
-	// height: 50vh;
-	// width: 50vh;
+	height: 60vh;
+	width: 45vh;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+   border: 5px solid $theme-black-dark;
+   border-radius: 10px;
+   background: $theme-black-dark;
 	.user-image {
 		height: min(150px, 50vw);
 		width: min(150px, 50vw);
