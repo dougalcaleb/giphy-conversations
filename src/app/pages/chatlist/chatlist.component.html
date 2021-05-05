@@ -5,15 +5,23 @@
    <div class="new-chat-modal-bg" *ngIf="showingModal" (click)="cancelNewChat()"></div>
 
    <div class="new-chat-modal" *ngIf="showingModal">
-      <input type="text" class="name" placeholder="Name this group" [(ngModel)]="newChatName">
+      <input type="text" class="name" placeholder="Name this group" [(ngModel)]="newChatName" (keydown)="handleKeyDown($event, 'groupname')">
       <div class="user-search-wrap">
-         <input type="text" class="user-search" placeholder="Search to add a user" [(ngModel)]="searchTerm">
-         <div class="user-search-results">
-            <app-user-profile [uid]="'uid'" [photoURL]="'bruh'" [username]="'TestUsername'" [userRemoval]="false" (click)="addNewUser('uid')"></app-user-profile>
+         <div class="user-search-results-bg" *ngIf="suggestedUsers.length > 0" (click)="clearSuggestedUsers()"></div>
+         <input type="text" class="user-search" placeholder="Search to add a user" [(ngModel)]="searchTerm" (keydown)="handleKeyDown($event, 'usersearch')">
+         <div class="user-search-results" *ngIf="suggestedUsers.length > 0">
+            <app-user-profile 
+               *ngFor="let user of suggestedUsers"
+               [uid]="user.uid" 
+               [photoURL]="user.photoURL"
+               [username]="user.username" 
+               [userRemoval]="false" 
+               (click)="addNewUser(user)"
+            ></app-user-profile>
          </div>
       </div>
       <div class="members">
-         <app-user-profile *ngFor="let member of inProgressUsers" [photoURL]="member.photoURL" [username]="member.username"></app-user-profile>
+         <app-user-profile *ngFor="let member of inProgressUsers" [photoURL]="member.photoURL" [username]="member.username" [interact]="false"></app-user-profile>
       </div>
       <button class="modal-action modal-cancel" (click)="cancelNewChat()">Cancel</button>
       <button class="modal-action modal-finish">Finish</button>

@@ -17,10 +17,10 @@ import {Observable, of} from "rxjs";
 	providedIn: "root",
 })
 export class FirebaseService {
-   signedIn: Observable<FirebaseUser | null | undefined>;
+	signedIn: Observable<FirebaseUser | null | undefined>;
 
-   constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
-      // Retrieve user from session storage (if exists) to prevent having to login again on refresh
+	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
+		// Retrieve user from session storage (if exists) to prevent having to login again on refresh
 		if (sessionStorage.getItem("GC_loggedInUser_Google")) {
 			this.Store.activeUser_Google = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Google") || "null");
 			this.Store.activeUser_Firebase = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Firebase") || "null");
@@ -39,9 +39,9 @@ export class FirebaseService {
 				}
 			})
 		);
-   }
-   
-   /*
+	}
+
+	/*
    ?==========================================================================================================
    ?
    ?   Sign in/out
@@ -52,13 +52,14 @@ export class FirebaseService {
 	// google signin popup
 	async googleSignIn(): Promise<void> {
 		const provider = new firebase.auth.GoogleAuthProvider();
-      const cred = await this.auth.signInWithPopup(provider);
-      this.Store.activeUser_Google = cred.user;
+		const cred = await this.auth.signInWithPopup(provider);
+		this.Store.activeUser_Google = cred.user;
+		this.Store.loggedIn = true;
 		return this.setUserData(cred.user);
-   }
-   
-   // sign out user
-   async signOut() {
+	}
+
+	// sign out user
+	async signOut() {
 		await this.auth.signOut();
 		this.Store.activeUser_Google = null;
 		this.Store.activeUser_Firebase = StoreService.defaultUser_Firebase;
@@ -100,66 +101,130 @@ export class FirebaseService {
 				})
 			)
 			.subscribe();
-   }
-   
+	}
 
-   /*
+	/*
    ?==========================================================================================================
    ?
    ?   Group member management
    ?
    ?==========================================================================================================
    */
-   
-   // decide if ref or not
 
-   public removeMemberFromGroup(chatId: string, userId: string = this.Store.activeUser_Firebase.uid) {
-      /* this needs to:
+	// decide if ref or not
+
+	public removeMemberFromGroup(chatId: string, userId: string = this.Store.activeUser_Firebase.uid) {
+		/* this needs to:
       1. remove from user's chats
       2. remove from metadata
       3. update local store to match firebase (could either pull or adjust here and trust it's in sync)
       */
-   }
+	}
 
-   /*
+	/*
    ?==========================================================================================================
    ?
    ?   Chat management
    ?
    ?==========================================================================================================
    */
-   
-   // load the chat metadata as well as all users that are part of the chat
-   public async loadActiveChatData(callback:Function) {
-      this.firestore.doc(`chats-meta/${this.Store.activeChatId}`).get().pipe(
-         take(1),
-         tap((doc: any) => {
-            this.Store.activeChatMeta = doc.data();
-            console.log(`Got active chat meta from id ${this.Store.activeChatId}:`);
-            console.log(this.Store.activeChatMeta);
-            this.Store.activeChatMeta.members.forEach((member: any, index: number) => {
-               //! Will need to be updated when shifting from old member object to simply uids
-               this.firestore.doc(`users/${member.uid}`).get().pipe(
-                  tap((user: any) => {
-                     this.Store.activeChat_Members.push(user.data());
-                     if (index == this.Store.activeChatMeta.members.length - 1) {
-                        callback();
-                     }
-                  })
-               ).subscribe();
-            });
-         })
-      ).subscribe();
-   }
 
-   public async loadSelectableChats() {
-      this.Store.activeUser_Firebase.chats.forEach((chatId: string) => {
-         this.firestore.doc(`chats/${chatId}`).get().pipe(
-            tap((doc:any) => {
-               this.Store.allChatsMeta.push(doc.data());
-            })
-         ).subscribe();
-      });
-   }
-   
+	// Loads the chat metadata as well as all users that are part of the chat
+	public async loadActiveChatData(callback: Function) {
+		this.firestore
+			.doc(`chats-meta/${this.Store.activeChatId}`)
+			.get()
+			.pipe(
+				take(1),
+				tap((doc: any) => {
+					this.Store.activeChatMeta = doc.data();
+					console.log(`Got active chat meta from id ${this.Store.activeChatId}:`);
+					console.log(this.Store.activeChatMeta);
+					this.Store.activeChatMeta.members.forEach((member: any, index: number) => {
+						//! Will need to be updated when shifting from old member object to simply uids
+						this.firestore
+							.doc(`users/${member.uid}`)
+							.get()
+							.pipe(
+								tap((user: any) => {
+									this.Store.activeChat_Members.push(user.data());
+									if (index == this.Store.activeChatMeta.members.length - 1) {
+										callback();
+									}
+								})
+							)
+							.subscribe();
+					});
+				})
+			)
+			.subscribe();
+	}
+
+	// Loads all chat data needed for the chatlist page
+	public async loadSelectableChats() {
+		this.Store.activeUser_Firebase.chats.forEach((chatId: string) => {
+			this.firestore
+				.doc(`chats/${chatId}`)
+				.get()
+				.pipe(
+					tap((doc: any) => {
+						this.Store.allChatsMeta.push(doc.data());
+					})
+				)
+				.subscribe();
+		});
+	}
+
+	/*
+   ?==========================================================================================================
+   ?
+   ?   User fetching
+   ?
+   ?==========================================================================================================
+   */
+
+	// Gets a single user data object by user UID
+	public async fetchSingleUserByUid(uid: string, callback: Function) {
+		this.firestore
+			.doc(`users/${uid}`)
+			.get()
+			.pipe(
+				take(1),
+				tap((user: any) => {
+					callback(user.data());
+				})
+			)
+			.subscribe();
+	}
+
+	// Gets all users that have a username that contains the search term
+	public async fetchUsersByUsername(searchTerm: string, callback: Function, filterSelf: boolean = true) {
+		this.firestore
+			.collection("users")
+			.get()
+			.pipe(
+				take(1),
+				tap((users: any) => {
+					let allUsers: FirebaseUser[] = [];
+					let matchingUsers: FirebaseUser[] = [];
+					let reg = new RegExp(searchTerm, "i");
+
+					users.docs.map((doc: any) => {
+						allUsers.push(doc.data());
+					});
+
+					allUsers.forEach((user: FirebaseUser) => {
+						if (user.username.match(reg)) {
+							if (filterSelf && user.uid != this.Store.activeUser_Firebase.uid) {
+								matchingUsers.push(user);
+							} else if (!filterSelf) {
+								matchingUsers.push(user);
+							}
+						}
+					});
+					callback(matchingUsers);
+				})
+			)
+			.subscribe();
+	}
 }

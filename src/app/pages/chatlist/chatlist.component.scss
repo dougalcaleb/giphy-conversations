@@ -66,6 +66,14 @@ $theme-red: #b52626;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+      .user-search-results-bg {
+         position: fixed;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         z-index: 4;
+      }
 		.user-search {
 			width: calc(90% - 16px);
 		}
