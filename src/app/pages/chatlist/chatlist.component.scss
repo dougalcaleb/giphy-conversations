@@ -81,13 +81,13 @@ $theme-red: #b52626;
 			padding-top: 10px;
 			background: $theme-black-medium;
 			position: absolute;
-			width: 90%;
+			width: calc(90% + 4px);
 			height: 200px;
 			top: 39px;
 			z-index: 5;
 			border-bottom-left-radius: 5px;
 			border-bottom-right-radius: 5px;
-         border-right: 4px solid $theme-black-medium;
+         // border-right: 4px solid $theme-black-medium;
 			overflow-y: auto;
          border-bottom: 5px solid $theme-black-medium;
 		}
@@ -120,6 +120,9 @@ $theme-red: #b52626;
 		background: $theme-black-light;
 		border: 2px solid $theme-blue-dark;
 		border-radius: 5px;
+      overflow-y: auto;
+      padding-top: 10px;
+      padding-bottom: 10px;
 	}
 	.name {
 		text-align: center;

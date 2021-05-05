@@ -18,14 +18,18 @@ video {
 
 * {
    &::-webkit-scrollbar {
-      width: 8px;
+      width: 15px;
    }
 	&::-webkit-scrollbar-thumb {
       background: $theme-blue-dark;
       border-radius: 5px;
+      margin-right: 5px;
+      border: 3px solid transparent;
+      background-clip: content-box;
 	}
    &::-webkit-scrollbar-track {
       background: transparent;
+      padding-right: 5px;
    }
    &::-webkit-scrollbar-button {
       display: none;
