@@ -1,6 +1,6 @@
 export interface ChatMeta {
-   last: Object;
-   members: Array<Object>;
-   name: String;
-   uid: String;
+   last: object;
+   members: Array<object>;
+   name: string;
+   uid: string;
 }

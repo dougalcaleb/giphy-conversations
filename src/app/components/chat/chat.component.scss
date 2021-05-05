@@ -6,6 +6,10 @@ $theme-black-medium: #191919;
 $theme-black-dark: #070707;
 $theme-red: #b52626;
 
+app-spinner {
+   z-index: 2;
+}
+
 .wrap {
    width: calc(100% - 50px);
    background: $theme-black-dark;
@@ -20,6 +24,13 @@ $theme-red: #b52626;
    right: 0;
    margin-left: auto;
    margin-right: auto;
+   .click-to-select {
+      height: 100%;
+      width: calc(100% - 10vh);
+      position: absolute;
+      // background: orange;
+      z-index: 50;
+   }
    div {
       position: relative;
       align-items: center;
@@ -49,6 +60,8 @@ $theme-red: #b52626;
          margin: 10px;
          background-size: cover;
          background-position: center center;
+         z-index: 55;
+         position: relative;
       }
    }
    .name {
@@ -74,6 +87,7 @@ $theme-red: #b52626;
          border-radius: 5px;
          height: 8vh;
          video {
+            z-index: 5;
             border: 3px solid $theme-blue-dark;
             position: relative;
             height: 100%;
@@ -87,7 +101,8 @@ $theme-red: #b52626;
    }
    .leave {
       display: flex;
-      flex: 0.5;
+      // flex: 0.5;
+      width: 10vh;
       border-bottom-right-radius: 10px;
       border-top-right-radius: 10px;
       svg {

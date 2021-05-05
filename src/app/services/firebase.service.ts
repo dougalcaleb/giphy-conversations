@@ -10,7 +10,7 @@ import {StoreService} from "./store.service";
 import {FirebaseUser} from "../interfaces/firebase-user";
 import {v4 as uuidv4} from "uuid";
 // rxjs
-import {map, switchMap, take} from "rxjs/operators";
+import {map, switchMap, take, tap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 
 @Injectable({
@@ -19,7 +19,8 @@ import {Observable, of} from "rxjs";
 export class FirebaseService {
    signedIn: Observable<FirebaseUser | null | undefined>;
 
-	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
+   constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
+      // Retrieve user from session storage (if exists) to prevent having to login again on refresh
 		if (sessionStorage.getItem("GC_loggedInUser_Google")) {
 			this.Store.activeUser_Google = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Google") || "null");
 			this.Store.activeUser_Firebase = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Firebase") || "null");
@@ -49,7 +50,7 @@ export class FirebaseService {
    */
 
 	// google signin popup
-	async googleSignIn() {
+	async googleSignIn(): Promise<void> {
 		const provider = new firebase.auth.GoogleAuthProvider();
       const cred = await this.auth.signInWithPopup(provider);
       this.Store.activeUser_Google = cred.user;
@@ -66,7 +67,7 @@ export class FirebaseService {
 	}
 
 	// updates or sets a user in Firebase
-	private async setUserData(user: any) {
+	private async setUserData(user: any): Promise<void> {
 		const userRef = this.firestore.doc(`users/${user.uid}`);
 
 		userRef
@@ -120,5 +121,45 @@ export class FirebaseService {
       */
    }
 
+   /*
+   ?==========================================================================================================
+   ?
+   ?   Chat management
+   ?
+   ?==========================================================================================================
+   */
+   
+   // load the chat metadata as well as all users that are part of the chat
+   public async loadActiveChatData(callback:Function) {
+      this.firestore.doc(`chats-meta/${this.Store.activeChatId}`).get().pipe(
+         take(1),
+         tap((doc: any) => {
+            this.Store.activeChatMeta = doc.data();
+            console.log(`Got active chat meta from id ${this.Store.activeChatId}:`);
+            console.log(this.Store.activeChatMeta);
+            this.Store.activeChatMeta.members.forEach((member: any, index: number) => {
+               //! Will need to be updated when shifting from old member object to simply uids
+               this.firestore.doc(`users/${member.uid}`).get().pipe(
+                  tap((user: any) => {
+                     this.Store.activeChat_Members.push(user.data());
+                     if (index == this.Store.activeChatMeta.members.length - 1) {
+                        callback();
+                     }
+                  })
+               ).subscribe();
+            });
+         })
+      ).subscribe();
+   }
 
+   public async loadSelectableChats() {
+      this.Store.activeUser_Firebase.chats.forEach((chatId: string) => {
+         this.firestore.doc(`chats/${chatId}`).get().pipe(
+            tap((doc:any) => {
+               this.Store.allChatsMeta.push(doc.data());
+            })
+         ).subscribe();
+      });
+   }
+   
 }

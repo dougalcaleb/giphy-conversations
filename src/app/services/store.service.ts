@@ -12,9 +12,10 @@ export class StoreService {
 	public loggedIn: boolean = false;
 	public activeChatId: string = "";
 	public isNewUser: boolean = false;
-	public chatsMeta: Array<ChatMeta> = [];
+	public allChatsMeta: Array<ChatMeta> = [];
 	public loadedChatIds: Array<string> = [];
-	public activeChatMeta: ChatMeta;
+   public activeChatMeta: ChatMeta;
+   public activeChat_Members: Array<FirebaseUser> = [];
 
 	public static defaultUser_Firebase: FirebaseUser = {
 		uid: "NONE",

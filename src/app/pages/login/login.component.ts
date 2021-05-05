@@ -8,14 +8,20 @@ import { StoreService } from 'src/app/services/store.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
    userEmail: string = "";
    userPassword: string = "";
 
    showingEap = false;
 
-  constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) { }
+   constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) { }
+   
+   ngOnInit() {
+      if (this.Store.loggedIn) {
+         this.router.navigate(["chatlist"])
+      }
+   }
    
    async signIn() {
       if (!this.Store.loggedIn) {
@@ -34,4 +40,6 @@ export class LoginComponent {
    showEap() {
       this.showingEap = true;
    }
+
+
 }

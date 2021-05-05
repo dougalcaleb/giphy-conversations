@@ -1,4 +1,5 @@
 <div class="wrap">
+   <div class="click-to-select" (click)="selectChat()"></div>
 	<div class="members">
       <div class="member" *ngFor="let member of members" title="{{member.username}}" style="background-image: url({{member.photoURL}});"></div>
 		<div class="right-border"></div>

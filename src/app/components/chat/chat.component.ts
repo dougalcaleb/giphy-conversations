@@ -24,4 +24,13 @@ export class ChatComponent implements OnInit {
    leaveGroup() {
       this.Firebase.removeMemberFromGroup(this.uid);
    }
+
+   selectChat() {
+      this.Store.activeChatId = this.uid;
+      this.Firebase.loadActiveChatData(() => {
+         console.log("Chat load has completed. Dumping gathered data:");
+         console.log(this.Store.activeChatMeta);
+         console.log(this.Store.activeChat_Members);
+      });
+   }
 }
