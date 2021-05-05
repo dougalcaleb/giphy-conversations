@@ -24,7 +24,7 @@
          <app-user-profile *ngFor="let member of inProgressUsers" [photoURL]="member.photoURL" [username]="member.username" [interact]="false"></app-user-profile>
       </div>
       <button class="modal-action modal-cancel" (click)="cancelNewChat()">Cancel</button>
-      <button class="modal-action modal-finish">Finish</button>
+      <button class="modal-action modal-finish" (click)="finishNewChat()">Finish</button>
    </div>
 
 	<div class="new-chat" (click)="showNewChatModal()">New Chat</div>

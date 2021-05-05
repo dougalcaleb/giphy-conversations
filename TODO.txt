@@ -1,4 +1,4 @@
 NEXT UP:
 
-- Create chat from chatlist page
 - Design conversation page if not done
+- Delete conversation from convo edit

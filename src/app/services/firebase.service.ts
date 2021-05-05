@@ -12,6 +12,8 @@ import {v4 as uuidv4} from "uuid";
 // rxjs
 import {map, switchMap, take, tap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
+import { ChatMeta } from "../interfaces/chat-meta";
+import { stringify } from "@angular/compiler/src/util";
 
 @Injectable({
 	providedIn: "root",
@@ -149,10 +151,10 @@ export class FirebaseService {
 					this.Store.activeChatMeta = doc.data();
 					console.log(`Got active chat meta from id ${this.Store.activeChatId}:`);
 					console.log(this.Store.activeChatMeta);
-					this.Store.activeChatMeta.members.forEach((member: any, index: number) => {
+					this.Store.activeChatMeta.members.forEach((memberId: any, index: number) => {
 						//! Will need to be updated when shifting from old member object to simply uids
 						this.firestore
-							.doc(`users/${member.uid}`)
+							.doc(`users/${memberId}`)
 							.get()
 							.pipe(
 								tap((user: any) => {
@@ -182,7 +184,58 @@ export class FirebaseService {
 				)
 				.subscribe();
 		});
-	}
+   }
+   
+   // Creates a new chat and the corresponding metadata
+   public async createNewChat(users: FirebaseUser[], name: string, callback: Function) {
+      let chatId = uuidv4();
+      let newChatData = { messages: [] };
+      let newChatMetaData:ChatMeta = {
+         last: {
+            from: "",
+            timestamp: 0,
+            url: "",
+         },
+         members: users.map((user: FirebaseUser) => {
+            return user.uid;
+         }),
+         name: name,
+         uid: chatId
+      }
+      // create chat
+      this.firestore.doc(`chats/${chatId}`).set(newChatData).then(() => {
+         // create chat meta
+         this.firestore.doc(`chats-meta/${chatId}`).set(newChatMetaData).then(() => {
+            // include all users and tell chatlist the data is ready enough to be used
+            users.forEach((user: FirebaseUser) => {
+               this.firestore.doc(`users/${user.uid}`).update({
+                  chats: firebase.firestore.FieldValue.arrayUnion(chatId)
+               });
+            });
+            this.firestore.doc(`users/${this.Store.activeUser_Firebase.uid}`).update({
+               chats: firebase.firestore.FieldValue.arrayUnion(chatId)
+            });
+            callback(chatId);
+         });
+      });
+   }
+
+   // delete a chat and remove the reference from all users
+   public async deleteChat(chatId: string = this.Store.activeChatId) {
+      let affectedUsers: string[] = [];
+      this.firestore.doc(`chats-meta/${chatId}`).get().pipe(
+         tap((doc: any) => {
+            affectedUsers = doc.data().members;
+            affectedUsers.forEach((user: string) => {
+               this.firestore.doc(`users/${user}`).update({
+                  chats: firebase.firestore.FieldValue.arrayRemove(chatId)
+               });
+            });
+            this.firestore.doc(`chats-meta/${chatId}`).delete();
+         })
+      ).subscribe();
+      this.firestore.doc(`chats/${chatId}`).delete();
+   }
 
 	/*
    ?==========================================================================================================

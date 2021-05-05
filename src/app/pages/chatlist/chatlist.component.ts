@@ -1,4 +1,5 @@
 import {Component, OnInit} from "@angular/core";
+import { Router } from "@angular/router";
 import {FirebaseUser} from "src/app/interfaces/firebase-user";
 import {FirebaseService} from "src/app/services/firebase.service";
 import {StoreService} from "src/app/services/store.service";
@@ -19,7 +20,7 @@ export class ChatlistComponent implements OnInit {
 
 	showingModal: boolean = true;
 
-	constructor(public Store: StoreService, private Firebase: FirebaseService) {}
+	constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) {}
 
 	ngOnInit(): void {
 		this.Firebase.loadSelectableChats();
@@ -38,7 +39,19 @@ export class ChatlistComponent implements OnInit {
 
 	clearSuggestedUsers() {
 		this.suggestedUsers = [];
-	}
+   }
+   
+   finishNewChat() {
+      this.Firebase.createNewChat(this.inProgressUsers, this.newChatName, (newChatUid: string) => {
+         this.Store.activeChatId = newChatUid;
+         this.Firebase.loadActiveChatData(() => {
+            console.log("Chat creation and load has completed. Dumping gathered data:");
+            console.log(this.Store.activeChatMeta);
+            console.log(this.Store.activeChat_Members);
+            this.router.navigate(["conversation"]);
+         });
+      });
+   }
 
 	addNewUser(user: FirebaseUser) {
 		if (!this.inProgressUserUids.includes(user.uid)) {
