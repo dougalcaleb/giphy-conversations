@@ -8,7 +8,7 @@
       {{ name }}
 		<div class="right-border"></div>
 	</div>
-	<div class="last" *ngIf="last.from">
+	<div class="last" *ngIf="last?.from">
       @{{ last?.from }}, {{Store.getTimeSince(last?.timestamp)}}:
       <div class="last-gif">
          <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{ last?.url }}">

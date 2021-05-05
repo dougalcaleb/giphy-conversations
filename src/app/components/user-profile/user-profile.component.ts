@@ -10,11 +10,18 @@ export class UserProfileComponent implements OnInit {
    @Input() username: string = "";
    @Input() uid: string = "";
    @Input() userRemoval: boolean = false;
+   @Input() interact = true;
+
+   pointerStyle = "pointer";
 
 	constructor() {
 	}
 
-   ngOnInit(): void { }
+   ngOnInit(): void {
+      if (!this.interact) {
+         this.pointerStyle = "default";
+      }
+   }
    
    removeUser() {}
 }
