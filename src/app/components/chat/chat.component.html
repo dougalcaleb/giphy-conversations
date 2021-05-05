@@ -8,13 +8,13 @@
       {{ name }}
 		<div class="right-border"></div>
 	</div>
-	<div class="last">
-      @{{ last.from }}, {{Store.getTimeSince(last.timestamp)}}:
+	<div class="last" *ngIf="last.from">
+      @{{ last?.from }}, {{Store.getTimeSince(last?.timestamp)}}:
       <div class="last-gif">
-         <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{ last.url }}">
+         <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{ last?.url }}">
             Your browser does not support embedded video.
          </video>
-         <app-spinner [size]="'40px'"></app-spinner>
+         <app-spinner [size]="40"></app-spinner>
       </div>
       <div class="right-border"></div>
    </div>

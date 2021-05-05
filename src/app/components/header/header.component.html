@@ -4,7 +4,7 @@
       <span>Giphy Conversations</span>
    </div>
    <div class="profile" *ngIf="Store.loggedIn">
-      <span class="profile-displayname">{{Store.activeUser_Firebase.displayName}}</span>
+      <!-- <span class="profile-displayname">{{Store.activeUser_Firebase.displayName}}</span> -->
       <span class="profile-username">@{{Store.activeUser_Firebase.username}}</span>
       <div class="profile-image" style="background-image: url({{Store.activeUser_Firebase.photoURL}})"></div>
    </div>
