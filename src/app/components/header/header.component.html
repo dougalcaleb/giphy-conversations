@@ -1,9 +1,9 @@
 <header>
-   <div class="logo">
+   <div class="logo" [routerLink]='["/chatlist"]'>
       <img src="assets/svgs/favicon.svg">
       <span>Giphy Conversations</span>
    </div>
-   <div class="profile" *ngIf="Store.loggedIn">
+   <div class="profile" *ngIf="Store.loggedIn" [routerLink]='["/profile"]'>
       <!-- <span class="profile-displayname">{{Store.activeUser_Firebase.displayName}}</span> -->
       <span class="profile-username">@{{Store.activeUser_Firebase.username}}</span>
       <div class="profile-image" style="background-image: url({{Store.activeUser_Firebase.photoURL}})"></div>

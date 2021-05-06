@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+   unsavedChanges: boolean = false;
+   showingEmail: boolean = false;
+   username: string = "";
 
-  ngOnInit(): void {
-  }
+  constructor(public Store: StoreService, private Firebase: FirebaseService) { }
+
+   ngOnInit(): void {
+      this.username = this.Store.activeUser_Firebase.username + "";
+   }
+   
+   showEmail() {
+      this.showingEmail = true;
+   }
 
 }

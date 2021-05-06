@@ -1,1 +1,35 @@
-<p>profile works!</p>
+<app-header></app-header>
+<div class="bg">
+
+   <div class="favorite-gifs">
+      <h3>Favorited GIFs</h3>
+      <!-- component for favorite gifs -->
+   </div>
+
+   <div class="profile">
+
+      <div class="personal">
+         <div class="user-image" style="background-image: url({{Store.activeUser_Firebase.photoURL}})"></div>
+         <div class="label">Username</div>
+         <input type="text" class="user-username" id="user-username" placeholder="Your username" maxlength="30" [(ngModel)]="username">
+         <div class="label">Email Address</div>
+         <button *ngIf="!showingEmail" class="email-reveal profile-action" (click)="showEmail()">Reveal</button>
+         <p *ngIf="showingEmail" class="email">{{Store.activeUser_Firebase.email}}</p>
+      </div>
+
+      <div class="stats">
+         <h3>Statistics</h3>
+         <p>In <span>{{Store.activeUser_Firebase.chats.length}}</span> groups</p>
+         <p><span>{{Store.activeUser_Firebase.favoritedGifs.length}}</span> favorite GIFs</p>
+         <p><span>0</span> sent GIFs</p>
+      </div>
+
+      <button class="profile-action logout">Log out</button>
+      <button class="profile-action save" *ngIf="!unsavedChanges">Save changes</button>
+
+   </div>
+
+   <button class="delete">Delete account</button>
+
+
+</div>

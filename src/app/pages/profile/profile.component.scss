@@ -1,0 +1,110 @@
+$theme-white: #e8e8e8;
+$theme-blue-light: #00b7ff;
+$theme-blue-dark: #006b8c;
+$theme-black-light: #282828;
+$theme-black-medium: #191919;
+$theme-black-dark: #070707;
+$theme-red: #b52626;
+
+.bg {
+	background: $theme-black-light;
+	position: absolute;
+	top: 6vh;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.profile {
+	position: absolute;
+	height: 90vh;
+	top: 2vh;
+	left: calc(25vw + 4vh);
+	// background: orange
+	.personal {
+		.user-image {
+			height: 150px;
+			width: 150px;
+			background: $theme-blue-light;
+			border-radius: 100%;
+			background-position: center center;
+			background-size: cover;
+		}
+		.label {
+			font-family: "Miriam Libre-Bold";
+			color: #939393;
+			margin-top: 30px;
+			margin-bottom: 10px;
+		}
+		.user-username {
+			border: none;
+			outline: none;
+			border-radius: 5px;
+			background: $theme-black-medium;
+			padding: 10px;
+			color: $theme-white;
+			text-align: center;
+			font-family: "Ubuntu";
+		}
+      .email {
+         color: $theme-white;
+         font-family: "Ubuntu";
+      }
+	}
+
+   .stats {
+      background: $theme-black-dark;
+      border-radius: 10px;
+      padding: 5px;
+      box-sizing: border-box;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      h3 {
+         font-family: "Miriam Libre";
+         color: $theme-white;
+         text-align: center;
+      }
+      p {
+         color: $theme-white;
+         font-family: "Ubuntu";
+         text-align: center;
+      }
+      p span {
+         color: $theme-blue-light;
+      }
+   }
+
+	.profile-action {
+		background: $theme-blue-dark;
+		border-radius: 5px;
+		cursor: pointer;
+		color: $theme-white;
+		border: none;
+		outline: none;
+		font-family: "Ubuntu";
+		padding: 8px;
+		padding-left: 25px;
+		padding-right: 25px;
+		margin-right: 25px;
+	}
+}
+
+.favorite-gifs {
+	width: 25vw;
+	height: 90vh;
+	background: $theme-black-dark;
+	border-radius: 10px;
+	position: relative;
+	top: 2vh;
+	left: 2vh;
+	h3 {
+		position: relative;
+		font-family: "Miriam Libre";
+		color: $theme-white;
+		text-align: center;
+		height: 5vh;
+		line-height: 5vh;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
