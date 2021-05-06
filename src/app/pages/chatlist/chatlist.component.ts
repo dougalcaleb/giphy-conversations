@@ -18,7 +18,7 @@ export class ChatlistComponent implements OnInit {
 
 	suggestedUsers: FirebaseUser[] = [];
 
-	showingModal: boolean = true;
+	showingModal: boolean = false;
 
 	constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) {}
 
