@@ -30,7 +30,7 @@ export class ChatComponent implements OnInit {
       this.Firebase.loadActiveChatData(() => {
          console.log("Chat load has completed. Dumping gathered data:");
          console.log(this.Store.activeChatMeta);
-         console.log(this.Store.activeChat_Members);
+         console.log(this.Store.activeChatMembers);
       });
    }
 }

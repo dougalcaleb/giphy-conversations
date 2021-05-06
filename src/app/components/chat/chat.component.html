@@ -1,32 +1,33 @@
 <div class="wrap">
-   <div class="click-to-select" (click)="selectChat()"></div>
+	<div class="click-to-select" (click)="selectChat()"></div>
 	<div class="members">
-      <div class="member" *ngFor="let member of members" title="{{member.username}}" style="background-image: url({{member.photoURL}});"></div>
+		<span *ngFor="let member of members">
+			<div *ngIf="Store.allChatsShownData[member]" class="member" title="{{ Store.allChatsShownData[member].username }}" style="background-image: url({{ Store.allChatsShownData[member].photoURL }})"></div>
+		</span>
+
 		<div class="right-border"></div>
 	</div>
 	<div class="name">
-      {{ name }}
+		{{ name }}
 		<div class="right-border"></div>
 	</div>
 	<div class="last">
-      <span *ngIf="last?.from">
-         @{{ last.from }}, {{Store.getTimeSince(last.timestamp)}}:
-      </span>
-      
-      <div class="last-gif">
-         <video *ngIf="last?.from" autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{ last?.url }}">
-            Your browser does not support embedded video.
-         </video>
-         <app-spinner *ngIf="last?.from" [size]="40"></app-spinner>
-      </div>
-      <div class="right-border"></div>
-   </div>
+		<span *ngIf="last?.from">@{{ last.from }}, {{ Store.getTimeSince(last.timestamp) }}:</span>
+		<span *ngIf="!last?.from">No messages</span>
+		<div class="last-gif">
+			<video *ngIf="last?.from" autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{ last?.url }}">
+				Your browser does not support embedded video.
+			</video>
+			<app-spinner *ngIf="last?.from" [size]="40"></app-spinner>
+		</div>
+		<div class="right-border"></div>
+	</div>
 	<div class="leave" title="Leave this group" (click)="leaveGroup()">
-      <svg viewBox="0 0 24 24">
-         <path
-            fill="currentColor"
-            d="M19,3H5C3.89,3 3,3.89 3,5V9H5V5H19V19H5V15H3V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M10.08,15.58L11.5,17L16.5,12L11.5,7L10.08,8.41L12.67,11H3V13H12.67L10.08,15.58Z"
-         />
-      </svg>
-   </div>
+		<svg viewBox="0 0 24 24">
+			<path
+				fill="currentColor"
+				d="M19,3H5C3.89,3 3,3.89 3,5V9H5V5H19V19H5V15H3V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M10.08,15.58L11.5,17L16.5,12L11.5,7L10.08,8.41L12.67,11H3V13H12.67L10.08,15.58Z"
+			/>
+		</svg>
+	</div>
 </div>

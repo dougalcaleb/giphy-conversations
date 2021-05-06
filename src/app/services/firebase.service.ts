@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import firebase from "firebase/app";
 import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/firestore";
 import {AngularFireAuth} from "@angular/fire/auth";
+import {AngularFireStorage} from "@angular/fire/storage";
 // helpers
 import {StoreService} from "./store.service";
 import {FirebaseUser} from "../interfaces/firebase-user";
@@ -12,8 +13,8 @@ import {v4 as uuidv4} from "uuid";
 // rxjs
 import {map, switchMap, take, tap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
-import { ChatMeta } from "../interfaces/chat-meta";
-import { stringify } from "@angular/compiler/src/util";
+import {ChatMeta} from "../interfaces/chat-meta";
+import {stringify} from "@angular/compiler/src/util";
 
 @Injectable({
 	providedIn: "root",
@@ -21,8 +22,14 @@ import { stringify } from "@angular/compiler/src/util";
 export class FirebaseService {
 	signedIn: Observable<FirebaseUser | null | undefined>;
 
-	constructor(public firestore: AngularFirestore, public auth: AngularFireAuth, private router: Router, private Store: StoreService) {
-		// Retrieve user from session storage (if exists) to prevent having to login again on refresh
+	constructor(
+		public firestore: AngularFirestore,
+		public storage: AngularFireStorage,
+		public auth: AngularFireAuth,
+		private router: Router,
+		private Store: StoreService
+	) {
+		// Retrieve the user from session storage (if they exist there) to prevent having to login again on refresh
 		if (sessionStorage.getItem("GC_loggedInUser_Google")) {
 			this.Store.activeUser_Google = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Google") || "null");
 			this.Store.activeUser_Firebase = JSON.parse(sessionStorage.getItem("GC_loggedInUser_Firebase") || "null");
@@ -51,34 +58,34 @@ export class FirebaseService {
    ?==========================================================================================================
    */
 
-	// google signin popup
+	// Google sign in popup
 	async googleSignIn(): Promise<void> {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      let cred: any;
-      let sud: any = null;
-      try {
-         cred = await this.auth.signInWithPopup(provider);
-         this.Store.activeUser_Google = cred.user;
-         this.Store.loggedIn = true;
-         sud = this.setUserData(cred.user);
-      } catch (error) {
-         if (error.code == "auth/popup-closed-by-user") {
-            console.warn("Popup closed");
-         }
-      }
-      return sud;
+		const provider = new firebase.auth.GoogleAuthProvider();
+		let cred: any;
+		let sud: any = null;
+		try {
+			cred = await this.auth.signInWithPopup(provider);
+			this.Store.activeUser_Google = cred.user;
+			this.Store.loggedIn = true;
+			sud = this.setUserData(cred.user);
+		} catch (error) {
+			if (error.code == "auth/popup-closed-by-user") {
+				console.warn("Popup closed");
+			}
+		}
+		return sud;
 	}
 
-	// sign out user
-   async signOut() {
+	// User sign out
+	async signOut() {
 		await this.auth.signOut();
 		this.Store.activeUser_Google = null;
 		this.Store.activeUser_Firebase = StoreService.defaultUser_Firebase;
 		this.Store.loggedIn = false;
-      this.router.navigate(["/"]);
+		this.router.navigate(["/"]);
 	}
 
-	// updates or sets a user in Firebase
+	// Called only from googleSignIn, updates or creates a Firebase user
 	private async setUserData(user: any): Promise<void> {
 		const userRef = this.firestore.doc(`users/${user.uid}`);
 
@@ -89,7 +96,7 @@ export class FirebaseService {
 				map((item: any) => {
 					let userData = item.data();
 
-					// allows for getting existing Firebase user data, or filling out the required data from Google if they're new
+					// merge existing and/or new data
 					const data: FirebaseUser = {
 						chats: userData?.chats || [],
 						displayName: userData?.displayName || user.displayName,
@@ -122,12 +129,10 @@ export class FirebaseService {
    ?==========================================================================================================
    */
 
-	// decide if ref or not
-
 	public removeMemberFromGroup(chatId: string, userId: string = this.Store.activeUser_Firebase.uid) {
 		/* this needs to:
-      1. remove from user's chats
-      2. remove from metadata
+      1. remove chat from user's chats
+      2. remove user from chat metadata
       3. update local store to match firebase (could either pull or adjust here and trust it's in sync)
       */
 	}
@@ -140,7 +145,8 @@ export class FirebaseService {
    ?==========================================================================================================
    */
 
-	// Loads the chat metadata as well as all users that are part of the chat
+	// Loads the active chat metadata as well as all users that are part of the chat
+   // Calls a callback on completion, passed no data
 	public async loadActiveChatData(callback: Function) {
 		this.firestore
 			.doc(`chats-meta/${this.Store.activeChatId}`)
@@ -149,16 +155,15 @@ export class FirebaseService {
 				take(1),
 				tap((doc: any) => {
 					this.Store.activeChatMeta = doc.data();
-					console.log(`Got active chat meta from id ${this.Store.activeChatId}:`);
-					console.log(this.Store.activeChatMeta);
+					// console.log(`Got active chat meta from id ${this.Store.activeChatId}:`);
+					// console.log(this.Store.activeChatMeta);
 					this.Store.activeChatMeta.members.forEach((memberId: any, index: number) => {
-						//! Will need to be updated when shifting from old member object to simply uids
 						this.firestore
 							.doc(`users/${memberId}`)
 							.get()
 							.pipe(
 								tap((user: any) => {
-									this.Store.activeChat_Members.push(user.data());
+									this.Store.activeChatMembers.push(user.data());
 									if (index == this.Store.activeChatMeta.members.length - 1) {
 										callback();
 									}
@@ -171,71 +176,94 @@ export class FirebaseService {
 			.subscribe();
 	}
 
-	// Loads all chat data needed for the chatlist page
-	public async loadSelectableChats() {
-		this.Store.activeUser_Firebase.chats.forEach((chatId: string) => {
+	// Loads all chat data needed for the chatlist page. Makes use of fetchMultipleUsersByUid
+   public async loadSelectableChats(callback: Function) {
+      // keep track of how many chats are done loading
+      let completed = 0;
+		this.Store.activeUser_Firebase.chats.forEach((chatId: string, index: number) => {
 			this.firestore
-				.doc(`chats/${chatId}`)
+				.doc(`chats-meta/${chatId}`)
 				.get()
 				.pipe(
-					tap((doc: any) => {
-						this.Store.allChatsMeta.push(doc.data());
+               tap((doc: any) => {
+                  // grab a chat metadata object
+                  let singleChatMembers: ChatMeta = doc.data();
+                  this.Store.allChatsMeta.push(singleChatMembers);
+                  // load all members associated with that chat
+                  this.fetchMultipleUsersByUid(singleChatMembers.members, (users: Array<FirebaseUser>) => {
+                     completed++;
+                     this.Store.allChatsMembers = this.Store.allChatsMembers.concat(users);
+                     // once all chats are done loading, return to chatlist.ts
+                     if (completed == this.Store.activeUser_Firebase.chats.length) {
+                        callback();
+                     }
+                  });
 					})
 				)
 				.subscribe();
 		});
-   }
-   
-   // Creates a new chat and the corresponding metadata
-   public async createNewChat(users: FirebaseUser[], name: string, callback: Function) {
-      let chatId = uuidv4();
-      let newChatData = { messages: [] };
-      let newChatMetaData:ChatMeta = {
-         last: {
-            from: "",
-            timestamp: 0,
-            url: "",
-         },
-         members: users.map((user: FirebaseUser) => {
-            return user.uid;
-         }),
-         name: name,
-         uid: chatId
-      }
-      // create chat
-      this.firestore.doc(`chats/${chatId}`).set(newChatData).then(() => {
-         // create chat meta
-         this.firestore.doc(`chats-meta/${chatId}`).set(newChatMetaData).then(() => {
-            // include all users and tell chatlist the data is ready enough to be used
-            users.forEach((user: FirebaseUser) => {
-               this.firestore.doc(`users/${user.uid}`).update({
-                  chats: firebase.firestore.FieldValue.arrayUnion(chatId)
-               });
-            });
-            this.firestore.doc(`users/${this.Store.activeUser_Firebase.uid}`).update({
-               chats: firebase.firestore.FieldValue.arrayUnion(chatId)
-            });
-            callback(chatId);
-         });
-      });
-   }
+	}
 
-   // delete a chat and remove the reference from all users
-   public async deleteChat(chatId: string = this.Store.activeChatId) {
-      let affectedUsers: string[] = [];
-      this.firestore.doc(`chats-meta/${chatId}`).get().pipe(
-         tap((doc: any) => {
-            affectedUsers = doc.data().members;
-            affectedUsers.forEach((user: string) => {
-               this.firestore.doc(`users/${user}`).update({
-                  chats: firebase.firestore.FieldValue.arrayRemove(chatId)
-               });
-            });
-            this.firestore.doc(`chats-meta/${chatId}`).delete();
-         })
-      ).subscribe();
-      this.firestore.doc(`chats/${chatId}`).delete();
-   }
+	// Creates a new chat, the corresponding metadata, and applies it to users
+	public async createNewChat(users: FirebaseUser[], name: string, callback: Function) {
+		let chatId = uuidv4();
+		let newChatData = {messages: []};
+		let newChatMetaData: ChatMeta = {
+			last: {
+				from: "",
+				timestamp: 0,
+				url: "",
+			},
+			members: users.map((user: FirebaseUser) => {
+				return user.uid;
+			}),
+			name: name,
+			uid: chatId,
+		};
+		// create chat
+		this.firestore
+			.doc(`chats/${chatId}`)
+			.set(newChatData)
+			.then(() => {
+				// create chat meta
+				this.firestore
+					.doc(`chats-meta/${chatId}`)
+					.set(newChatMetaData)
+					.then(() => {
+						// include all users and tell chatlist the data is ready enough to be used
+						users.forEach((user: FirebaseUser) => {
+							this.firestore.doc(`users/${user.uid}`).update({
+								chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+							});
+						});
+						this.firestore.doc(`users/${this.Store.activeUser_Firebase.uid}`).update({
+							chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+						});
+						callback(chatId);
+					});
+			});
+	}
+
+	// Given a chat ID, deletes all data associated with that chat and removes it from users
+	public async deleteChat(chatId: string = this.Store.activeChatId) {
+		let affectedUsers: string[] = [];
+		this.firestore
+			.doc(`chats-meta/${chatId}`)
+			.get()
+			.pipe(
+				tap((doc: any) => {
+					affectedUsers = doc.data().members;
+					affectedUsers.forEach((user: string) => {
+						this.firestore.doc(`users/${user}`).update({
+							chats: firebase.firestore.FieldValue.arrayRemove(chatId),
+						});
+					});
+					this.firestore.doc(`chats-meta/${chatId}`).delete();
+				})
+			)
+			.subscribe();
+		this.firestore.doc(`chats/${chatId}`).delete();
+	}
 
 	/*
    ?==========================================================================================================
@@ -245,7 +273,7 @@ export class FirebaseService {
    ?==========================================================================================================
    */
 
-	// Gets a single user data object by user UID
+	// Given a single UID, calls a callback passed that user's Firebase data
 	public async fetchSingleUserByUid(uid: string, callback: Function) {
 		this.firestore
 			.doc(`users/${uid}`)
@@ -259,8 +287,31 @@ export class FirebaseService {
 			.subscribe();
 	}
 
-	// Gets all users that have a username that contains the search term
-	public async fetchUsersByUsername(searchTerm: string, callback: Function, filterSelf: boolean = true) {
+   // Given one or more UIDs, calls a callback passed an array of users
+	public async fetchMultipleUsersByUid(uids: Array<string>, callback: Function) {
+		let data: Array<FirebaseUser> = [];
+      console.log("Fetching multiple users:",uids)
+		uids.forEach((userId: string, index: number) => {
+         this.firestore
+            .doc(`users/${userId}`)
+            .get()
+            .pipe(
+               take(1),
+               tap((user: any) => {
+                  console.log(`Got user index ${index}`);
+                  data.push(user.data());
+                  if (index == uids.length - 1) {
+                     console.log("Completed user fetch, calling back");
+                     callback(data);
+                  }
+               })
+            ).subscribe();
+		});
+	}
+
+	// Given a search term, calls a callback passed an array of every user whose username contains the search term
+   // Optionally returns current logged in user as well or, by default, does not
+	public async fetchUsersByUsername(searchTerm: string, callback: Function, filterOutSelf: boolean = true) {
 		this.firestore
 			.collection("users")
 			.get()
@@ -277,9 +328,9 @@ export class FirebaseService {
 
 					allUsers.forEach((user: FirebaseUser) => {
 						if (user.username.match(reg)) {
-							if (filterSelf && user.uid != this.Store.activeUser_Firebase.uid) {
+							if (filterOutSelf && user.uid != this.Store.activeUser_Firebase.uid) {
 								matchingUsers.push(user);
-							} else if (!filterSelf) {
+							} else if (!filterOutSelf) {
 								matchingUsers.push(user);
 							}
 						}

@@ -7,15 +7,17 @@ import {FirebaseUser} from "../interfaces/firebase-user";
 	providedIn: "root",
 })
 export class StoreService {
-	public activeUser_Google: any = null;
-	public activeUser_Firebase: FirebaseUser;
-	public loggedIn: boolean = false;
-	public activeChatId: string = "";
-	public isNewUser: boolean = false;
-	public allChatsMeta: Array<ChatMeta> = [];
-	public loadedChatIds: Array<string> = [];
-   public activeChatMeta: ChatMeta;
-   public activeChat_Members: Array<FirebaseUser> = [];
+   public activeUser_Google: any = null;                 // Data gathered from Google sign-in
+   public activeUser_Firebase: FirebaseUser;             // Data stored in and pushed to Firebase
+   public loggedIn: boolean = false;                     // Whether there is a logged in user or not
+	public activeChatId: string = "";                     // The current active chat
+	public isNewUser: boolean = false;                    // If this logon is the user's first (does some setting up)
+	public allChatsMeta: Array<ChatMeta> = [];            // Stores the metadata from Firebase for all chats the user is in
+	public loadedChatIds: Array<string> = [];             // Stores the IDs for all chats the user is in
+   public activeChatMeta: ChatMeta;                      // Metadata for the active chat
+   public activeChatMembers: Array<FirebaseUser> = [];   // Users in the active chat
+   public allChatsMembers: Array<FirebaseUser> = [];     // Users in all chats the logged in user is in
+   public allChatsShownData: any = {};                   // Exclusively for chat.html, gives easy accessible username and photo url
 
 	public static defaultUser_Firebase: FirebaseUser = {
 		uid: "NONE",
@@ -44,11 +46,13 @@ export class StoreService {
 		this.activeChatMeta = StoreService.defaultChatMeta;
 	}
 
+   // Saves user to session storage to prevent relogin on refresh
 	public saveUser() {
 		sessionStorage.setItem("GC_loggedInUser_Google", JSON.stringify(this.activeUser_Google));
 		sessionStorage.setItem("GC_loggedInUser_Firebase", JSON.stringify(this.activeUser_Firebase));
    }
    
+   // Returns a string that says how long it has been since the given timestamp
    public getTimeSince(date: any): string {
 		var seconds = Math.floor((Date.now() - date) / 1000);
 		var interval = seconds / 31536000;

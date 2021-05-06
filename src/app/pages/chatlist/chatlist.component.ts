@@ -22,8 +22,15 @@ export class ChatlistComponent implements OnInit {
 
 	constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) {}
 
-	ngOnInit(): void {
-		this.Firebase.loadSelectableChats();
+   ngOnInit() {
+      this.Firebase.loadSelectableChats(() => {
+         this.Store.allChatsMembers.forEach((user: FirebaseUser) => {
+            this.Store.allChatsShownData[user.uid] = {
+               photoURL: user.photoURL,
+               username: user.username
+            }
+         });
+      });
 	}
 
 	cancelNewChat() {
@@ -47,7 +54,7 @@ export class ChatlistComponent implements OnInit {
          this.Firebase.loadActiveChatData(() => {
             console.log("Chat creation and load has completed. Dumping gathered data:");
             console.log(this.Store.activeChatMeta);
-            console.log(this.Store.activeChat_Members);
+            console.log(this.Store.activeChatMembers);
             this.router.navigate(["conversation"]);
          });
       });
