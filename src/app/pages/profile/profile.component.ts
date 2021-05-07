@@ -23,4 +23,9 @@ export class ProfileComponent implements OnInit {
       this.showingEmail = true;
    }
 
+   logout() {
+      this.Store.clearSavedUser();
+      this.Firebase.signOut();
+   }
+
 }

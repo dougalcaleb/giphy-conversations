@@ -10,7 +10,7 @@
             <img src="assets/svgs/google-icon.svg" >
             Continue with Google 
          </button>
-         <button class="eap-login-show" *ngIf="!Store.loggedIn" (click)="showEap()">Log in with email and password</button>
+         <button class="eap-login-show" *ngIf="!Store.loggedIn && !showingEap" (click)="showEap()">Log in with email and password</button>
          <div class="eap-method" *ngIf="showingEap">
             <input type="email" placeholder="Email" [(ngModel)]="userEmail">
             <input type="password" placeholder="Password" [(ngModel)]="userPassword">

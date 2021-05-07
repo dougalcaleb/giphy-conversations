@@ -51,6 +51,11 @@ export class StoreService {
 		sessionStorage.setItem("GC_loggedInUser_Google", JSON.stringify(this.activeUser_Google));
 		sessionStorage.setItem("GC_loggedInUser_Firebase", JSON.stringify(this.activeUser_Firebase));
    }
+
+   public clearSavedUser() {
+      sessionStorage?.removeItem("GC_loggedInUser_Google");
+      sessionStorage?.removeItem("GC_loggedInUser_Firebase");
+   }
    
    // Returns a string that says how long it has been since the given timestamp
    public getTimeSince(date: any): string {

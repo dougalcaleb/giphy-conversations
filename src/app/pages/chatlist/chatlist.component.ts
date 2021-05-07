@@ -23,6 +23,7 @@ export class ChatlistComponent implements OnInit {
 	constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) {}
 
    ngOnInit() {
+      this.Store.allChatsMeta = [];
       this.Firebase.loadSelectableChats(() => {
          this.Store.allChatsMembers.forEach((user: FirebaseUser) => {
             this.Store.allChatsShownData[user.uid] = {
