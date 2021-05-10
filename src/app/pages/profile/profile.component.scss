@@ -22,14 +22,44 @@ $theme-red: #b52626;
 	left: calc(25vw + 4vh);
 	// background: orange
 	.personal {
-		.user-image {
-			height: 150px;
-			width: 150px;
-			background: $theme-blue-light;
-			border-radius: 100%;
-			background-position: center center;
-			background-size: cover;
+		.image-wrap {
+			display: flex;
+			&:hover {
+				.image-edit {
+					visibility: visible;
+				}
+			}
+			.user-image {
+				height: 150px;
+				width: 150px;
+				background: $theme-blue-light;
+				border-radius: 100%;
+				background-position: center center;
+				background-size: cover;
+			}
+			.image-edit {
+				background: $theme-black-medium;
+				border-radius: 100%;
+				height: 30px;
+				width: 30px;
+				position: relative;
+				cursor: pointer;
+				align-self: flex-end;
+				visibility: hidden;
+				svg {
+					color: $theme-blue-light;
+					height: 20px;
+					width: 20px;
+					margin: auto;
+					position: absolute;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					top: 0;
+				}
+			}
 		}
+
 		.label {
 			font-family: "Miriam Libre-Bold";
 			color: #939393;
@@ -46,33 +76,33 @@ $theme-red: #b52626;
 			text-align: center;
 			font-family: "Ubuntu";
 		}
-      .email {
-         color: $theme-white;
-         font-family: "Ubuntu";
-      }
+		.email {
+			color: $theme-white;
+			font-family: "Ubuntu";
+		}
 	}
 
-   .stats {
-      background: $theme-black-dark;
-      border-radius: 10px;
-      padding: 5px;
-      box-sizing: border-box;
-      margin-top: 20px;
-      margin-bottom: 20px;
-      h3 {
-         font-family: "Miriam Libre";
-         color: $theme-white;
-         text-align: center;
-      }
-      p {
-         color: $theme-white;
-         font-family: "Ubuntu";
-         text-align: center;
-      }
-      p span {
-         color: $theme-blue-light;
-      }
-   }
+	.stats {
+		background: $theme-black-dark;
+		border-radius: 10px;
+		padding: 5px;
+		box-sizing: border-box;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		h3 {
+			font-family: "Miriam Libre";
+			color: $theme-white;
+			text-align: center;
+		}
+		p {
+			color: $theme-white;
+			font-family: "Ubuntu";
+			text-align: center;
+		}
+		p span {
+			color: $theme-blue-light;
+		}
+	}
 
 	.profile-action {
 		background: $theme-blue-dark;
@@ -107,4 +137,110 @@ $theme-red: #b52626;
 		margin-top: 0;
 		margin-bottom: 0;
 	}
+}
+
+.image-edit-modal-bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 90;
+}
+
+.image-edit-modal {
+	height: 50vh;
+	width: 50vh;
+	background: $theme-black-light;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	margin: auto;
+	z-index: 100;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-bottom: 50px;
+	padding-top: 10px;
+	box-sizing: border-box;
+	box-shadow: 5px 5px 10px rgb(7, 7, 7);
+
+	.modal-action {
+		position: absolute;
+		bottom: 10px;
+		padding: 5px;
+		padding-left: 15px;
+		padding-right: 15px;
+		border: none;
+		outline: none;
+		font-family: "Ubuntu";
+		border-radius: 5px;
+		cursor: pointer;
+		color: $theme-white;
+	}
+	.modal-cancel {
+		left: 10px;
+		background: $theme-red;
+	}
+	.modal-finish {
+		right: 10px;
+		background: $theme-blue-dark;
+	}
+   .modal-profile-image {
+      height: 128px;
+      width: 128px;
+      background: $theme-blue-light;
+      border-radius: 100%;
+      margin: 15px;
+      background-size: cover;
+      background-position: center center;
+   }
+   p {
+      font-family: "Ubuntu";
+      color: gray;
+      // background: red;
+      text-align: center;
+      margin-top: 30px;
+   }
+   .desc {
+      padding-left: 25%;
+      padding-right: 25%;
+   }
+   .upload-complete {
+      color: #2dff6e;
+   }
+   .modal-upload-wrap {
+      // background: orange;
+      position: relative;
+      margin-top: 30px;
+      .modal-upload {
+         position: absolute;
+         height: 100%;
+         width: 100%;
+         color: transparent;
+         cursor: pointer;
+         opacity: 0;
+         // background: red;
+      }
+      .modal-upload-button {
+         border: none;
+         outline: none;
+         border-radius: 5px;
+         padding: 8px;
+         padding-left: 20px;
+         padding-right: 20px;
+         // position: relative;
+         background: $theme-blue-dark;
+         font-family: "Ubuntu";
+         color: $theme-white;
+      }
+   }
+}
+
+input[type=file]::-webkit-file-upload-button {
+   cursor: pointer;
 }

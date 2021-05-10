@@ -18,6 +18,7 @@ export class StoreService {
    public activeChatMembers: Array<FirebaseUser> = [];   // Users in the active chat
    public allChatsMembers: Array<FirebaseUser> = [];     // Users in all chats the logged in user is in
    public allChatsShownData: any = {};                   // Exclusively for chat.html, gives easy accessible username and photo url
+   public newProfileImage: any;
 
 	public static defaultUser_Firebase: FirebaseUser = {
 		uid: "NONE",
@@ -39,7 +40,10 @@ export class StoreService {
 		members: [],
 		name: "NONE",
 		uid: "NONE",
-	};
+   };
+   
+   public static blankUserImage: string = "assets/svgs/user.svg";
+   public blankUserImage: string = "assets/svgs/user.svg";
 
 	constructor() {
 		this.activeUser_Firebase = StoreService.defaultUser_Firebase;

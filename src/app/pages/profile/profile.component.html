@@ -9,7 +9,14 @@
    <div class="profile">
 
       <div class="personal">
-         <div class="user-image" style="background-image: url({{Store.activeUser_Firebase.photoURL}})"></div>
+         <div class="image-wrap">
+            <div class="user-image" style="background-image: url({{Store.activeUser_Firebase.photoURL}})"></div>
+            <div class="image-edit" (click)="openImageModal()">
+               <svg viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+              </svg>
+            </div>
+         </div>
          <div class="label">Username</div>
          <input type="text" class="user-username" id="user-username" placeholder="Your username" maxlength="30" [(ngModel)]="username">
          <div class="label">Email Address</div>
@@ -27,6 +34,29 @@
       <button class="profile-action logout" (click)="logout()">Log out</button>
       <button class="profile-action save" *ngIf="!unsavedChanges">Save changes</button>
 
+   </div>
+
+   <div class="image-edit-modal-bg" *ngIf="showingImageModal" (click)="cancelNewImage()"></div>
+
+   <div class="image-edit-modal" *ngIf="showingImageModal">
+
+      <div class="modal-profile-image" style="background-image: url({{Store.activeUser_Firebase.photoURL || Store.blankUserImage}})"></div>
+      
+      <div class="modal-upload-wrap">
+         <input type="file" class="modal-upload" accept=".png,.jpg,.jpeg" (change)="capture($event)">
+         <button class="modal-upload-button">Upload new profile image</button>
+      </div>
+      
+      <p class="file-name">{{Store.newProfileImage?.name || "No file chosen"}}</p>
+
+      <p class="desc" *ngIf="!Store.newProfileImage?.name">For best results, use an image that is at least 128x128 pixels in size.</p>
+
+      <progress max="100" [value]="(Firebase.uploadProgress | async)" *ngIf="showingProgressBar && !uploadComplete"></progress>
+      <p class="upload-complete" *ngIf="uploadComplete">Upload successful</p>
+
+     
+      <button class="modal-action modal-cancel" (click)="cancelNewImage()">Cancel</button>
+      <button class="modal-action modal-finish" (click)="confirmNewImage()">Confirm</button>
    </div>
 
    <button class="delete">Delete account</button>

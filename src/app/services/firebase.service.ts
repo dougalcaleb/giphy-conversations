@@ -14,13 +14,13 @@ import {v4 as uuidv4} from "uuid";
 import {map, switchMap, take, tap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {ChatMeta} from "../interfaces/chat-meta";
-import {stringify} from "@angular/compiler/src/util";
 
 @Injectable({
 	providedIn: "root",
 })
 export class FirebaseService {
 	signedIn: Observable<FirebaseUser | null | undefined>;
+	public uploadProgress: any;
 
 	constructor(
 		public firestore: AngularFirestore,
@@ -124,6 +124,42 @@ export class FirebaseService {
 	/*
    ?==========================================================================================================
    ?
+   ?   User data management
+   ?
+   ?==========================================================================================================
+   */
+
+	public uploadProfileImage(image: any, callback: Function) {
+      let task = this.storage.upload(`profileImages/${this.Store.activeUser_Firebase.uid}`, image);
+		this.uploadProgress = task.snapshotChanges().pipe(
+			map((s) => {
+            let prog = ((s?.bytesTransferred || 0) / (s?.totalBytes || 100)) * 100;
+            if (prog == 100) {
+               callback(this.storage.ref(`profileImages/${this.Store.activeUser_Firebase.uid}`).getDownloadURL());
+            }
+				return prog;
+			})
+		);
+   }
+   
+   public updateUser(userId: string, action: string, data: any) {
+      switch (action) {
+         case "newImage":
+            data.pipe(
+               tap((data: any) => {
+                  this.Store.activeUser_Firebase.photoURL = data;
+                  console.log("Uploading url");
+                  console.log(data);
+                  this.firestore.doc(`users/${userId}`).set({photoURL: data as string}, {merge: true});
+               })
+            ).subscribe();
+            break;
+      }
+   }
+
+	/*
+   ?==========================================================================================================
+   ?
    ?   Group member management
    ?
    ?==========================================================================================================
@@ -146,7 +182,7 @@ export class FirebaseService {
    */
 
 	// Loads the active chat metadata as well as all users that are part of the chat
-   // Calls a callback on completion, passed no data
+	// Calls a callback on completion, passed no data
 	public async loadActiveChatData(callback: Function) {
 		this.firestore
 			.doc(`chats-meta/${this.Store.activeChatId}`)
@@ -177,27 +213,27 @@ export class FirebaseService {
 	}
 
 	// Loads all chat data needed for the chatlist page. Makes use of fetchMultipleUsersByUid
-   public async loadSelectableChats(callback: Function) {
-      // keep track of how many chats are done loading
-      let completed = 0;
+	public async loadSelectableChats(callback: Function) {
+		// keep track of how many chats are done loading
+		let completed = 0;
 		this.Store.activeUser_Firebase.chats.forEach((chatId: string, index: number) => {
 			this.firestore
 				.doc(`chats-meta/${chatId}`)
 				.get()
 				.pipe(
-               tap((doc: any) => {
-                  // grab a chat metadata object
-                  let singleChatMembers: ChatMeta = doc.data();
-                  this.Store.allChatsMeta.push(singleChatMembers);
-                  // load all members associated with that chat
-                  this.fetchMultipleUsersByUid(singleChatMembers.members, (users: Array<FirebaseUser>) => {
-                     completed++;
-                     this.Store.allChatsMembers = this.Store.allChatsMembers.concat(users);
-                     // once all chats are done loading, return to chatlist.ts
-                     if (completed == this.Store.activeUser_Firebase.chats.length) {
-                        callback();
-                     }
-                  });
+					tap((doc: any) => {
+						// grab a chat metadata object
+						let singleChatMembers: ChatMeta = doc.data();
+						this.Store.allChatsMeta.push(singleChatMembers);
+						// load all members associated with that chat
+						this.fetchMultipleUsersByUid(singleChatMembers.members, (users: Array<FirebaseUser>) => {
+							completed++;
+							this.Store.allChatsMembers = this.Store.allChatsMembers.concat(users);
+							// once all chats are done loading, return to chatlist.ts
+							if (completed == this.Store.activeUser_Firebase.chats.length) {
+								callback();
+							}
+						});
 					})
 				)
 				.subscribe();
@@ -287,30 +323,31 @@ export class FirebaseService {
 			.subscribe();
 	}
 
-   // Given one or more UIDs, calls a callback passed an array of users
+	// Given one or more UIDs, calls a callback passed an array of users
 	public async fetchMultipleUsersByUid(uids: Array<string>, callback: Function) {
 		let data: Array<FirebaseUser> = [];
-      console.log("Fetching multiple users:",uids)
+		console.log("Fetching multiple users:", uids);
 		uids.forEach((userId: string, index: number) => {
-         this.firestore
-            .doc(`users/${userId}`)
-            .get()
-            .pipe(
-               take(1),
-               tap((user: any) => {
-                  console.log(`Got user index ${index}`);
-                  data.push(user.data());
-                  if (index == uids.length - 1) {
-                     console.log("Completed user fetch, calling back");
-                     callback(data);
-                  }
-               })
-            ).subscribe();
+			this.firestore
+				.doc(`users/${userId}`)
+				.get()
+				.pipe(
+					take(1),
+					tap((user: any) => {
+						console.log(`Got user index ${index}`);
+						data.push(user.data());
+						if (index == uids.length - 1) {
+							console.log("Completed user fetch, calling back");
+							callback(data);
+						}
+					})
+				)
+				.subscribe();
 		});
 	}
 
 	// Given a search term, calls a callback passed an array of every user whose username contains the search term
-   // Optionally returns current logged in user as well or, by default, does not
+	// Optionally returns current logged in user as well or, by default, does not
 	public async fetchUsersByUsername(searchTerm: string, callback: Function, filterOutSelf: boolean = true) {
 		this.firestore
 			.collection("users")
