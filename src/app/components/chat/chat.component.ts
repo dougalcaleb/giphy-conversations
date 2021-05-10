@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
+import { Router } from "@angular/router";
 import {FirebaseService} from "src/app/services/firebase.service";
 import {StoreService} from "src/app/services/store.service";
 
@@ -17,7 +18,7 @@ export class ChatComponent implements OnInit {
 	@Input() name: string = "NEW CHAT";
 	@Input() uid: string = "NONE";
 
-	constructor(public Store: StoreService, private Firebase: FirebaseService) {}
+	constructor(public Store: StoreService, private Firebase: FirebaseService, private router: Router) {}
 
 	ngOnInit(): void {}
 
@@ -28,9 +29,10 @@ export class ChatComponent implements OnInit {
    selectChat() {
       this.Store.activeChatId = this.uid;
       this.Firebase.loadActiveChatData(() => {
-         console.log("Chat load has completed. Dumping gathered data:");
-         console.log(this.Store.activeChatMeta);
-         console.log(this.Store.activeChatMembers);
+         // console.log("Chat load has completed. Dumping gathered data:");
+         // console.log(this.Store.activeChatMeta);
+         // console.log(this.Store.activeChatMembers);
+         this.router.navigate(["/conversation"]);
       });
    }
 }

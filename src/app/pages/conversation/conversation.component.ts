@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-conversation',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConversationComponent implements OnInit {
 
-  constructor() { }
+  constructor(public Store: StoreService, private Firebase: FirebaseService) { }
 
   ngOnInit(): void {
   }
