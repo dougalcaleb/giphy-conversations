@@ -18,7 +18,11 @@
             </div>
          </div>
          <div class="label">Username</div>
-         <input type="text" class="user-username" id="user-username" placeholder="Your username" maxlength="30" [(ngModel)]="username">
+         <input type="text" class="user-username" id="user-username" placeholder="Your username" maxlength="30" [(ngModel)]="username" (change)="usernameHasChanged()" spellcheck="false"><button class="save" *ngIf="unsavedNameChange" (click)="updateUsername()">
+            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+               <path fill="currentColor" d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" />
+           </svg>
+         </button>
          <div class="label">Email Address</div>
          <button *ngIf="!showingEmail" class="email-reveal profile-action" (click)="showEmail()">Reveal</button>
          <p *ngIf="showingEmail" class="email">{{Store.activeUser_Firebase.email}}</p>
@@ -32,7 +36,7 @@
       </div>
 
       <button class="profile-action logout" (click)="logout()">Log out</button>
-      <button class="profile-action save" *ngIf="!unsavedChanges">Save changes</button>
+      <!-- <button class="profile-action save" *ngIf="!unsavedChanges">Save changes</button> -->
 
    </div>
 
@@ -40,7 +44,7 @@
 
    <div class="image-edit-modal" *ngIf="showingImageModal">
 
-      <div class="modal-profile-image" style="background-image: url({{Store.activeUser_Firebase.photoURL || Store.blankUserImage}})"></div>
+      <div class="modal-profile-image" style="background-image: url({{Store.activeUser_Firebase?.photoURL || Store.blankUserImage}})"></div>
       
       <div class="modal-upload-wrap">
          <input type="file" class="modal-upload" accept=".png,.jpg,.jpeg" (change)="capture($event)">

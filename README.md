@@ -1,27 +1,15 @@
 # GiphyConversations
 
+A simple app for sending GIFs to your friends through group chats.
+
+Features:
+
+- Quick cloud storage using Google Firebase
+- Search users who have used the app to create chats with 1 or more people
+- Find GIFs easily with the GIF picker, powered by Giphy
+- Favorite GIFs for quick reuse
+- Easily manage groups - add or remove users and edit chat names
+- Manage profile information including username and profile image
+- One-click secure login with Google
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.2.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

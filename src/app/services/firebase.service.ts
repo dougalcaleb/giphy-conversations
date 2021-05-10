@@ -142,17 +142,19 @@ export class FirebaseService {
 		);
    }
    
-   public updateUser(userId: string, action: string, data: any) {
+   public updateUser(userId: string, action: string, data: any, callback?: Function) {
       switch (action) {
          case "newImage":
             data.pipe(
                tap((data: any) => {
                   this.Store.activeUser_Firebase.photoURL = data;
-                  console.log("Uploading url");
-                  console.log(data);
                   this.firestore.doc(`users/${userId}`).set({photoURL: data as string}, {merge: true});
                })
             ).subscribe();
+            break;
+         case "username":
+            this.Store.activeUser_Firebase.username = data as string;
+            this.firestore.doc(`users/${userId}`).set({ username: data as string }, { merge: true });
             break;
       }
    }

@@ -117,6 +117,23 @@ $theme-red: #b52626;
 		padding-right: 25px;
 		margin-right: 25px;
 	}
+
+	.save {
+		background: $theme-blue-dark;
+		border-radius: 5px;
+		cursor: pointer;
+		color: $theme-white;
+		border: none;
+		outline: none;
+		font-family: "Ubuntu";
+		// padding: 8px;
+		margin-left: 10px;
+		padding: 3px;
+		top: 6px;
+		padding-left: 15px;
+		padding-right: 15px;
+		position: relative;
+	}
 }
 
 .favorite-gifs {
@@ -190,57 +207,57 @@ $theme-red: #b52626;
 		right: 10px;
 		background: $theme-blue-dark;
 	}
-   .modal-profile-image {
-      height: 128px;
-      width: 128px;
-      background: $theme-blue-light;
-      border-radius: 100%;
-      margin: 15px;
-      background-size: cover;
-      background-position: center center;
-   }
-   p {
-      font-family: "Ubuntu";
-      color: gray;
-      // background: red;
-      text-align: center;
-      margin-top: 30px;
-   }
-   .desc {
-      padding-left: 25%;
-      padding-right: 25%;
-   }
-   .upload-complete {
-      color: #2dff6e;
-   }
-   .modal-upload-wrap {
-      // background: orange;
-      position: relative;
-      margin-top: 30px;
-      .modal-upload {
-         position: absolute;
-         height: 100%;
-         width: 100%;
-         color: transparent;
-         cursor: pointer;
-         opacity: 0;
-         // background: red;
-      }
-      .modal-upload-button {
-         border: none;
-         outline: none;
-         border-radius: 5px;
-         padding: 8px;
-         padding-left: 20px;
-         padding-right: 20px;
-         // position: relative;
-         background: $theme-blue-dark;
-         font-family: "Ubuntu";
-         color: $theme-white;
-      }
-   }
+	.modal-profile-image {
+		height: 128px;
+		width: 128px;
+		background: $theme-blue-light;
+		border-radius: 100%;
+		margin: 15px;
+		background-size: cover;
+		background-position: center center;
+	}
+	p {
+		font-family: "Ubuntu";
+		color: gray;
+		// background: red;
+		text-align: center;
+		margin-top: 30px;
+	}
+	.desc {
+		padding-left: 25%;
+		padding-right: 25%;
+	}
+	.upload-complete {
+		color: #2dff6e;
+	}
+	.modal-upload-wrap {
+		// background: orange;
+		position: relative;
+		margin-top: 30px;
+		.modal-upload {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			color: transparent;
+			cursor: pointer;
+			opacity: 0;
+			// background: red;
+		}
+		.modal-upload-button {
+			border: none;
+			outline: none;
+			border-radius: 5px;
+			padding: 8px;
+			padding-left: 20px;
+			padding-right: 20px;
+			// position: relative;
+			background: $theme-blue-dark;
+			font-family: "Ubuntu";
+			color: $theme-white;
+		}
+	}
 }
 
-input[type=file]::-webkit-file-upload-button {
-   cursor: pointer;
+input[type="file"]::-webkit-file-upload-button {
+	cursor: pointer;
 }

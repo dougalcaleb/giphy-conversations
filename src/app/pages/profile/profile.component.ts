@@ -9,11 +9,11 @@ import { StoreService } from 'src/app/services/store.service';
 })
 export class ProfileComponent implements OnInit {
 
-   unsavedChanges: boolean = false;
+   unsavedNameChange: boolean = false;
    showingEmail: boolean = false;
    username: string = "";
 
-   showingImageModal: boolean = true;
+   showingImageModal: boolean = false;
    showingProgressBar: boolean = false;
    uploadComplete: boolean = false;
 
@@ -57,8 +57,19 @@ export class ProfileComponent implements OnInit {
    
    capture(event: any) {
       this.Store.newProfileImage = event.target.files[0];
-      // console.log("image is");
-      // console.log(event.target.files[0]);
+   }
+
+   usernameHasChanged() {
+      if (this.username != this.Store.activeUser_Firebase.username) {
+         this.unsavedNameChange = true;
+      } else {
+         this.unsavedNameChange = false;
+      }
+   }
+
+   updateUsername() {
+      this.unsavedNameChange = false;
+      this.Firebase.updateUser(this.Store.activeUser_Firebase.uid, "username", this.username);
    }
 
 }
