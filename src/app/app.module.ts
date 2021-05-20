@@ -5,6 +5,8 @@ import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
 import {keys} from "src/environments/keys";
 import {FormsModule} from "@angular/forms";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+// import { CommonModule } from "@angular/common";
 // pages
 import {LoginComponent} from "./pages/login/login.component";
 import {ChatlistComponent} from "./pages/chatlist/chatlist.component";
@@ -20,7 +22,7 @@ import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {ChatComponent} from "./components/chat/chat.component";
 import {SpinnerComponent} from "./components/spinner/spinner.component";
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 
 @NgModule({
 	declarations: [
@@ -34,7 +36,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 		PagenotfoundComponent,
 		ChatComponent,
 		SpinnerComponent,
-  UserProfileComponent,
+		UserProfileComponent,
+		
 	],
 	imports: [
 		FormsModule,
@@ -42,7 +45,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 		AppRoutingModule,
 		AngularFireModule.initializeApp(keys.firebase),
 		AngularFirestoreModule,
-		AngularFireAuthModule,
+      AngularFireAuthModule,
+      BrowserAnimationsModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

@@ -93,6 +93,27 @@ $theme-red: #b52626;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
+   .scroll-to-bottom {
+      height: 40px;
+      width: 40px;
+      background: $theme-blue-dark;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      bottom: max(calc(5vh + 20px), 70px);
+      cursor: pointer;
+      // transition: 0.2s;
+      svg {
+         color: $theme-white;
+         height: 30px;
+         width: 30px;
+      }
+   }
 	input {
 		border-radius: 5px;
 		border: 3px solid $theme-blue-dark;
@@ -138,6 +159,10 @@ $theme-red: #b52626;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+   padding-top: 30px;
+   padding-bottom: 10px;
+   scroll-behavior: smooth;
+   box-sizing: border-box;
 	.sent {
       align-self: flex-end;
    }
