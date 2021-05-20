@@ -1,8 +1,8 @@
 export interface ChatMessage {
-   senderName: String;
-   senderPhotoURL: String;
-   url: String;
-   user: String;
-   timestamp: Number;
-   message?: String;
+   senderName: string;
+   senderPhotoURL: string;
+   senderUID: string;
+   url: string;
+   timestamp: number;
+   message?: string;
 }

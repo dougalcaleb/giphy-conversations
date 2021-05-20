@@ -20,7 +20,9 @@ import {ChatMeta} from "../interfaces/chat-meta";
 })
 export class FirebaseService {
 	signedIn: Observable<FirebaseUser | null | undefined>;
-	public uploadProgress: any;
+   public uploadProgress: any;
+   
+   private favoriteCooldown: number = 1000;
 
 	constructor(
 		public firestore: AngularFirestore,
@@ -156,6 +158,26 @@ export class FirebaseService {
             this.Store.activeUser_Firebase.username = data as string;
             this.firestore.doc(`users/${userId}`).set({ username: data as string }, { merge: true });
             break;
+         case "addToFavorites":
+            this.Store.activeUser_Firebase.favoritedGifs.push(data);
+            this.firestore.doc(`users/${userId}`).update({
+					favoritedGifs: firebase.firestore.FieldValue.arrayUnion(data as string),
+            }).catch((e) => {
+               console.error("Could not update firebase with favorite addition. Reverting.")
+               console.error(e);
+               this.Store.activeUser_Firebase.favoritedGifs.splice(this.Store.activeUser_Firebase.favoritedGifs.indexOf(data), 1);
+            });
+            break;
+         case "removeFromFavorites":
+            this.Store.activeUser_Firebase.favoritedGifs.splice(this.Store.activeUser_Firebase.favoritedGifs.indexOf(data), 1);
+            this.firestore.doc(`users/${userId}`).update({
+					favoritedGifs: firebase.firestore.FieldValue.arrayRemove(data as string),
+            }).catch((e) => {
+               console.error("Could not update firebase with favorite removal. Reverting.")
+               console.error(e);
+               this.Store.activeUser_Firebase.favoritedGifs.push(data);
+            });
+            break;
       }
    }
 
@@ -185,7 +207,8 @@ export class FirebaseService {
 
 	// Loads the active chat metadata as well as all users that are part of the chat
 	// Calls a callback on completion, passed no data
-	public async loadActiveChatData(callback: Function) {
+   public async loadActiveChatData(callback: Function) {
+      this.Store.activeChatMembers = [];
 		this.firestore
 			.doc(`chats-meta/${this.Store.activeChatId}`)
 			.get()
