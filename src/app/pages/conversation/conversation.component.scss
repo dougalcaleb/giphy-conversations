@@ -93,6 +93,59 @@ $theme-red: #b52626;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
+   .gif-picker-closer {
+      // background: orange;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      z-index: 9;
+   }
+   .gif-picker {
+      width: calc(80vw - 34px);
+      min-height: 5vh;
+      border-radius: 5px;
+      border: 3px solid $theme-blue-dark;
+      background: $theme-black-medium;
+      position: absolute;
+      // left: 12px;
+      bottom: 7vh;
+      // padding: 5px;
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      z-index: 10;
+      max-height: 50vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      .gif {
+         background: $theme-black-dark;
+         border-radius: 5px;
+         height: 10vh;
+         position: relative;
+         width: 15vh;
+         margin: 5px;
+         cursor: pointer;
+      }
+
+      .load-more {
+         width: 15vh;
+         display: flex;
+         justify-content: space-evenly;
+         align-items: center;
+         flex-direction: column;
+         svg {
+            color: $theme-blue-light;
+            height: 30px;
+         }
+         p {
+            color: $theme-white;
+            font-family: "Ubuntu";
+            margin: 0;
+         }
+      }
+   }
    .scroll-to-bottom {
       height: 40px;
       width: 40px;
@@ -107,6 +160,7 @@ $theme-red: #b52626;
       margin: auto;
       bottom: max(calc(5vh + 20px), 70px);
       cursor: pointer;
+      z-index: 5;
       // transition: 0.2s;
       svg {
          color: $theme-white;

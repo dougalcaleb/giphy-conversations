@@ -45,21 +45,26 @@ export class ConversationComponent implements AfterViewInit {
 		url: this.testGifUrl,
 		timestamp: 1621521028848,
 	};
-
-   stbBtnIsVisible = true;
-   canShowStbBtn = true;
-
-   scrollAllowance = 200;
-
+   
 	testMessageOther: ChatMessage = {
 		senderName: "NotHavoc",
 		senderPhotoURL: "https://lh3.googleusercontent.com/a-/AOh14GhbGpxxRCr8_GNhVh9HJg47fSVGKBaJdCCclNHv=s96-c",
 		senderUID: "dwefiujnf98we7fwe97tfg",
 		url: this.testGifUrl2,
 		timestamp: 1621521028848,
-	};
+   };
+   
+   stbBtnIsVisible = true;
+   canShowStbBtn = true;
+   retrievedGifs: any = [];
 
-	constructor(public Store: StoreService, private Firebase: FirebaseService) {}
+   // settings
+   scrollAllowance: number = 200;
+   cacheResults: boolean = true;
+
+   constructor(public Store: StoreService, private Firebase: FirebaseService) {
+      // this.retrievedGifs = JSON.parse(localStorage.getItem("gif-cache") || "");
+   }
 
 	ngAfterViewInit(): void {
       this.messageWrapper.nativeElement.addEventListener("scroll", () => {
@@ -97,5 +102,28 @@ export class ConversationComponent implements AfterViewInit {
             this.canShowStbBtn = true;
          }, 100);
       });
-	}
+   }
+
+   searchGifs() {
+      if (this.cacheResults) {
+         this.retrievedGifs = JSON.parse(localStorage.getItem("gif-cache") || "");
+      }
+   }
+
+   loadMoreGifs() {
+      if (this.cacheResults) {
+         this.retrievedGifs = this.retrievedGifs.concat(JSON.parse(localStorage.getItem("gif-cache") || ""));
+      }
+      console.log(this.retrievedGifs);
+   }
+   
+   closeGifPicker() {
+      this.retrievedGifs = [];
+   }
+
+   handleInputKeydown(event: any) {
+      if (event.key == "Enter") {
+         this.searchGifs();
+      }
+   }
 }
