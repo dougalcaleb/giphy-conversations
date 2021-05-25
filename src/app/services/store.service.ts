@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { ChatMessage } from "../interfaces/chat-message";
 // interfaces
 import {ChatMeta} from "../interfaces/chat-meta";
 import {FirebaseUser} from "../interfaces/firebase-user";
@@ -16,6 +17,8 @@ export class StoreService {
 	public loadedChatIds: Array<string> = [];             // Stores the IDs for all chats the user is in
    public activeChatMeta: ChatMeta;                      // Metadata for the active chat
    public activeChatMembers: Array<FirebaseUser> = [];   // Users in the active chat
+   public activeChatAllMessages: ChatMessage[] = [];     // All messages for the current chat
+   public activeChatShownMessages: ChatMessage[] = [];   // Shown messages for the current chat. Does not include messages that have not been loaded
    public allChatsMembers: Array<FirebaseUser> = [];     // Users in all chats the logged in user is in
    public allChatsShownData: any = {};                   // Exclusively for chat.html, gives easy accessible username and photo url
    public newProfileImage: any;
@@ -28,7 +31,8 @@ export class StoreService {
 		username: "NONE",
 		chats: [],
       favoritedGifs: [],
-      color: "black",
+      // color: "black",
+      sentGifs: 0,
 	};
 
 	public static defaultChatMeta: ChatMeta = {

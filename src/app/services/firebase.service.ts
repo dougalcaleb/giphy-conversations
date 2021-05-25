@@ -14,15 +14,16 @@ import {v4 as uuidv4} from "uuid";
 import {map, switchMap, take, tap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {ChatMeta} from "../interfaces/chat-meta";
+import {ChatMessage} from "../interfaces/chat-message";
 
 @Injectable({
 	providedIn: "root",
 })
 export class FirebaseService {
 	signedIn: Observable<FirebaseUser | null | undefined>;
-   public uploadProgress: any;
-   
-   private favoriteCooldown: number = 1000;
+	public uploadProgress: any;
+
+	private favoriteCooldown: number = 1000;
 
 	constructor(
 		public firestore: AngularFirestore,
@@ -107,7 +108,8 @@ export class FirebaseService {
 						photoURL: userData?.photoURL || user.photoURL,
 						uid: userData?.uid || user.uid,
 						username: userData?.username || user.displayName.split(" ").join("") + "-" + uuidv4().split("").slice(0, 5).join(""),
-						color: userData?.color || "#ffffff",
+						// color: userData?.color || "#ffffff",
+                  sentGifs: userData?.sentGifs || 0
 					};
 
 					this.Store.activeUser_Firebase = data;
@@ -132,54 +134,68 @@ export class FirebaseService {
    */
 
 	public uploadProfileImage(image: any, callback: Function) {
-      let task = this.storage.upload(`profileImages/${this.Store.activeUser_Firebase.uid}`, image);
+		let task = this.storage.upload(`profileImages/${this.Store.activeUser_Firebase.uid}`, image);
 		this.uploadProgress = task.snapshotChanges().pipe(
 			map((s) => {
-            let prog = ((s?.bytesTransferred || 0) / (s?.totalBytes || 100)) * 100;
-            if (prog == 100) {
-               callback(this.storage.ref(`profileImages/${this.Store.activeUser_Firebase.uid}`).getDownloadURL());
-            }
+				let prog = ((s?.bytesTransferred || 0) / (s?.totalBytes || 100)) * 100;
+				if (prog == 100) {
+					callback(this.storage.ref(`profileImages/${this.Store.activeUser_Firebase.uid}`).getDownloadURL());
+				}
 				return prog;
 			})
 		);
-   }
-   
-   public updateUser(userId: string, action: string, data: any, callback?: Function) {
-      switch (action) {
-         case "newImage":
-            data.pipe(
-               tap((data: any) => {
-                  this.Store.activeUser_Firebase.photoURL = data;
-                  this.firestore.doc(`users/${userId}`).set({photoURL: data as string}, {merge: true});
-               })
-            ).subscribe();
+	}
+
+	public updateUser(userId: string, action: string, data: any, callback?: Function) {
+		switch (action) {
+			case "newImage":
+				data
+					.pipe(
+						tap((data: any) => {
+							this.Store.activeUser_Firebase.photoURL = data;
+							this.firestore.doc(`users/${userId}`).set({photoURL: data as string}, {merge: true});
+						})
+					)
+					.subscribe();
+				break;
+			case "username":
+				this.Store.activeUser_Firebase.username = data as string;
+				this.firestore.doc(`users/${userId}`).set({username: data as string}, {merge: true});
+				break;
+			case "addToFavorites":
+				this.Store.activeUser_Firebase.favoritedGifs.push(data);
+				this.firestore
+					.doc(`users/${userId}`)
+					.update({
+						favoritedGifs: firebase.firestore.FieldValue.arrayUnion(data as string),
+					})
+					.catch((e) => {
+						console.error("Could not update firebase with favorite addition. Reverting.");
+						console.error(e);
+						this.Store.activeUser_Firebase.favoritedGifs.splice(this.Store.activeUser_Firebase.favoritedGifs.indexOf(data), 1);
+					});
+				break;
+			case "removeFromFavorites":
+				this.Store.activeUser_Firebase.favoritedGifs.splice(this.Store.activeUser_Firebase.favoritedGifs.indexOf(data), 1);
+				this.firestore
+					.doc(`users/${userId}`)
+					.update({
+						favoritedGifs: firebase.firestore.FieldValue.arrayRemove(data as string),
+					})
+					.catch((e) => {
+						console.error("Could not update firebase with favorite removal. Reverting.");
+						console.error(e);
+						this.Store.activeUser_Firebase.favoritedGifs.push(data);
+					});
             break;
-         case "username":
-            this.Store.activeUser_Firebase.username = data as string;
-            this.firestore.doc(`users/${userId}`).set({ username: data as string }, { merge: true });
-            break;
-         case "addToFavorites":
-            this.Store.activeUser_Firebase.favoritedGifs.push(data);
+         case "updateSentGifCount":
+            this.Store.activeUser_Firebase.sentGifs += data;
             this.firestore.doc(`users/${userId}`).update({
-					favoritedGifs: firebase.firestore.FieldValue.arrayUnion(data as string),
-            }).catch((e) => {
-               console.error("Could not update firebase with favorite addition. Reverting.")
-               console.error(e);
-               this.Store.activeUser_Firebase.favoritedGifs.splice(this.Store.activeUser_Firebase.favoritedGifs.indexOf(data), 1);
-            });
+               sentGifs: this.Store.activeUser_Firebase.sentGifs
+            })
             break;
-         case "removeFromFavorites":
-            this.Store.activeUser_Firebase.favoritedGifs.splice(this.Store.activeUser_Firebase.favoritedGifs.indexOf(data), 1);
-            this.firestore.doc(`users/${userId}`).update({
-					favoritedGifs: firebase.firestore.FieldValue.arrayRemove(data as string),
-            }).catch((e) => {
-               console.error("Could not update firebase with favorite removal. Reverting.")
-               console.error(e);
-               this.Store.activeUser_Firebase.favoritedGifs.push(data);
-            });
-            break;
-      }
-   }
+		}
+	}
 
 	/*
    ?==========================================================================================================
@@ -207,8 +223,8 @@ export class FirebaseService {
 
 	// Loads the active chat metadata as well as all users that are part of the chat
 	// Calls a callback on completion, passed no data
-   public async loadActiveChatData(callback: Function) {
-      this.Store.activeChatMembers = [];
+	public async loadActiveChatData(callback: Function) {
+		this.Store.activeChatMembers = [];
 		this.firestore
 			.doc(`chats-meta/${this.Store.activeChatId}`)
 			.get()
@@ -325,6 +341,56 @@ export class FirebaseService {
 			.subscribe();
 		this.firestore.doc(`chats/${chatId}`).delete();
 	}
+
+	/*
+   ?==========================================================================================================
+   ?
+   ?   Message management
+   ?
+   ?==========================================================================================================
+   */
+
+	public async sendMessage(gifURL: string, from = this.Store.activeUser_Firebase, chatId = this.Store.activeChatId) {
+		let newMessage: ChatMessage = {
+			senderName: from.username,
+			senderPhotoURL: from.photoURL,
+			timestamp: Date.now(),
+			url: gifURL,
+			senderUID: from.uid,
+      };
+      
+      // console.log("sending")
+
+		this.firestore.doc(`chats/${chatId}`).update({
+			messages: firebase.firestore.FieldValue.arrayUnion(newMessage),
+		});
+		this.firestore.doc(`chats-meta/${chatId}`).set(
+			{
+				last: {
+					from: from.username,
+					timestamp: Date.now(),
+					url: gifURL,
+				},
+			},
+			{
+				merge: true,
+			}
+		);
+   }
+   
+   public async retrieveActiveChatMessages(callback: Function) {
+      this.firestore.doc(`chats/${this.Store.activeChatId}`).get().pipe(
+         tap((item: any) => {
+            callback(item.data().messages);
+         })
+      ).subscribe();
+   }
+
+   public subscribeToActiveChat(callback: Function) {
+      this.firestore.doc(`chats/${this.Store.activeChatId}`).valueChanges().subscribe(() => {
+         callback();
+      });
+   }
 
 	/*
    ?==========================================================================================================

@@ -6,7 +6,7 @@
 			Your browser does not support embedded video.
 		</video>
 		<div class="meta">
-			<span class="timestamp">{{ message.senderName }}, {{ Store.getTimeSince(message.timestamp) }}</span>
+			<span class="timestamp">{{ checkIfSelf(message.senderName) }}, {{ Store.getTimeSince(message.timestamp) | lowercase }}</span>
 			<div class="favorite">
 				<svg viewBox="0 0 24 24" *ngIf="Store.activeUser_Firebase.favoritedGifs.includes(message.url)" (click)="removeFromFavorites()">
 					<path

@@ -32,18 +32,19 @@
 
 <div class="chat">
    <div class="chat-messages" #messageWrapper>
-      <app-message [message]="testMessageSelf"></app-message>
+      <!-- <app-message [message]="testMessageSelf"></app-message>
       <app-message [message]="testMessageOther"></app-message>
       <app-message [message]="testMessageOther"></app-message>
       <app-message [message]="testMessageSelf"></app-message>
       <app-message [message]="testMessageSelf"></app-message>
-      <app-message [message]="testMessageOther"></app-message>
+      <app-message [message]="testMessageOther"></app-message> -->
+      <app-message *ngFor="let msg of Store.activeChatShownMessages" [message]="msg"></app-message>
    </div>
 	<div class="chat-controls">
       <div class="gif-picker-closer" *ngIf="retrievedGifs.length > 0" (click)="closeGifPicker()"></div>
       <div class="gif-picker" *ngIf="retrievedGifs.length > 0">
-         <div class="gif" *ngFor="let gif of retrievedGifs">
-            <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src={{gif.images.fixed_height.mp4}}></video>
+         <div class="gif" *ngFor="let gif of retrievedGifs" (click)="sendGif(gif.images.fixed_height.mp4)">
+            <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src={{gif.images.original_mp4.mp4}}></video>
             <app-spinner [size]="40"></app-spinner>
          </div>
 
@@ -59,7 +60,7 @@
             <path fill="currentColor" d="M12 20.03C16.41 20.03 20.03 16.41 20.03 12C20.03 7.59 16.41 3.97 12 3.97C7.59 3.97 3.97 7.59 3.97 12C3.97 16.41 7.59 20.03 12 20.03M12 22C6.46 22 2 17.54 2 12C2 6.46 6.46 2 12 2C17.54 2 22 6.46 22 12C22 17.54 17.54 22 12 22M11 13.54H8L12 17.5L16 13.54H13V6.5H11" />
         </svg>
       </div>
-		<input type="text" placeholder="Search for a GIF" (keydown)="handleInputKeydown($event)"/>
+		<input type="text" placeholder="Search for a GIF" (keydown)="handleInputKeydown($event)" [(ngModel)]="searchQuery" />
 		<div class="controls-button favorite-toggle" title="Favorite GIFs">
 			<svg viewBox="0 0 24 24">
 				<path

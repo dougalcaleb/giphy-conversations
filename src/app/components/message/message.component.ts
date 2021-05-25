@@ -38,5 +38,13 @@ export class MessageComponent implements OnInit {
 
 	addToFavorites() {
 		this.Firebase.updateUser(this.Store.activeUser_Firebase.uid, "addToFavorites", this.message.url);
-	}
+   }
+   
+   checkIfSelf(name: string): string {
+      if (name == this.Store.activeUser_Firebase.username) {
+         return "You"
+      } else {
+         return name;
+      }
+   }
 }

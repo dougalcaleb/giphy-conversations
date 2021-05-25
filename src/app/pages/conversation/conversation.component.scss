@@ -105,7 +105,7 @@ $theme-red: #b52626;
    .gif-picker {
       width: calc(80vw - 34px);
       min-height: 5vh;
-      border-radius: 5px;
+      border-radius: 10px;
       border: 3px solid $theme-blue-dark;
       background: $theme-black-medium;
       position: absolute;
@@ -119,14 +119,25 @@ $theme-red: #b52626;
       max-height: 50vh;
       overflow-y: auto;
       overflow-x: hidden;
+      box-shadow: 0px 20px 0px $theme-black-light;
       .gif {
          background: $theme-black-dark;
          border-radius: 5px;
          height: 10vh;
          position: relative;
-         width: 15vh;
+         // width: 15vh;
          margin: 5px;
          cursor: pointer;
+         border-radius: 5px;
+         overflow: hidden;
+         video {
+            height: 100%;
+            position: relative;
+            z-index: 5;
+         }
+         app-spinner {
+            z-index: 3;
+         }
       }
 
       .load-more {

@@ -4,67 +4,30 @@ import {FirebaseUser} from "src/app/interfaces/firebase-user";
 import {FirebaseService} from "src/app/services/firebase.service";
 import {StoreService} from "src/app/services/store.service";
 import {trigger, state, style, animate, transition} from "@angular/animations";
+import { GiphyService } from "src/app/services/giphy.service";
 
 @Component({
 	selector: "app-conversation",
 	templateUrl: "./conversation.component.html",
 	styleUrls: ["./conversation.component.scss"],
-	animations: [
-		trigger("stbVisible", [
-			state(
-				"visible",
-				style({
-					opacity: "1",
-					bottom: "max(calc(5vh + 20px), 70px);",
-				})
-			),
-			state(
-				"hidden",
-				style({
-					opacity: "0",
-					bottom: "max(calc(5vh + 40px), 90px);",
-				})
-			),
-			transition("visible => hidden", [animate("0.1s")]),
-			transition("hidden => visible", [animate("0.1s")]),
-		]),
-	],
 })
 export class ConversationComponent implements AfterViewInit {
 	@ViewChild("messageWrapper", {read: ElementRef}) public messageWrapper: any;
-
-	testGifUrl = "https://media2.giphy.com/media/5Zesu5VPNGJlm/giphy.mp4?cid=1480d408vbfhbmsl26vceb3rye86w82sawuesdo553sesoy0&rid=giphy.mp4&ct=g";
-	testGifUrl2 =
-		"https://media0.giphy.com/media/xUOxeTqiI5sgD1sXQI/giphy.mp4?cid=1480d4086v8urcr6fsyb3433kadpcai509b6jd5ezp37d4cv&rid=giphy.mp4&ct=g";
-
-	testMessageSelf: ChatMessage = {
-		senderName: "havoc",
-		senderPhotoURL:
-			"https://firebasestorage.googleapis.com/v0/b/giphy-conversations.appspot.com/o/profileImages%2Fx9bSzUSYsOMF6OjweJdaOc36rw72?alt=media&token=460ea4dd-cd7e-4a55-a034-f06e75bb5b99",
-		senderUID: "x9bSzUSYsOMF6OjweJdaOc36rw72",
-		url: this.testGifUrl,
-		timestamp: 1621521028848,
-	};
-   
-	testMessageOther: ChatMessage = {
-		senderName: "NotHavoc",
-		senderPhotoURL: "https://lh3.googleusercontent.com/a-/AOh14GhbGpxxRCr8_GNhVh9HJg47fSVGKBaJdCCclNHv=s96-c",
-		senderUID: "dwefiujnf98we7fwe97tfg",
-		url: this.testGifUrl2,
-		timestamp: 1621521028848,
-   };
    
    stbBtnIsVisible = true;
    canShowStbBtn = true;
    retrievedGifs: any = [];
+   searchQuery: string = "";
+   searchOffset: number = 0;
 
    // settings
    scrollAllowance: number = 200;
-   cacheResults: boolean = true;
+   cacheResults: boolean = false;
+   gifRetrieveCount: number = 15;
+   messagesRetrieveCount: number = 20;
+   messagesOffset: number = 0;
 
-   constructor(public Store: StoreService, private Firebase: FirebaseService) {
-      // this.retrievedGifs = JSON.parse(localStorage.getItem("gif-cache") || "");
-   }
+   constructor(public Store: StoreService, private Firebase: FirebaseService, private Giphy: GiphyService) {}
 
 	ngAfterViewInit(): void {
       this.messageWrapper.nativeElement.addEventListener("scroll", () => {
@@ -82,6 +45,14 @@ export class ConversationComponent implements AfterViewInit {
          ) {
             this.stbBtnIsVisible = false;
          }
+      });
+
+      this.Firebase.subscribeToActiveChat(() => {
+         this.Firebase.retrieveActiveChatMessages((messages: ChatMessage[]) => {
+            this.Store.activeChatAllMessages = messages;
+            this.Store.activeChatShownMessages = messages.slice(Math.max(messages.length - this.messagesRetrieveCount - this.messagesOffset, 0), messages.length - this.messagesOffset);
+            this.scrollToBottom();
+         });
       });
 	}
 
@@ -105,16 +76,30 @@ export class ConversationComponent implements AfterViewInit {
    }
 
    searchGifs() {
-      if (this.cacheResults) {
+      // console.log("Gif Searching")
+      if (this.cacheResults && localStorage.getItem("gif-cache")) {
+         // console.log("Found cached");
          this.retrievedGifs = JSON.parse(localStorage.getItem("gif-cache") || "");
+      } else {
+         // console.log("No cached found");
+         this.Giphy.search(this.searchQuery, this.searchOffset, this.gifRetrieveCount).then((data) => {
+            this.retrievedGifs = data.data;
+            if (this.cacheResults) {
+               localStorage.setItem("gif-cache", JSON.stringify(data.data));
+            }
+         });
       }
    }
 
    loadMoreGifs() {
-      if (this.cacheResults) {
+      if (this.cacheResults && localStorage.getItem("gif-cache")) {
          this.retrievedGifs = this.retrievedGifs.concat(JSON.parse(localStorage.getItem("gif-cache") || ""));
+      } else {
+         this.searchOffset += this.gifRetrieveCount;
+         this.Giphy.search(this.searchQuery, this.searchOffset, this.gifRetrieveCount).then((data) => {
+            this.retrievedGifs = this.retrievedGifs.concat(data.data);
+         });
       }
-      console.log(this.retrievedGifs);
    }
    
    closeGifPicker() {
@@ -125,5 +110,10 @@ export class ConversationComponent implements AfterViewInit {
       if (event.key == "Enter") {
          this.searchGifs();
       }
+   }
+
+   sendGif(gifURL: string) {
+      this.Firebase.sendMessage(gifURL);
+      this.closeGifPicker();
    }
 }

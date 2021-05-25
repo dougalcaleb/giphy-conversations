@@ -12,7 +12,7 @@
 		<div class="right-border"></div>
 	</div>
 	<div class="last">
-		<span *ngIf="last?.from">@{{ last.from }}, {{ Store.getTimeSince(last.timestamp) }}:</span>
+		<span *ngIf="last?.from">@{{ last.from }}, {{ Store.getTimeSince(last.timestamp) | lowercase}}:</span>
 		<span *ngIf="!last?.from">No messages</span>
 		<div class="last-gif">
 			<video *ngIf="last?.from" autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{ last?.url }}">
