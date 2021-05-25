@@ -19,6 +19,7 @@ export class ConversationComponent implements AfterViewInit {
    retrievedGifs: any = [];
    searchQuery: string = "";
    searchOffset: number = 0;
+   showingFavorites: boolean = false;
 
    // settings
    scrollAllowance: number = 200;
@@ -101,9 +102,21 @@ export class ConversationComponent implements AfterViewInit {
          });
       }
    }
+
+   closeOpenPicker() {
+      if (this.showingFavorites) {
+         this.closeFavoriteGifs();
+      } else if (this.retrievedGifs.length > 0) {
+         this.closeGifPicker();
+      }
+   }
    
    closeGifPicker() {
       this.retrievedGifs = [];
+   }
+
+   closeFavoriteGifs() {
+      this.showingFavorites = false;
    }
 
    handleInputKeydown(event: any) {
@@ -114,6 +127,17 @@ export class ConversationComponent implements AfterViewInit {
 
    sendGif(gifURL: string) {
       this.Firebase.sendMessage(gifURL);
-      this.closeGifPicker();
+      this.closeOpenPicker();
+   }
+
+   toggleFavorites() {
+      this.showingFavorites = !this.showingFavorites;
+      if (this.showingFavorites && this.retrievedGifs.length > 0) {
+         this.closeGifPicker();
+      }
+   }
+
+   removeFromFavorites(gifURL: string) {
+      this.Firebase.updateUser(this.Store.activeUser_Firebase.uid, "removeFromFavorites", gifURL)
    }
 }

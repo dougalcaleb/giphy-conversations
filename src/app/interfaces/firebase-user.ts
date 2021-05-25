@@ -1,8 +1,8 @@
 export interface FirebaseUser {
-   chats: Array<string>;
+   chats: string[];
    displayName: string;
    email: string;
-   favoritedGifs: Array<string>;
+   favoritedGifs: string[];
    photoURL: string;
    uid: string;
    username: string;

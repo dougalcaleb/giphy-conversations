@@ -9,7 +9,7 @@
 			[photoURL]="user.photoURL"
 			[username]="user.username"
 			[userRemoval]="false"
-         [interact]="false"
+			[interact]="false"
 		></app-user-profile>
 	</div>
 	<div class="other">
@@ -31,37 +31,80 @@
 </div>
 
 <div class="chat">
-   <div class="chat-messages" #messageWrapper>
-      <!-- <app-message [message]="testMessageSelf"></app-message>
+	<div class="chat-messages" #messageWrapper>
+		<!-- <app-message [message]="testMessageSelf"></app-message>
       <app-message [message]="testMessageOther"></app-message>
       <app-message [message]="testMessageOther"></app-message>
       <app-message [message]="testMessageSelf"></app-message>
       <app-message [message]="testMessageSelf"></app-message>
       <app-message [message]="testMessageOther"></app-message> -->
-      <app-message *ngFor="let msg of Store.activeChatShownMessages" [message]="msg"></app-message>
-   </div>
+		<app-message *ngFor="let msg of Store.activeChatShownMessages" [message]="msg"></app-message>
+	</div>
 	<div class="chat-controls">
-      <div class="gif-picker-closer" *ngIf="retrievedGifs.length > 0" (click)="closeGifPicker()"></div>
-      <div class="gif-picker" *ngIf="retrievedGifs.length > 0">
-         <div class="gif" *ngFor="let gif of retrievedGifs" (click)="sendGif(gif.images.fixed_height.mp4)">
-            <video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src={{gif.images.original_mp4.mp4}}></video>
-            <app-spinner [size]="40"></app-spinner>
-         </div>
+		<div class="gif-picker-closer" *ngIf="retrievedGifs.length > 0 || showingFavorites" (click)="closeOpenPicker()"></div>
 
-         <div class="load-more gif" (click)="loadMoreGifs()">
-            <svg viewBox="0 0 24 24">
-               <path fill="currentColor" d="M8,13H10.55V10H13.45V13H16L12,17L8,13M19.35,10.04C21.95,10.22 24,12.36 24,15A5,5 0 0,1 19,20H6A6,6 0 0,1 0,14C0,10.91 2.34,8.36 5.35,8.04C6.6,5.64 9.11,4 12,4C15.64,4 18.67,6.59 19.35,10.04M19,18A3,3 0 0,0 22,15C22,13.45 20.78,12.14 19.22,12.04L17.69,11.93L17.39,10.43C16.88,7.86 14.62,6 12,6C9.94,6 8.08,7.14 7.13,8.97L6.63,9.92L5.56,10.03C3.53,10.24 2,11.95 2,14A4,4 0 0,0 6,18H19Z" />
-           </svg>
-           <p>Load More</p>
-         </div>
-      </div>
-      <div class="scroll-to-bottom" *ngIf="stbBtnIsVisible" (click)="scrollToBottom()">
-         <svg viewBox="0 0 24 24">
-            <path fill="currentColor" d="M12 20.03C16.41 20.03 20.03 16.41 20.03 12C20.03 7.59 16.41 3.97 12 3.97C7.59 3.97 3.97 7.59 3.97 12C3.97 16.41 7.59 20.03 12 20.03M12 22C6.46 22 2 17.54 2 12C2 6.46 6.46 2 12 2C17.54 2 22 6.46 22 12C22 17.54 17.54 22 12 22M11 13.54H8L12 17.5L16 13.54H13V6.5H11" />
-        </svg>
-      </div>
+		<div class="gif-picker" *ngIf="retrievedGifs.length > 0">
+			<div class="gif" *ngFor="let gif of retrievedGifs" (click)="sendGif(gif.images.fixed_height.mp4)">
+				<video
+					autoplay
+					loop
+					disablePictureInPicture
+					disableRemotePlayback
+					muted="true"
+					preload="auto"
+					src="{{ gif.images.original_mp4.mp4 }}"
+				></video>
+				<app-spinner [size]="40"></app-spinner>
+			</div>
+
+			<div class="load-more gif" (click)="loadMoreGifs()">
+				<svg viewBox="0 0 24 24">
+					<path
+						fill="currentColor"
+						d="M8,13H10.55V10H13.45V13H16L12,17L8,13M19.35,10.04C21.95,10.22 24,12.36 24,15A5,5 0 0,1 19,20H6A6,6 0 0,1 0,14C0,10.91 2.34,8.36 5.35,8.04C6.6,5.64 9.11,4 12,4C15.64,4 18.67,6.59 19.35,10.04M19,18A3,3 0 0,0 22,15C22,13.45 20.78,12.14 19.22,12.04L17.69,11.93L17.39,10.43C16.88,7.86 14.62,6 12,6C9.94,6 8.08,7.14 7.13,8.97L6.63,9.92L5.56,10.03C3.53,10.24 2,11.95 2,14A4,4 0 0,0 6,18H19Z"
+					/>
+				</svg>
+				<p>Load More</p>
+			</div>
+		</div>
+
+		<div class="favorites-picker" *ngIf="showingFavorites">
+			<div class="gif" *ngFor="let gif of Store.activeUser_Firebase.favoritedGifs" (click)="sendGif(gif)">
+				<video autoplay loop disablePictureInPicture disableRemotePlayback muted="true" preload="auto" src="{{ gif }}"></video>
+				<app-spinner [size]="40"></app-spinner>
+				<span title="Unfavorite this GIF">
+					<svg viewBox="0 0 24 24" class="remove-fav" (click)="removeFromFavorites(gif)">
+						<path
+							fill="currentColor"
+							d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
+						/>
+					</svg>
+				</span>
+			</div>
+
+			<div class="no-favorites gif" *ngIf="Store.activeUser_Firebase.favoritedGifs.length == 0">
+				<svg viewBox="0 0 24 24">
+					<path
+						fill="currentColor"
+						d="M20.41 19L22.54 21.12L21.12 22.54L19 20.41L16.88 22.54L15.47 21.12L17.59 19L15.47 16.88L16.88 15.47L19 17.59L21.12 15.47L22.54 16.88L20.41 19M13.09 18H4V6H20V13.09C20.72 13.21 21.39 13.46 22 13.81V6C22 4.89 21.11 4 20 4H4C2.9 4 2 4.89 2 6V18C2 19.11 2.9 20 4 20H13.09C13.04 19.67 13 19.34 13 19C13 18.66 13.04 18.33 13.09 18Z"
+					/>
+				</svg>
+				<p>No favorite GIFs</p>
+			</div>
+		</div>
+
+		<div class="scroll-to-bottom" *ngIf="stbBtnIsVisible" (click)="scrollToBottom()">
+			<svg viewBox="0 0 24 24">
+				<path
+					fill="currentColor"
+					d="M12 20.03C16.41 20.03 20.03 16.41 20.03 12C20.03 7.59 16.41 3.97 12 3.97C7.59 3.97 3.97 7.59 3.97 12C3.97 16.41 7.59 20.03 12 20.03M12 22C6.46 22 2 17.54 2 12C2 6.46 6.46 2 12 2C17.54 2 22 6.46 22 12C22 17.54 17.54 22 12 22M11 13.54H8L12 17.5L16 13.54H13V6.5H11"
+				/>
+			</svg>
+		</div>
+
 		<input type="text" placeholder="Search for a GIF" (keydown)="handleInputKeydown($event)" [(ngModel)]="searchQuery" />
-		<div class="controls-button favorite-toggle" title="Favorite GIFs">
+
+		<div class="controls-button favorite-toggle" title="Favorite GIFs" (click)="toggleFavorites()">
 			<svg viewBox="0 0 24 24">
 				<path
 					fill="currentColor"

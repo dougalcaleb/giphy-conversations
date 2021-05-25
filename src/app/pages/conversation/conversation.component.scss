@@ -157,6 +157,82 @@ $theme-red: #b52626;
          }
       }
    }
+
+   .favorites-picker {
+      width: calc(80vw - 34px);
+      min-height: 5vh;
+      border-radius: 10px;
+      border: 3px solid $theme-blue-dark;
+      background: $theme-black-medium;
+      position: absolute;
+      // left: 12px;
+      bottom: 7vh;
+      // padding: 5px;
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      z-index: 10;
+      max-height: 50vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 0px 20px 0px $theme-black-light;
+      .gif {
+         background: $theme-black-dark;
+         border-radius: 5px;
+         height: 10vh;
+         position: relative;
+         // width: 15vh;
+         margin: 5px;
+         cursor: pointer;
+         border-radius: 5px;
+         // overflow: hidden;
+         // margin-bottom: 30px;
+         padding-bottom: 35px;
+         video {
+            height: 100%;
+            position: relative;
+            z-index: 5;
+            border-radius: 5px;
+         }
+         app-spinner {
+            z-index: 3;
+         }
+         svg.remove-fav {
+            bottom: 5px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            height: 25px;
+            width: 25px;
+            color: $theme-red;
+            z-index: 5;
+         }
+      }
+
+      .no-favorites {
+         width: 20vh;
+         display: flex;
+         justify-content: space-evenly;
+         align-items: center;
+         flex-direction: column;
+         // padding-left: 10px;
+         // padding-right: 10px;
+         // text-align: center;
+         // padding-bottom: 5px;
+         cursor: default;
+         svg {
+            color: $theme-blue-light;
+            height: 30px;
+         }
+         p {
+            color: $theme-white;
+            font-family: "Ubuntu";
+            margin: 0;
+         }
+      }
+   }
+
    .scroll-to-bottom {
       height: 40px;
       width: 40px;
